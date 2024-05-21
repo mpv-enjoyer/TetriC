@@ -1,24 +1,19 @@
 #include "action.h"
 
 bool _tCollision(const Field* field, const Shape* shape);
-#define COPYHITBOX(t, dest) \
-    strncpy(dest[0], t[0], SHAPE_SIZE * SHAPE_SIZE); \
-    strncpy(dest[1], t[1], SHAPE_SIZE * SHAPE_SIZE); \
-    strncpy(dest[2], t[2], SHAPE_SIZE * SHAPE_SIZE);\
-    strncpy(dest[3], t[3], SHAPE_SIZE * SHAPE_SIZE);
 
 bool tMakeShape(const Field* field, Shape* shape)
 {
     int type = rand() % SHAPE_TYPE_COUNT;
     switch (type)
     {
-        case 0: COPYHITBOX(ShapeI, shape->hitboxes); break;
-        case 1: COPYHITBOX(ShapeJ, shape->hitboxes); break;
-        case 2: COPYHITBOX(ShapeL, shape->hitboxes); break;
-        case 3: COPYHITBOX(ShapeO, shape->hitboxes); break;
-        case 4: COPYHITBOX(ShapeS, shape->hitboxes); break;
-        case 5: COPYHITBOX(ShapeT, shape->hitboxes); break;
-        case 6: COPYHITBOX(ShapeZ, shape->hitboxes); break;
+        case 0: *shape = ShapeI; break;
+        case 1: *shape = ShapeJ; break;
+        case 2: *shape = ShapeL; break;
+        case 3: *shape = ShapeO; break;
+        case 4: *shape = ShapeS; break;
+        case 5: *shape = ShapeT; break;
+        case 6: *shape = ShapeZ; break;
         default: D_ASSERT(false);
     }
     shape->rotate_state = rand() % SHAPE_ROTATE_SIZE;
@@ -98,9 +93,9 @@ bool tPlaceShape(Field *field, const Shape *shape)
             if (shape->hitboxes[shape->rotate_state][shape_offset] == '0') continue;
             int shape_y = shape->y + yi;
             int shape_x = shape->x + xi;
+            if (shape_y <= 0) return false;
             int field_offset = shape_y * FIELD_WIDTH + shape_x;
             field[field_offset] = color;
-            if (shape_y <= 0) return false;
         }
     }
     return true;

@@ -5,6 +5,7 @@
 #include <signal.h>
 #include <time.h>
 #include <string.h>
+#include <malloc.h>
 
 #ifndef NDEBUG
  #define D_ASSERT(expr) if (!(expr)) raise(SIGSEGV);

@@ -11,10 +11,6 @@ void _tFrame();
 void tInit()
 {
     shape = &_shape;
-    _shape.hitboxes[0] = (char*)calloc(SHAPE_SIZE * SHAPE_SIZE, sizeof(char*));
-    _shape.hitboxes[1] = (char*)calloc(SHAPE_SIZE * SHAPE_SIZE, sizeof(char*));
-    _shape.hitboxes[2] = (char*)calloc(SHAPE_SIZE * SHAPE_SIZE, sizeof(char*));
-    _shape.hitboxes[3] = (char*)calloc(SHAPE_SIZE * SHAPE_SIZE, sizeof(char*));
 
     InitWindow(WIDTH, HEIGHT, "TetriC");
     SetTargetFPS(60);

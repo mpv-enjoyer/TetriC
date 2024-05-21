@@ -1,8 +1,7 @@
 #ifndef RENDER_H
 #define RENDER_H
 
-#include <malloc.h>
-#include "raylib.h"
+#include <raylib.h>
 #include "action.h"
 
 #define WIDTH 800

@@ -10,14 +10,14 @@
 
 typedef struct
 {
-    char* hitboxes[SHAPE_ROTATE_SIZE];
+    const char* hitboxes[SHAPE_ROTATE_SIZE];
     int rotate_state;
     int x;
     int y;
     int color;
 } Shape;
 
-const static char* ShapeO[4] = {
+const static Shape ShapeO = {{
 "0000"
 "0110"
 "0110"
@@ -37,9 +37,9 @@ const static char* ShapeO[4] = {
 "0110"
 "0110"
 "0000"
-};
+}};
 
-const static char* ShapeI[4] = {
+const static Shape ShapeI = {{
 "0010"
 "0010"
 "0010"
@@ -59,9 +59,9 @@ const static char* ShapeI[4] = {
 "1111"
 "0000"
 "0000"
-};
+}};
 
-const static char* ShapeT[4] = {
+const static Shape ShapeT = {{
 "0010"
 "0111"
 "0000"
@@ -81,9 +81,9 @@ const static char* ShapeT[4] = {
 "0110"
 "0010"
 "0000"
-};
+}};
 
-const static char* ShapeJ[4] = {
+const static Shape ShapeJ = {{
 "0011"
 "0010"
 "0010"
@@ -103,9 +103,9 @@ const static char* ShapeJ[4] = {
 "0111"
 "0000"
 "0000"
-};
+}};
 
-const static char* ShapeL[4] = {
+const static Shape ShapeL = {{
 "0110"
 "0010"
 "0010"
@@ -125,9 +125,9 @@ const static char* ShapeL[4] = {
 "0111"
 "0100"
 "0000"
-};
+}};
 
-const static char* ShapeZ[4] = {
+const static Shape ShapeZ = {{
 "0110"
 "0011"
 "0000"
@@ -147,9 +147,9 @@ const static char* ShapeZ[4] = {
 "0110"
 "0100"
 "0000"
-};
+}};
 
-const static char* ShapeS[4] = {
+const static Shape ShapeS = {{
 
 "0011"
 "0110"
@@ -170,6 +170,6 @@ const static char* ShapeS[4] = {
 "0110"
 "0010"
 "0000"
-};
+}};
 
 #endif
