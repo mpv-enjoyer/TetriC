@@ -22,7 +22,7 @@ void tMainLoop()
     tResetRNG();
     field = (Field*)calloc(FIELD_HEIGHT * FIELD_WIDTH + 1, sizeof(char));
     tMakeShape(field, shape);
-    
+
     bool playing = true;
     double previous_keyframe = 0;
     double wait_keyframe = 0.7f;
@@ -93,7 +93,7 @@ bool _tKeyFrame()
 
 void _tFrame()
 {
-    float rectangle_size = GetRenderHeight() / FIELD_HEIGHT;
+    float rectangle_size = GetRenderHeight() / (FIELD_HEIGHT + FIELD_OUTSIDE_HEIGHT);
     float begin_x = GetRenderWidth() / 2 - rectangle_size * FIELD_WIDTH / 2;
 
     BeginDrawing();
@@ -117,7 +117,7 @@ void _tFrame()
                 default: D_ASSERT(false);
             }
             int x = begin_x + xi * rectangle_size;
-            int y = yi * rectangle_size;
+            int y = (yi + FIELD_OUTSIDE_HEIGHT) * rectangle_size;
             Rectangle rect = { x, y, rectangle_size, rectangle_size };
             DrawRectangle(x, y, rectangle_size, rectangle_size, color);
             DrawRectangleLinesEx(rect, 1, BLACK);
@@ -142,7 +142,7 @@ void _tFrame()
         for (int xi = 0; xi < SHAPE_SIZE; xi++)
         {
             int x = begin_x + (xi + shape->x) * rectangle_size;
-            int y = (yi + shape->y) * rectangle_size;
+            int y = (yi + shape->y + FIELD_OUTSIDE_HEIGHT) * rectangle_size;
             int shape_offset = yi * SHAPE_SIZE + xi;
             if (shape->hitboxes[shape->rotate_state][shape_offset] == '0') continue;
             DrawRectangle(x, y, rectangle_size, rectangle_size, color);

@@ -3,6 +3,7 @@
 
 bool _tCollisionY(const Field* field, const Shape* shape, int* y_top);
 bool _tCollision(const Field* field, const Shape* shape);
+bool _tBehaviourSRS(const Field* field, Shape* shape, int dx, int dy);
 Bag _bag;
 bool _bag_empty = true;
 
@@ -56,10 +57,24 @@ bool tHardDropShape(const Field* field, Shape* shape)
     return shape->y != y_before;
 }
 
+bool _tBehaviourSRS(const Field* field, Shape* shape, int dx, int dy)
+{
+    shape->x += dx;
+    shape->y += dy;
+    if (!_tCollision(field, shape)) return true;
+    shape->x -= dx;
+    shape->y -= dy;
+    return false;
+}
+
 bool tRotateShapeLeft(const Field* field, Shape* shape)
 {
     shape->rotate_state = (shape->rotate_state + SHAPE_ROTATE_SIZE - 1) % SHAPE_ROTATE_SIZE;
     if (!_tCollision(field, shape)) return true;
+    if (_tBehaviourSRS(field, shape, 1, 0)) return true;
+    if (_tBehaviourSRS(field, shape, 1, -1)) return true;
+    if (_tBehaviourSRS(field, shape, 0, -2)) return true;
+    if (_tBehaviourSRS(field, shape, 1, -2)) return true;
     shape->rotate_state = (shape->rotate_state + 1) % SHAPE_ROTATE_SIZE;
     return false;
 }
@@ -68,6 +83,10 @@ bool tRotateShapeRight(const Field* field, Shape* shape)
 {
     shape->rotate_state = (shape->rotate_state + 1) % SHAPE_ROTATE_SIZE;
     if (!_tCollision(field, shape)) return true;
+    if (_tBehaviourSRS(field, shape, -1, 0)) return true;
+    if (_tBehaviourSRS(field, shape, -1, -1)) return true;
+    if (_tBehaviourSRS(field, shape, 0, -2)) return true;
+    if (_tBehaviourSRS(field, shape, -1, -2)) return true;
     shape->rotate_state = (shape->rotate_state + SHAPE_ROTATE_SIZE - 1) % SHAPE_ROTATE_SIZE;
     return false;
 }
