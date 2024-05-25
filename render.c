@@ -19,29 +19,41 @@ void tInit()
 
 void tMainLoop()
 {
+    tResetRNG();
     field = (Field*)calloc(FIELD_HEIGHT * FIELD_WIDTH + 1, sizeof(char));
     tMakeShape(field, shape);
-
+    
     bool playing = true;
     double previous_keyframe = 0;
-    double wait_keyframe = 0.1f;
+    double wait_keyframe = 0.7f;
     double faster_keyframe = 0.04f;
     while (!WindowShouldClose() && playing)
     {
         double current_wait_time = wait_keyframe;
-        if (IsKeyPressed(KEY_UP)) tRotateShapeLeft(field, shape);
-        if (IsKeyPressed(KEY_DOWN)) tRotateShapeRight(field, shape);
+        bool current_hard_dropped = false;
+
+        if (IsKeyPressed(KEY_Z)) tRotateShapeLeft(field, shape);
+        if (IsKeyPressed(KEY_X)) tRotateShapeRight(field, shape);
         if (IsKeyPressed(KEY_LEFT)) tMoveShapeLeft(field, shape);
         if (IsKeyPressed(KEY_RIGHT)) tMoveShapeRight(field, shape);
-        if (IsKeyDown(KEY_SPACE)) current_wait_time = faster_keyframe;
-        if (GetTime() - previous_keyframe < current_wait_time)
+        if (IsKeyDown(KEY_DOWN)) current_wait_time = faster_keyframe;
+        if (IsKeyPressed(KEY_SPACE)) 
         {
-            _tFrame();
+            tHardDropShape(field, shape);
+            current_hard_dropped = true;
         }
-        else
+
+        bool should_keyframe = false;
+        should_keyframe |= current_hard_dropped;
+        should_keyframe |= GetTime() - previous_keyframe >= current_wait_time;
+        if (should_keyframe)
         {
             playing = _tKeyFrame();
             previous_keyframe = GetTime();
+        }
+        else
+        {
+            _tFrame();
         }
     }
 }
@@ -85,7 +97,7 @@ void _tFrame()
     float begin_x = GetRenderWidth() / 2 - rectangle_size * FIELD_WIDTH / 2;
 
     BeginDrawing();
-    ClearBackground(RAYWHITE);
+    ClearBackground(FIELD_OUTSIDE_COLOR);
     for (int yi = 0; yi < FIELD_HEIGHT; yi++)
     {
         for (int xi = 0; xi < FIELD_WIDTH; xi++)
@@ -94,12 +106,15 @@ void _tFrame()
             int offset = yi * FIELD_WIDTH + xi;
             switch (field[offset])
             {
-                case 0: color =  (Color){ 0, 0, 0, 255}; break;
-                case 1: color =  (Color){ 200, 50, 0, 255 }; break;
-                case 2: color =  (Color){ 0, 200, 80, 255 }; break;
-                case 3: color =  (Color){ 100, 0, 200, 255 } ; break;
-                case 4: color =  (Color){ 200, 0, 200, 255 }; break;
-                default: color = (Color){ 255, 0, 0, 255 };
+                case 0: color = FIELD_COLOR; break;
+                case 1: color = SHAPE_O_COLOR; break;
+                case 2: color = SHAPE_I_COLOR; break;
+                case 3: color = SHAPE_T_COLOR; break;
+                case 4: color = SHAPE_J_COLOR; break;
+                case 5: color = SHAPE_L_COLOR; break;
+                case 6: color = SHAPE_Z_COLOR; break;
+                case 7: color = SHAPE_S_COLOR; break;
+                default: D_ASSERT(false);
             }
             int x = begin_x + xi * rectangle_size;
             int y = yi * rectangle_size;
@@ -112,12 +127,15 @@ void _tFrame()
     Color color;
     switch (shape->color)
     {
-        case 0:  color = (Color){ 0, 0, 0, 255}; break;
-        case 1:  color = (Color){ 100, 0, 0, 255 }; break;
-        case 2:  color = (Color){ 0, 100, 0, 255 }; break;
-        case 3:  color = (Color){ 0, 0, 100, 255 } ; break;
-        case 4:  color = (Color){ 100, 0, 100, 255 }; break;
-        default: color = (Color){ 255, 0, 0, 255 };
+        case 0: color = FIELD_COLOR; break;
+        case 1: color = SHAPE_O_COLOR; break;
+        case 2: color = SHAPE_I_COLOR; break;
+        case 3: color = SHAPE_T_COLOR; break;
+        case 4: color = SHAPE_J_COLOR; break;
+        case 5: color = SHAPE_L_COLOR; break;
+        case 6: color = SHAPE_Z_COLOR; break;
+        case 7: color = SHAPE_S_COLOR; break;
+        default: D_ASSERT(false);
     }
     for (int yi = 0; yi < SHAPE_SIZE; yi++)
     {
@@ -131,7 +149,6 @@ void _tFrame()
         }
     }
 
-    const char* output = to_string(shape->color);
     DrawText(TextFormat("Color: %d\nRotate state: %d\nX: %d\nY: %d", shape->color, shape->rotate_state, shape->x, shape->y), 0, 0, 20, RED);
     EndDrawing();
 }

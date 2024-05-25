@@ -1,58 +1,74 @@
 #include "action.h"
+#include "bag.h"
 
+bool _tCollisionY(const Field* field, const Shape* shape, int* y_top);
 bool _tCollision(const Field* field, const Shape* shape);
+Bag _bag;
+bool _bag_empty = true;
+
+void tResetRNG()
+{
+    if (_bag_empty)
+    {
+        _bag = tCreateBag(-1);
+        _bag_empty = false;
+    }
+    else
+    {
+        int previous = tGetLastInBag(&_bag);
+        _bag = tCreateBag(previous);
+    }
+};
 
 bool tMakeShape(const Field* field, Shape* shape)
 {
-    int type = rand() % SHAPE_TYPE_COUNT;
+    int type = tGetNextInBag(&_bag);
+    if (type == -1)
+    {
+        tResetRNG();
+        type = tGetNextInBag(&_bag);
+    }
     switch (type)
     {
-        case 0: *shape = ShapeI; break;
-        case 1: *shape = ShapeJ; break;
-        case 2: *shape = ShapeL; break;
-        case 3: *shape = ShapeO; break;
-        case 4: *shape = ShapeS; break;
-        case 5: *shape = ShapeT; break;
-        case 6: *shape = ShapeZ; break;
+        case 0: *shape = ShapeO; break;
+        case 1: *shape = ShapeI; break;
+        case 2: *shape = ShapeT; break;
+        case 3: *shape = ShapeJ; break;
+        case 4: *shape = ShapeL; break;
+        case 5: *shape = ShapeZ; break;
+        case 6: *shape = ShapeS; break;
         default: D_ASSERT(false);
     }
-    shape->rotate_state = rand() % SHAPE_ROTATE_SIZE;
-    int x_min = -1;
-    int x_max = -1;
-    int y_min = -1;
-    int y_max = -1;
-    for (int xi = 0; xi < SHAPE_SIZE; xi++)
-    {
-        for (int yi = 0; yi < SHAPE_SIZE; yi++)
-        {
-            int offset = yi * SHAPE_SIZE + xi;
-            if (!shape->hitboxes[shape->rotate_state][offset]) continue;
-            if (x_min == -1 || x_min > xi) x_min = xi;
-            if (y_min == -1 || y_min > yi) y_min = yi;
-            if (x_max == -1 || x_max < xi) x_max = xi;
-            if (y_max == -1 || y_max < yi) y_max = yi;
-        }
-    }
-    int available_width = FIELD_WIDTH - (x_max - x_min);
-    shape->x = rand() % available_width - x_min;
-    shape->y = - y_max;
-    shape->color = rand() % SHAPE_COLOR_COUNT + 1;
+    shape->rotate_state = SHAPE_DEFAULT_ROTATION;
+    shape->x = SHAPE_DEFAULT_X;
+    shape->y = SHAPE_DEFAULT_Y;
+    shape->color = type + 1;
     return !_tCollision(field, shape);
+}
+
+bool tHardDropShape(const Field* field, Shape* shape)
+{
+    int y_before = shape->y;
+    int y_collision_top;
+    while (!_tCollisionY(field, shape, &y_collision_top)) shape->y += 1;
+    D_ASSERT(y_before != shape->y);
+    shape->y -= 1;
+    return shape->y != y_before;
 }
 
 bool tRotateShapeLeft(const Field* field, Shape* shape)
 {
-    shape->rotate_state = (shape->rotate_state + 1) % SHAPE_ROTATE_SIZE;
-    if (!_tCollision(field, shape)) return true;
     shape->rotate_state = (shape->rotate_state + SHAPE_ROTATE_SIZE - 1) % SHAPE_ROTATE_SIZE;
+    if (!_tCollision(field, shape)) return true;
+    shape->rotate_state = (shape->rotate_state + 1) % SHAPE_ROTATE_SIZE;
     return false;
 }
 
 bool tRotateShapeRight(const Field* field, Shape* shape)
 {
-    shape->rotate_state = (shape->rotate_state + SHAPE_ROTATE_SIZE - 1) % SHAPE_ROTATE_SIZE;
-    if (!_tCollision(field, shape)) return true;
     shape->rotate_state = (shape->rotate_state + 1) % SHAPE_ROTATE_SIZE;
+    if (!_tCollision(field, shape)) return true;
+    shape->rotate_state = (shape->rotate_state + SHAPE_ROTATE_SIZE - 1) % SHAPE_ROTATE_SIZE;
     return false;
 }
 
@@ -142,9 +158,15 @@ void tRemoveLine(Field* field, int y)
 
 bool _tCollision(const Field* field, const Shape* shape)
 {
-    for (int xi = 0; xi < SHAPE_SIZE; xi++)
+    return _tCollisionY(field, shape, nullptr);
+}
+
+bool _tCollisionY(const Field* field, const Shape* shape, int* y_top)
+{
+    for (int yi = 0; yi < SHAPE_SIZE; yi++)
     {
-        for (int yi = 0; yi < SHAPE_SIZE; yi++)
+        if (y_top) *y_top = yi;
+        for (int xi = 0; xi < SHAPE_SIZE; xi++)
         {
             int shape_offset = yi * SHAPE_SIZE + xi;
             if (shape->hitboxes[shape->rotate_state][shape_offset] == '0') continue;
@@ -157,5 +179,6 @@ bool _tCollision(const Field* field, const Shape* shape)
             if (field[field_offset]) return true;
         }
     }
+    if (y_top) *y_top = 0xBACCA;
     return false;
 }

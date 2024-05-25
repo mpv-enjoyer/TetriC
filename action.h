@@ -4,7 +4,9 @@
 #include "field.h"
 #include "shapes.h"
 
+void tResetRNG();
 bool tMakeShape(const Field *field, Shape *shape);
+bool tHardDropShape(const Field *field, Shape *shape);
 bool tRotateShapeLeft(const Field *field, Shape *shape);
 bool tRotateShapeRight(const Field* field, Shape* shape);
 bool tMoveShapeLeft(const Field* field, Shape* shape);

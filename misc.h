@@ -17,8 +17,9 @@
  typedef unsigned char bool;
  static const bool false = 0;
  static const bool true = 1;
+ static const size_t nullptr = 0;
 #endif
 
-const char* to_string(int number);
+void shuffle(int *array, size_t n);
 
 #endif
