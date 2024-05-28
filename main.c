@@ -1,6 +1,6 @@
 #include <raylib.h>
 #include "field.h"
-#include "shapes.h"
+#include "shape.h"
 #include "render.h"
 
 int main(void)

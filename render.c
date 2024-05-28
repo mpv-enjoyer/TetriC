@@ -125,7 +125,7 @@ void _tFrame()
     }
 
     Color color;
-    switch (shape->color)
+    switch (shape->type + 1)
     {
         case 0: color = FIELD_COLOR; break;
         case 1: color = SHAPE_O_COLOR; break;
@@ -149,6 +149,6 @@ void _tFrame()
         }
     }
 
-    DrawText(TextFormat("Color: %d\nRotate state: %d\nX: %d\nY: %d", shape->color, shape->rotate_state, shape->x, shape->y), 0, 0, 20, RED);
+    DrawText(TextFormat("Shape type: %d\nRotate state: %d\nX: %d\nY: %d", shape->type, shape->rotate_state, shape->x, shape->y), 0, 0, 20, RED);
     EndDrawing();
 }

@@ -1,7 +1,7 @@
 #ifndef BAG_H
 #define BAG_H
 
-#include "shapes.h"
+#include "shape.h"
 
 typedef struct {
     int data[SHAPE_TYPE_COUNT];

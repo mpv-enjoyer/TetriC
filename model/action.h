@@ -2,7 +2,7 @@
 #define ACTION_H
 
 #include "field.h"
-#include "shapes.h"
+#include "shape.h"
 
 void tResetRNG();
 bool tMakeShape(const Field *field, Shape *shape);

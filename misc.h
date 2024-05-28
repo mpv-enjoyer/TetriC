@@ -20,6 +20,9 @@
  static const size_t nullptr = 0;
 #endif
 
+#define LOOP_PLUS(value, base) ((value + 1) % base)
+#define LOOP_MINUS(value, base) ((value + (base - 1)) % base)
+
 void shuffle(int *array, size_t n);
 
 #endif

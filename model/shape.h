@@ -1,5 +1,5 @@
-#ifndef SHAPES_H
-#define SHAPES_H
+#ifndef SHAPE_H
+#define SHAPE_H
 
 #include "misc.h"
 
@@ -11,16 +11,25 @@
 #define SHAPE_DEFAULT_Y -2
 #define SHAPE_DEFAULT_ROTATION 0
 
-typedef struct
+#define SHAPE_TYPE_O 0
+#define SHAPE_TYPE_I 1
+#define SHAPE_TYPE_T 2
+#define SHAPE_TYPE_J 3
+#define SHAPE_TYPE_L 4
+#define SHAPE_TYPE_Z 5
+#define SHAPE_TYPE_S 6
+
+typedef struct Shape
 {
     const char* hitboxes[SHAPE_ROTATE_SIZE];
+    int type;
     int rotate_state;
     int x;
     int y;
-    int color;
 } Shape;
 
-const static Shape ShapeO = {{
+const static Shape Shapes[SHAPE_TYPE_COUNT] = 
+{{{
 "0110"
 "0110"
 "0000"
@@ -40,9 +49,7 @@ const static Shape ShapeO = {{
 "0110"
 "0000"
 "0000"
-}};
-
-const static Shape ShapeI = {{
+}, SHAPE_TYPE_O}, {{
 "0000"
 "1111"
 "0000"
@@ -62,9 +69,7 @@ const static Shape ShapeI = {{
 "0100"
 "0100"
 "0100"
-}};
-
-const static Shape ShapeT = {{
+}, SHAPE_TYPE_I}, {{
 "0100"
 "1110"
 "0000"
@@ -84,9 +89,7 @@ const static Shape ShapeT = {{
 "1100"
 "0100"
 "0000"
-}};
-
-const static Shape ShapeJ = {{
+}, SHAPE_TYPE_T}, {{
 "1000"
 "1110"
 "0000"
@@ -106,9 +109,7 @@ const static Shape ShapeJ = {{
 "0100"
 "1100"
 "0000"
-}};
-
-const static Shape ShapeL = {{
+}, SHAPE_TYPE_J}, {{
 "0010"
 "1110"
 "0000"
@@ -128,9 +129,7 @@ const static Shape ShapeL = {{
 "0100"
 "0100"
 "0000"
-}};
-
-const static Shape ShapeZ = {{
+}, SHAPE_TYPE_L}, {{
 "1100"
 "0110"
 "0000"
@@ -150,9 +149,7 @@ const static Shape ShapeZ = {{
 "1100"
 "1000"
 "0000"
-}};
-
-const static Shape ShapeS = {{
+}, SHAPE_TYPE_Z}, {{
 
 "0110"
 "1100"
@@ -173,6 +170,6 @@ const static Shape ShapeS = {{
 "1100"
 "0100"
 "0000"
-}};
+}, SHAPE_TYPE_S}};
 
 #endif
