@@ -11,8 +11,8 @@
 #define CALLBACK_HARDDROP        8
 #define CALLBACK_PAUSE           16
 
-#define HOLD_TIMEOUT 0.2
-#define HOLD_INTERVAL 0.05
+#define HOLD_TIMEOUT 0.15
+#define HOLD_INTERVAL 0.04
 
 int tInput(Field* field, Shape* shape, double time);
 

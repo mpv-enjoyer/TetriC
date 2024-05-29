@@ -8,7 +8,6 @@ Shared tPlaying(Shared shared)
 {
     Shape* shape;
     Field* field;
-    Shape new_shape;
     double wait_keyframe;
     if (shared.field != nullptr)
     {
@@ -20,8 +19,8 @@ Shared tPlaying(Shared shared)
     {
         D_ASSERT(shared.shape == nullptr);
         tResetRNG();
+        shape = (Shape*)malloc(sizeof(Shape));
         field = (Field*)calloc(FIELD_HEIGHT * FIELD_WIDTH, sizeof(char));
-        shape = &new_shape;
         tMakeShape(field, shape);
         shared.field = field;
         shared.shape = shape;
@@ -61,6 +60,7 @@ Shared tPlaying(Shared shared)
             {
                 shared.state = STATE_GAME_OVER;
                 free(field);
+                free(shape);
                 shared.field = nullptr;
                 shared.shape = nullptr;
                 break;

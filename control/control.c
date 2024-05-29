@@ -6,6 +6,7 @@
 #include "menu.h"
 #include "playing.h"
 #include "gameover.h"
+#include "pause.h"
 
 bool _tKeyFrame(Field* field, Shape* shape);
 bool _tMenu();
@@ -39,7 +40,7 @@ void tMainLoop()
             case (STATE_PLAYING): shared_data = tPlaying(shared_data); break;
             case (STATE_GAME_OVER): shared_data = tGameOver(shared_data); break;
             case (STATE_IN_MENU): shared_data = tMenu(shared_data); break;
-            case (STATE_PAUSED): break;
+            case (STATE_PAUSED): shared_data = tPause(shared_data); break;
             case (STATE_IN_SETTINGS): break;
             case (STATE_EXITING): return;
         }

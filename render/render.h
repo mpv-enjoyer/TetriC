@@ -23,5 +23,6 @@
 void tDrawGameFrame(const Field* field, const Shape* shape, const Record* record);
 void tDrawMenuFrame(int selected);
 void tDrawGameOverFrame(int lines_cleared);
+void tDrawPauseFrame(int selected);
 
 #endif

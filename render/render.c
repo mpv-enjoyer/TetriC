@@ -68,7 +68,7 @@ void tDrawMenuFrame(int selected)
 {
     BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawText("You lost.\nClick Enter to play again.", 0, 0, 20, BLACK);
+        DrawText("Menu frame.\nClick Enter to play again.", 0, 0, 20, BLACK);
     EndDrawing();
 }
 
@@ -77,5 +77,13 @@ void tDrawGameOverFrame(int lines_cleared)
     BeginDrawing();
         ClearBackground(RAYWHITE);
         DrawText("Game over frame.\nDon't mind me.", 0, 0, 20, BLACK);
+    EndDrawing();
+}
+
+void tDrawPauseFrame(int selected)
+{
+    BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawText("Paused frame.\nDon't mind me.\n(click Enter to proceed)", 0, 0, 20, BLACK);
     EndDrawing();
 }

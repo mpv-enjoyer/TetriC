@@ -35,7 +35,6 @@ int tInput(Field* field, Shape* shape, double time)
                 last_action_time = 0;
             }
             break;
-        case KEY_DOWN: callback |= CALLBACK_FASTER_KEYFRAME; break;
         case KEY_SPACE: 
             if (tHardDropShape(field, shape)) callback |= CALLBACK_HARDDROP;
             callback |= CALLBACK_KEYFRAME;
@@ -44,6 +43,8 @@ int tInput(Field* field, Shape* shape, double time)
         }
         key = GetKeyPressed();
     }
+
+    if (IsKeyDown(KEY_DOWN)) callback |= CALLBACK_FASTER_KEYFRAME;
 
     if (last_key == KEY_NULL) return callback;
     if (!IsKeyDown(last_key))
