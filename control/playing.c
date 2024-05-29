@@ -1,4 +1,5 @@
 #include "playing.h"
+#include "input.h"
 
 bool _tKeyFrame(Field* field, Shape* shape, Record* record);
 double _tCalculateFrameTime(int level, double begin, double acceleration, double min);
@@ -33,11 +34,10 @@ Shared tPlaying(Shared shared)
         shared.current_record.level = 0;
     }
 
-    int current_key = KEY_NULL;
-    double current_key_timing = 0.0f;
     double previous_keyframe = GetTime();
     while (shared.state == STATE_PLAYING)
     {
+        double current_time = GetTime();
         int level = shared.current_record.level;
         double begin_sec = shared.config->begin_keyframe_seconds;
         double acceleration = shared.config->acceleration;
@@ -45,30 +45,13 @@ Shared tPlaying(Shared shared)
         
         wait_keyframe = _tCalculateFrameTime(level, begin_sec, acceleration, min_sec);
         double faster_keyframe = wait_keyframe / 2;
-
         double current_wait_time = wait_keyframe;
-        bool current_hard_dropped = false;
+        
+        int input_callback = tInput(field, shape, current_time);
+        if (input_callback & CALLBACK_FASTER_KEYFRAME) current_wait_time = faster_keyframe;
+        if (input_callback & CALLBACK_PAUSE) shared.state = STATE_PAUSED;
 
-        bool current_key_exists = false;
-        current_key_exists |= IsKeyDown(KEY_DOWN);
-        current_key_exists |= IsKeyDown(KEY_LEFT);
-        current_key_exists |= IsKeyDown(KEY_RIGHT);
-        if (!current_key_exists)
-        {
-            current_key = KEY_NULL;
-            current_key_timing = -HOLD_TIMEOUT;
-        }
-        else
-        {
-            if (current_key != )
-            if (current_key_timing < 0)
-            {
-                
-            }
-        }
-
-        bool should_keyframe = false;
-        should_keyframe |= current_hard_dropped;
+        bool should_keyframe = ( input_callback & CALLBACK_KEYFRAME );
         should_keyframe |= GetTime() - previous_keyframe >= current_wait_time;
         if (should_keyframe)
         {

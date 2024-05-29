@@ -7,8 +7,6 @@
 #include "shared.h"
 #include "action.h"
 
-#define HOLD_TIMEOUT 0.8
-
 Shared tPlaying(Shared shared);
 
 #endif
