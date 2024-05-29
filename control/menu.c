@@ -2,12 +2,13 @@
 #include "render.h"
 #include "shared.h"
 
-bool _tMenu()
+Shared tMenu(Shared shared)
 {
-    while (true)
+    while (shared.state == STATE_IN_MENU)
     {
-        if (WindowShouldClose()) return STATE_EXITING;
-        if (IsKeyPressed(KEY_ENTER)) return STATE_PLAYING;
+        tDrawMenuFrame(0);
+        if (IsKeyPressed(KEY_ENTER)) shared.state = STATE_PLAYING;
+        if (WindowShouldClose()) shared.state = STATE_EXITING;
     }
-    return false;
+    return shared;
 }

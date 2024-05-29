@@ -62,10 +62,18 @@ void tDrawGameFrame(const Field* field, const Shape* shape)
     EndDrawing();
 }
 
-void tDrawMenuFrame(int state)
+void tDrawMenuFrame(int selected)
 {
     BeginDrawing();
         ClearBackground(RAYWHITE);
         DrawText("You lost.\nClick Enter to play again.", 0, 0, 20, BLACK);
+    EndDrawing();
+}
+
+void tDrawGameOverFrame(int lines_cleared)
+{
+    BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawText("Game over frame.\nDon't mind me.", 0, 0, 20, BLACK);
     EndDrawing();
 }

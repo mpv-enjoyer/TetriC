@@ -20,5 +20,7 @@
 #define SHAPE_S_COLOR (Color){142,191,61,255}
 
 void tDrawGameFrame(const Field* field, const Shape* shape);
+void tDrawMenuFrame(int selected);
+void tDrawGameOverFrame(int lines_cleared);
 
 #endif

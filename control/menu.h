@@ -1,6 +1,8 @@
 #ifndef MENU_H
 #define MENU_H
 
-Shared tInMenu(Shared shared);
+#include "shared.h"
+
+Shared tMenu(Shared shared);
 
 #endif

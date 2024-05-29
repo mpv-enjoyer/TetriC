@@ -1,6 +1,6 @@
 #include "shared.h"
 
-bool LoadFromShared(const Shared *shared, Field **field, Shape **shape, Config **config, Record* current_record)
+bool tLoadFromShared(const Shared *shared, Field **field, Shape **shape, Config **config, Record *current_record)
 {
     if (shared == nullptr) return false;
     if (field != nullptr) *field = shared->field;
