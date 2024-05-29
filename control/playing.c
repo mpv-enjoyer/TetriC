@@ -49,6 +49,7 @@ Shared tPlaying(Shared shared)
         int input_callback = tInput(field, shape, current_time);
         if (input_callback & CALLBACK_FASTER_KEYFRAME) current_wait_time = faster_keyframe;
         if (input_callback & CALLBACK_PAUSE) shared.state = STATE_PAUSED;
+        tUpdateShapeShadow(field, shape);
 
         bool should_keyframe = ( input_callback & CALLBACK_KEYFRAME );
         should_keyframe |= GetTime() - previous_keyframe >= current_wait_time;

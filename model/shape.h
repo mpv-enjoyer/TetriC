@@ -26,6 +26,7 @@ typedef struct Shape
     int rotate_state;
     int x;
     int y;
+    int y_shadow;
 } Shape;
 
 const static Shape Shapes[SHAPE_TYPE_COUNT] = 

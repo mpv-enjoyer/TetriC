@@ -33,6 +33,7 @@ bool tMakeShape(const Field* field, Shape* shape)
     shape->x = SHAPE_DEFAULT_X;
     shape->y = SHAPE_DEFAULT_Y;
     shape->type = type;
+    tUpdateShapeShadow(field, shape);
     return !tCollision(field, shape);
 }
 
@@ -146,4 +147,11 @@ void tRemoveLine(Field* field, int y)
         int field_offset = xi;
         field[field_offset] = 0;
     }
+}
+
+void tUpdateShapeShadow(const Field *field, Shape* shape)
+{
+    Shape shadow = *shape;
+    while (!tCollision(field, &shadow)) shadow.y += 1;
+    shape->y_shadow = shadow.y - 1;
 }

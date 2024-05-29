@@ -46,6 +46,8 @@ void tDrawGameFrame(const Field* field, const Shape* shape, const Record *record
         case 7: color = SHAPE_S_COLOR; break;
         default: D_ASSERT(false);
     }
+    Color shadow_color = color;
+    shadow_color.a = 80;
     for (int yi = 0; yi < SHAPE_SIZE; yi++)
     {
         for (int xi = 0; xi < SHAPE_SIZE; xi++)
@@ -55,6 +57,8 @@ void tDrawGameFrame(const Field* field, const Shape* shape, const Record *record
             int shape_offset = yi * SHAPE_SIZE + xi;
             if (shape->hitboxes[shape->rotate_state][shape_offset] == '0') continue;
             DrawRectangle(x, y, rectangle_size, rectangle_size, color);
+            int y_shadow = (yi + shape->y_shadow + FIELD_OUTSIDE_HEIGHT) * rectangle_size;
+            DrawRectangle(x, y_shadow, rectangle_size, rectangle_size, shadow_color);
         }
     }
 
