@@ -4,8 +4,8 @@
 #include "render.h"
 #include "config.h"
 #include "record.h"
-#include "state.h"
+#include "shared.h"
 
-int tPlaying(const Config* config);
+Shared tPlaying(Shared shared);
 
 #endif

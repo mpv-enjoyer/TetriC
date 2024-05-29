@@ -1,32 +1,43 @@
 #include "playing.h"
 
-bool _already_playing = false;
-double _wait_keyframe;
-double _faster_keyframe;
-Shape _shape_data;
-Shape* _shape;
-Field* _field;
+bool _tKeyFrame(Shape* shape, Field* field, Record* record);
 
-bool _tKeyFrame();
-
-int tPlaying(const Config* config)
+Shared tPlaying(Shared shared)
 {
-    if (!_already_playing)
+    Shape* shape;
+    Field* field;
+    Shape new_shape;
+    double wait_keyframe;
+    if (shared.field != nullptr)
     {
-        tResetRNG();
-        _field = (Field*)calloc(FIELD_HEIGHT * FIELD_WIDTH, sizeof(char));
-        _shape = &_shape_data;
-        tMakeShape(_field, _shape);
-        _already_playing = true;
-        _wait_keyframe = config->keyframe_seconds;
-        _faster_keyframe = config->faster_keyframe_seconds;
+        D_ASSERT(shared.shape != nullptr);
+        Config config;
+        LoadFromShared(&shared, &field, &shape, &config, nullptr);
+        int acceleration_times = (shared.current_record.lines_cleared / config.lines_for_acceleration);
+        wait_keyframe = config.begin_keyframe_seconds - acceleration_times * config.acceleration;
+        if (wait_keyframe < config.min_keyframe_seconds) wait_keyframe = config.min_keyframe_seconds;
     }
-    
+    else
+    {
+        D_ASSERT(shared.shape == nullptr);
+        field = (Field*)calloc(FIELD_HEIGHT * FIELD_WIDTH, sizeof(char));
+        shape = &new_shape;
+        tMakeShape(field, shape);
+        shared.field = field;
+        shared.shape = shape;
+        wait_keyframe = shared.config->begin_keyframe_seconds;
+        shared.current_record.lines_cleared = 0;
+        shared.current_record.score = 0;
+        shared.current_record.time = 0;
+    }
+
+    double faster_keyframe = wait_keyframe / 2;
     double previous_keyframe = GetTime();
 
-    while (_already_playing)
+    while (true)
     {
-        double current_wait_time = _wait_keyframe;
+        shared.current_record.time += GetFrameTime();
+        double current_wait_time = wait_keyframe;
         bool current_hard_dropped = false;
 
         int key = GetKeyPressed();
@@ -34,13 +45,13 @@ int tPlaying(const Config* config)
         {
             switch (key)
             {
-            case KEY_Z: tRotateShapeLeft(_field, _shape); break;
-            case KEY_X: tRotateShapeRight(_field, _shape); break;
-            case KEY_UP: tRotateShapeRight(_field, _shape); break;
-            case KEY_LEFT: tMoveShapeLeft(_field, _shape); break;
-            case KEY_RIGHT: tMoveShapeRight(_field, _shape); break;
-            case KEY_DOWN: current_wait_time = _faster_keyframe; break;
-            case KEY_SPACE: tHardDropShape(_field, _shape); current_hard_dropped = true; break;
+            case KEY_Z: tRotateShapeLeft(field, shape); break;
+            case KEY_X: tRotateShapeRight(field, shape); break;
+            case KEY_UP: tRotateShapeRight(field, shape); break;
+            case KEY_LEFT: tMoveShapeLeft(field, shape); break;
+            case KEY_RIGHT: tMoveShapeRight(field, shape); break;
+            case KEY_DOWN: current_wait_time = faster_keyframe; break;
+            case KEY_SPACE: tHardDropShape(field, shape); current_hard_dropped = true; break;
             }
             key = GetKeyPressed();
         }
@@ -50,35 +61,43 @@ int tPlaying(const Config* config)
         should_keyframe |= GetTime() - previous_keyframe >= current_wait_time;
         if (should_keyframe)
         {
-            _already_playing = _tKeyFrame(_field, _shape);
+            if (!_tKeyFrame(field, shape, &shared.current_record)) break;
             previous_keyframe = GetTime();
         }
         else
         {
-            tDrawGameFrame(_field, _shape);
+            tDrawGameFrame(field, shape);
         }
-        if (WindowShouldClose()) return STATE_EXITING;
+        if (WindowShouldClose())
+        {
+            shared.state = STATE_EXITING;
+            return shared;
+        }
     }
-    free(_field);
-    return STATE_GAME_OVER;
+    shared.state = STATE_GAME_OVER;
+    free(field);
+    shared.field = nullptr;
+    shared.shape = nullptr;
+    return shared;
 }
 
-bool _tKeyFrame()
+bool _tKeyFrame(Shape* shape, Field* field, Record* record)
 {
-    bool falling = tGravity(_field, _shape);
+    bool falling = tGravity(field, shape);
     if (!falling)
     {
-        bool good_placement = tPlaceShape(_field, _shape);
+        bool good_placement = tPlaceShape(field, shape);
         if (!good_placement) return false;
         while (true)
         {
-            int found = tFindLine(_field);
+            int found = tFindLine(field);
             if (found == -1) break;
-            tRemoveLine(_field, found);
+            record->lines_cleared++;
+            tRemoveLine(field, found);
         }
-        bool good_spawn = tMakeShape(_field, _shape);
+        bool good_spawn = tMakeShape(field, shape);
         if (!good_spawn) return false;
     }
-    tDrawGameFrame(_field, _shape);
+    tDrawGameFrame(field, shape);
     return true;
 }
