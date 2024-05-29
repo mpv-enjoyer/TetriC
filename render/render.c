@@ -1,97 +1,6 @@
 #include "render.h"
 
-Shape _shape;
-
-Field* field;
-Shape* shape;
-
-bool _tKeyFrame();
-void _tFrame();
-
-void tInit()
-{
-    shape = &_shape;
-
-    InitWindow(WIDTH, HEIGHT, "TetriC");
-    SetTargetFPS(60);
-    srand(time(NULL));
-}
-
-void tMainLoop()
-{
-    tResetRNG();
-    field = (Field*)calloc(FIELD_HEIGHT * FIELD_WIDTH + 1, sizeof(char));
-    tMakeShape(field, shape);
-
-    bool playing = true;
-    double previous_keyframe = 0;
-    double wait_keyframe = 0.7f;
-    double faster_keyframe = 0.04f;
-    while (!WindowShouldClose() && playing)
-    {
-        double current_wait_time = wait_keyframe;
-        bool current_hard_dropped = false;
-
-        if (IsKeyPressed(KEY_Z)) tRotateShapeLeft(field, shape);
-        if (IsKeyPressed(KEY_X)) tRotateShapeRight(field, shape);
-        if (IsKeyPressed(KEY_LEFT)) tMoveShapeLeft(field, shape);
-        if (IsKeyPressed(KEY_RIGHT)) tMoveShapeRight(field, shape);
-        if (IsKeyDown(KEY_DOWN)) current_wait_time = faster_keyframe;
-        if (IsKeyPressed(KEY_SPACE)) 
-        {
-            tHardDropShape(field, shape);
-            current_hard_dropped = true;
-        }
-
-        bool should_keyframe = false;
-        should_keyframe |= current_hard_dropped;
-        should_keyframe |= GetTime() - previous_keyframe >= current_wait_time;
-        if (should_keyframe)
-        {
-            playing = _tKeyFrame();
-            previous_keyframe = GetTime();
-        }
-        else
-        {
-            _tFrame();
-        }
-    }
-}
-
-bool tMenu()
-{
-    while (!WindowShouldClose())
-    {
-        BeginDrawing();
-        DrawText("You lost.\nClick Enter to play again.", 0, 0, 20, BLACK);
-        ClearBackground(RAYWHITE);
-        EndDrawing();
-        if (IsKeyPressed(KEY_ENTER)) return true;
-    }
-    return false;
-}
-
-bool _tKeyFrame()
-{
-    bool falling = tGravity(field, shape);
-    if (!falling)
-    {
-        bool good_placement = tPlaceShape(field, shape);
-        if (!good_placement) return false;
-        while (true)
-        {
-            int found = tFindLine(field);
-            if (found == -1) break;
-            tRemoveLine(field, found);
-        }
-        bool good_spawn = tMakeShape(field, shape);
-        if (!good_spawn) return false;
-    }
-    _tFrame();
-    return true;
-}
-
-void _tFrame()
+void tDrawGameFrame(const Field* field, const Shape* shape)
 {
     float rectangle_size = GetRenderHeight() / (FIELD_HEIGHT + FIELD_OUTSIDE_HEIGHT);
     float begin_x = GetRenderWidth() / 2 - rectangle_size * FIELD_WIDTH / 2;
@@ -127,7 +36,7 @@ void _tFrame()
     Color color;
     switch (shape->type + 1)
     {
-        case 0: color = FIELD_COLOR; break;
+        case 0: D_ASSERT(false); break;
         case 1: color = SHAPE_O_COLOR; break;
         case 2: color = SHAPE_I_COLOR; break;
         case 3: color = SHAPE_T_COLOR; break;
@@ -150,5 +59,13 @@ void _tFrame()
     }
 
     DrawText(TextFormat("Shape type: %d\nRotate state: %d\nX: %d\nY: %d", shape->type, shape->rotate_state, shape->x, shape->y), 0, 0, 20, RED);
+    EndDrawing();
+}
+
+void tDrawMenuFrame(int state)
+{
+    BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawText("You lost.\nClick Enter to play again.", 0, 0, 20, BLACK);
     EndDrawing();
 }

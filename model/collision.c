@@ -44,20 +44,16 @@ const _WallKickData _wallkickI
 bool tCollisionSRS(const Field *field, Shape *shape, SRSRotateType type)
 {
     const _WallKickData* current_wall_kicks = nullptr;
-    if (shape->type == SHAPE_TYPE_J ||
-        shape->type == SHAPE_TYPE_L ||
-        shape->type == SHAPE_TYPE_T ||
-        shape->type == SHAPE_TYPE_S ||
-        shape->type == SHAPE_TYPE_Z)
+    switch (shape->type)
     {
-        current_wall_kicks = &_wallkickJLTSZ;
+        case SHAPE_TYPE_J: current_wall_kicks = &_wallkickJLTSZ; break;
+        case SHAPE_TYPE_L: current_wall_kicks = &_wallkickJLTSZ; break;
+        case SHAPE_TYPE_T: current_wall_kicks = &_wallkickJLTSZ; break;
+        case SHAPE_TYPE_S: current_wall_kicks = &_wallkickJLTSZ; break;
+        case SHAPE_TYPE_Z: current_wall_kicks = &_wallkickJLTSZ; break;
+        case SHAPE_TYPE_I: current_wall_kicks = &_wallkickI; break;
+        default: return false;
     }
-    if (shape->type == SHAPE_TYPE_I)
-    {
-        current_wall_kicks = &_wallkickI;
-    }
-    if (current_wall_kicks == nullptr) return false;    
-
     for (int i = 0; i < SRS_KICK_COUNT; i++)
     {
         int dx;

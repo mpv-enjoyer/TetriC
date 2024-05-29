@@ -1,16 +1,10 @@
 #include <raylib.h>
-#include "field.h"
-#include "shape.h"
-#include "render.h"
+#include "control.h"
 
 int main(void)
 {
     tInit();
-    do
-    {
-        tMainLoop();
-    }
-    while (tMenu());
-    CloseWindow();
+    tMainLoop();
+    tEnd();
     return 0;
 }

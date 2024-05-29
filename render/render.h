@@ -2,7 +2,8 @@
 #define RENDER_H
 
 #include <raylib.h>
-#include "action.h"
+#include "field.h"
+#include "shape.h"
 
 #define WIDTH 800
 #define HEIGHT 450
@@ -18,8 +19,6 @@
 #define SHAPE_Z_COLOR (Color){202,72,79,255}
 #define SHAPE_S_COLOR (Color){142,191,61,255}
 
-void tInit();
-void tMainLoop();
-bool tMenu();
+void tDrawGameFrame(const Field* field, const Shape* shape);
 
 #endif
