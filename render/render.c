@@ -1,6 +1,6 @@
 #include "render.h"
 
-void tDrawGameFrame(const Field* field, const Shape* shape)
+void tDrawGameFrame(const Field* field, const Shape* shape, const Record *record)
 {
     float rectangle_size = GetRenderHeight() / (FIELD_HEIGHT + FIELD_OUTSIDE_HEIGHT);
     float begin_x = GetRenderWidth() / 2 - rectangle_size * FIELD_WIDTH / 2;
@@ -59,6 +59,8 @@ void tDrawGameFrame(const Field* field, const Shape* shape)
     }
 
     DrawText(TextFormat("Shape type: %d\nRotate state: %d\nX: %d\nY: %d", shape->type, shape->rotate_state, shape->x, shape->y), 0, 0, 20, RED);
+    DrawText(TextFormat("Lines cleared: %i\nScore: %i\nTime: %f", record->lines_cleared, record->score, record->time), 0, 80, 20, GREEN);
+    DrawText(TextFormat("Level %i", record->lines_cleared / record->config->lines_for_acceleration + 1), 0, 140, 20, YELLOW);
     EndDrawing();
 }
 

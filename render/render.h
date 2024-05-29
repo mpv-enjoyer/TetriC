@@ -4,6 +4,7 @@
 #include <raylib.h>
 #include "field.h"
 #include "shape.h"
+#include "record.h"
 
 #define WIDTH 800
 #define HEIGHT 450
@@ -19,7 +20,7 @@
 #define SHAPE_Z_COLOR (Color){202,72,79,255}
 #define SHAPE_S_COLOR (Color){142,191,61,255}
 
-void tDrawGameFrame(const Field* field, const Shape* shape);
+void tDrawGameFrame(const Field* field, const Shape* shape, const Record* record);
 void tDrawMenuFrame(int selected);
 void tDrawGameOverFrame(int lines_cleared);
 

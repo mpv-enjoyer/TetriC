@@ -50,7 +50,7 @@ bool tRotateShapeLeft(const Field* field, Shape* shape)
 {
     shape->rotate_state = LOOP_MINUS(shape->rotate_state, SHAPE_ROTATE_SIZE);
     if (!tCollision(field, shape)) return true;
-    if (tCollisionSRS(field, shape, Left)) return true;
+    if (!tCollisionSRS(field, shape, Left)) return true;
     shape->rotate_state = LOOP_PLUS(shape->rotate_state, SHAPE_ROTATE_SIZE);
     return false;
 }
@@ -59,7 +59,7 @@ bool tRotateShapeRight(const Field* field, Shape* shape)
 {
     shape->rotate_state = LOOP_PLUS(shape->rotate_state, SHAPE_ROTATE_SIZE);
     if (!tCollision(field, shape)) return true;
-    if (tCollisionSRS(field, shape, Right)) return true;
+    if (!tCollisionSRS(field, shape, Right)) return true;
     shape->rotate_state = LOOP_MINUS(shape->rotate_state, SHAPE_ROTATE_SIZE);
     return false;
 }

@@ -28,8 +28,8 @@ void tMainLoop()
     shared_data.shape = nullptr;
 
     config.begin_keyframe_seconds = 0.2f;
-    config.acceleration = 0.005f;
-    config.lines_for_acceleration = 5;
+    config.acceleration = 0.05f;
+    config.lines_for_acceleration = 2;
     config.min_keyframe_seconds = 0.05f;
 
     while (true)

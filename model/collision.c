@@ -52,7 +52,7 @@ bool tCollisionSRS(const Field *field, Shape *shape, SRSRotateType type)
         case SHAPE_TYPE_S: current_wall_kicks = &_wallkickJLTSZ; break;
         case SHAPE_TYPE_Z: current_wall_kicks = &_wallkickJLTSZ; break;
         case SHAPE_TYPE_I: current_wall_kicks = &_wallkickI; break;
-        default: return false;
+        default: return true;
     }
     for (int i = 0; i < SRS_KICK_COUNT; i++)
     {
@@ -72,11 +72,11 @@ bool tCollisionSRS(const Field *field, Shape *shape, SRSRotateType type)
         }
         shape->x += dx;
         shape->y += dy;
-        if (!tCollision(field, shape)) return true;
+        if (!tCollision(field, shape)) return false;
         shape->x -= dx;
         shape->y -= dy;
     }
-    return false;
+    return true;
 }
 
 bool tCollision(const Field* field, const Shape* shape)
