@@ -8,12 +8,10 @@
 #include "gameover.h"
 #include "pause.h"
 
-bool _tKeyFrame(Field* field, Shape* shape);
-bool _tMenu();
-
 void tInit()
 {
     InitWindow(WIDTH, HEIGHT, "TetriC");
+    SetWindowState(FLAG_WINDOW_RESIZABLE);
     SetTargetFPS(60);
     srand(time(NULL));
     SetExitKey(KEY_NULL);

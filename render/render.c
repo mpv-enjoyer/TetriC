@@ -36,7 +36,6 @@ void tDrawGameFrame(const Field* field, const Shape* shape, const Record *record
     Color color;
     switch (shape->type + 1)
     {
-        case 0: D_ASSERT(false); break;
         case 1: color = SHAPE_O_COLOR; break;
         case 2: color = SHAPE_I_COLOR; break;
         case 3: color = SHAPE_T_COLOR; break;
@@ -62,17 +61,24 @@ void tDrawGameFrame(const Field* field, const Shape* shape, const Record *record
         }
     }
 
-    DrawText(TextFormat("Shape type: %d\nRotate state: %d\nX: %d\nY: %d", shape->type, shape->rotate_state, shape->x, shape->y), 0, 0, 20, RED);
-    DrawText(TextFormat("Lines cleared: %i\nScore: %i\nTime: %f", record->lines_cleared, record->score, record->time), 0, 80, 20, GREEN);
-    DrawText(TextFormat("Level %i", record->lines_cleared / record->config->lines_for_acceleration + 1), 0, 140, 20, YELLOW);
+    DrawText(TextFormat("Shape type: %d\nRotate state: %d\nX: %d\nY: %d", shape->type, shape->rotate_state, shape->x, shape->y), 0, 0, DEFAULT_FONT_SIZE, RED);
+    DrawText(TextFormat("Lines cleared: %i\nScore: %i\nTime: %f", record->lines_cleared, record->score, record->time), 0, 80, DEFAULT_FONT_SIZE, GREEN);
+    DrawText(TextFormat("Level %i", record->lines_cleared / record->config->lines_for_acceleration + 1), 0, 140, DEFAULT_FONT_SIZE, YELLOW);
     EndDrawing();
 }
 
-void tDrawMenuFrame(int selected)
+void tDrawMenuFrame(int selected, const Rectangle* items)
 {
+    const static char* strings[MENU_ITEM_COUNT] = {"Play", "Settings", "Exit"};
     BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawText("Menu frame.\nClick Enter to play again.", 0, 0, 20, BLACK);
+    ClearBackground(RAYWHITE);
+    for (int i = 0; i < MENU_ITEM_COUNT; i++)
+    {
+        Color color = BLACK;
+        if (selected == i) color = RED;
+        DrawText(strings[i], items[i].x + 2, items[i].y + 2, DEFAULT_FONT_SIZE * 2, GRAY);
+        DrawText(strings[i], items[i].x, items[i].y, DEFAULT_FONT_SIZE * 2, color);
+    }
     EndDrawing();
 }
 
@@ -80,14 +86,14 @@ void tDrawGameOverFrame(int lines_cleared)
 {
     BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawText("Game over frame.\nDon't mind me.", 0, 0, 20, BLACK);
+        DrawText("Game over frame.\nDon't mind me.", 0, 0, DEFAULT_FONT_SIZE, BLACK);
     EndDrawing();
 }
 
-void tDrawPauseFrame(int selected)
+void tDrawPauseFrame(int* selected)
 {
     BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawText("Paused frame.\nDon't mind me.\n(click Enter to proceed)", 0, 0, 20, BLACK);
+        DrawText("Paused frame.\nDon't mind me.\n(click Enter to proceed)", 0, 0, DEFAULT_FONT_SIZE, BLACK);
     EndDrawing();
 }

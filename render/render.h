@@ -20,9 +20,19 @@
 #define SHAPE_Z_COLOR (Color){202,72,79,255}
 #define SHAPE_S_COLOR (Color){142,191,61,255}
 
+#define DEFAULT_FONT_SIZE 20
+
+#define MENU_ITEM_COUNT 3
+#define PAUSE_ITEM_COUNT 2
+#define GAME_OVER_ITEM_COUNT 1
+
+const static char* menu_item_strings[MENU_ITEM_COUNT] = {"Play", "Settings", "Exit"};
+const static char* pause_item_strings[PAUSE_ITEM_COUNT] = {"Continue", "To menu"};
+const static char* game_over_strings[GAME_OVER_ITEM_COUNT] = {"To menu"};
+
 void tDrawGameFrame(const Field* field, const Shape* shape, const Record* record);
-void tDrawMenuFrame(int selected);
+void tDrawMenuFrame(int selected, const Rectangle* items);
 void tDrawGameOverFrame(int lines_cleared);
-void tDrawPauseFrame(int selected);
+void tDrawPauseFrame(int* selected);
 
 #endif
