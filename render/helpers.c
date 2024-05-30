@@ -9,10 +9,16 @@ Rectangle tResizeCentered(Rectangle rectangle, int dw, int dh)
     return rectangle;
 }
 
+Vector2 tMeasureTextFix(const char* text, int font_size)
+{
+    Vector2 measured = MeasureTextEx(GetFontDefault(), text, font_size, 0);
+    measured.x = MeasureText(text, font_size);
+    return measured;
+}
+
 Rectangle tCalculateCenteredText(const char *text, int x, int y, int font_size)
 {
-    Vector2 measured = MeasureTextEx(GetFontDefault(), text, font_size, 2);
-    measured.x = MeasureText(text, font_size);
+    Vector2 measured = tMeasureTextFix(text, font_size);
     Rectangle output;
     output.x = x - measured.x / 2;
     output.y = y - measured.y / 2;

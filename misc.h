@@ -23,6 +23,9 @@
 #define LOOP_PLUS(value, base) ((value + 1) % base)
 #define LOOP_MINUS(value, base) ((value + (base - 1)) % base)
 
+#define MIN(l, r) l < r ? l : r
+#define MAX(l, r) l > r ? l : r
+
 void shuffle(int *array, size_t n);
 
 #endif

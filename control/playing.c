@@ -83,25 +83,33 @@ Shared tPlaying(Shared shared)
 
 bool _tKeyFrame(Field* field, Shape* shape, Record* record)
 {
-    static double __previous = 0.0;
-    printf("%f\n", GetTime() - __previous);
-    __previous = GetTime();
-
     bool falling = tGravity(field, shape);
     if (!falling)
     {
         bool good_placement = tPlaceShape(field, shape);
         if (!good_placement) return false;
+        int lines_cleared = 0;
         while (true)
         {
             int found = tFindLine(field);
             if (found == -1) break;
-            record->lines_cleared++;
+            lines_cleared++;
             tRemoveLine(field, found);
         }
+        record->lines_cleared += lines_cleared;
+        int points_increment = 0;
+        switch (lines_cleared)
+        {
+            case 0: points_increment = 0; break;
+            case 1: points_increment = 40; break;
+            case 2: points_increment = 100; break;
+            case 3: points_increment = 300; break;
+            case 4: points_increment = 1200; break;
+            default: D_ASSERT(false);
+        }
+        record->score += points_increment;
         bool good_spawn = tMakeShape(field, shape);
         if (!good_spawn) return false;
-
         record->level = (record->lines_cleared / record->config->lines_for_acceleration);
     }
     tDrawGameFrame(field, shape, record);

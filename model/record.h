@@ -7,7 +7,7 @@ typedef struct Record
 {
     Config* config;
     int lines_cleared;
-    int score;
+    long score;
     int level;
     double time;
 } Record;
