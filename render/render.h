@@ -31,7 +31,7 @@ const static char* pause_item_strings[PAUSE_ITEM_COUNT] = {"Continue", "To menu"
 const static char* game_over_strings[GAME_OVER_ITEM_COUNT] = {"To menu"};
 
 void tDrawGameFrame(const Field* field, const Shape* shape, const Record* record);
-void tDrawMenuFrame(int selected, const Rectangle* items);
+int tDrawMenuFrame();
 void tDrawGameOverFrame(int lines_cleared);
 void tDrawPauseFrame(int* selected);
 

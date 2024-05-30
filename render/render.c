@@ -1,4 +1,5 @@
 #include "render.h"
+#include "ui.h"
 
 void tDrawGameFrame(const Field* field, const Shape* shape, const Record *record)
 {
@@ -67,19 +68,21 @@ void tDrawGameFrame(const Field* field, const Shape* shape, const Record *record
     EndDrawing();
 }
 
-void tDrawMenuFrame(int selected, const Rectangle* items)
+int tDrawMenuFrame()
 {
-    const static char* strings[MENU_ITEM_COUNT] = {"Play", "Settings", "Exit"};
     BeginDrawing();
     ClearBackground(RAYWHITE);
+    const float sector_height = 20;
+    int sector_count = MENU_ITEM_COUNT * 2 - 1;
+    int y_center = GetRenderHeight() / 2;
+    int y_center_begin = y_center - sector_height * ((sector_count - 1) / 2.0f);
     for (int i = 0; i < MENU_ITEM_COUNT; i++)
     {
-        Color color = BLACK;
-        if (selected == i) color = RED;
-        DrawText(strings[i], items[i].x + 2, items[i].y + 2, DEFAULT_FONT_SIZE * 2, GRAY);
-        DrawText(strings[i], items[i].x, items[i].y, DEFAULT_FONT_SIZE * 2, color);
+        int y_center_current = y_center_begin + i * 2 * sector_height;
+        if (tCenteredButton(y_center_current, menu_item_strings[i])) return i;
     }
     EndDrawing();
+    return -1;
 }
 
 void tDrawGameOverFrame(int lines_cleared)
