@@ -23,7 +23,7 @@ void tDrawShadowBlock(float rectangle_size, int x, int y, int color_type);
 void tDrawShapeRotated(const Shape *shape, float rectangle_size, float rotation, int x, int y);
 void tDrawField(const Field *field, int begin_x, int rectangle_size);
 void tDrawShape(const Shape* shape, int begin_x, int rectangle_size);
-void tDrawStatistics(const Record *current_record, Rectangle bounds);
-void tDrawNextShapes(Rectangle bounds);
+void tDrawStatistics(const Record *current_record, int begin_x);
+void tDrawNextShapes(int begin_x);
 
 #endif

@@ -18,17 +18,8 @@ void tDrawGameFrame(const Field* field, const Shape* shape, const Record *record
     ClearBackground(FIELD_OUTSIDE_COLOR);
         tDrawField(field, begin_x, rectangle_size);
         tDrawShape(shape, begin_x, rectangle_size);
-        Rectangle statistics_bounds;
-        statistics_bounds.x = begin_x - 320;
-        if (statistics_bounds.x < 20) statistics_bounds.x = 20;
-        statistics_bounds.y = 30;
-        statistics_bounds.width = begin_x - 20 - statistics_bounds.x;
-        statistics_bounds.height = GetRenderHeight() - 30;
-        tDrawStatistics(record, statistics_bounds);
-        Rectangle next_shapes_bounds = statistics_bounds;
-        next_shapes_bounds.x = GetRenderWidth() / 2 + (GetRenderWidth() / 2 - begin_x) + 30;
-        next_shapes_bounds.width = 100;
-        tDrawNextShapes(next_shapes_bounds);
+        tDrawStatistics(record, begin_x);
+        tDrawNextShapes(begin_x);
     EndDrawing();
 }
 
@@ -41,13 +32,14 @@ int tDrawMenuFrame()
     int sector_count = MENU_ITEM_COUNT * 2 - 1;
     int y_center = GetRenderHeight() / 2;
     int y_center_begin = y_center - sector_height * ((sector_count - 1) / 2.0f);
+    int selected = -1;
     for (int i = 0; i < MENU_ITEM_COUNT; i++)
     {
         int y_center_current = y_center_begin + i * 2 * sector_height;
-        if (tCenteredButton(y_center_current, menu_item_strings[i])) return i;
+        if (tCenteredButton(y_center_current, menu_item_strings[i])) selected = i;
     }
     EndDrawing();
-    return -1;
+    return selected;
 }
 
 void tDrawGameOverFrame(int lines_cleared)
@@ -58,12 +50,33 @@ void tDrawGameOverFrame(int lines_cleared)
     EndDrawing();
 }
 
-void tDrawPauseFrame(int* selected)
+int tDrawPauseFrame(const Field* field, const Shape* shape, const Record *record)
 {
     BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawText("Paused frame.\nDon't mind me.\n(click Enter to proceed)", 0, 0, DEFAULT_FONT_SIZE, BLACK);
+    ClearBackground(RAYWHITE);
+    float rectangle_size = GetRenderHeight() / (FIELD_HEIGHT + FIELD_OUTSIDE_HEIGHT);
+    float begin_x = GetRenderWidth() / 2 - rectangle_size * FIELD_WIDTH / 2;
+    tDrawField(field, begin_x, rectangle_size);
+    tDrawShape(shape, begin_x, rectangle_size);
+    tDrawStatistics(record, begin_x);
+    tDrawNextShapes(begin_x);
+
+    Color darker = BLACK;
+    darker.a = 200;
+    DrawRectangle(0, 0, GetRenderWidth(), GetRenderHeight(), darker);
+
+    const float sector_height = 20;
+    int sector_count = PAUSE_ITEM_COUNT * 2 - 1;
+    int y_center = GetRenderHeight() / 2;
+    int y_center_begin = y_center - sector_height * ((sector_count - 1) / 2.0f);
+    int selected = -1;
+    for (int i = 0; i < PAUSE_ITEM_COUNT; i++)
+    {
+        int y_center_current = y_center_begin + i * 2 * sector_height;
+        if (tCenteredButton(y_center_current, pause_item_strings[i])) selected = i;
+    }
     EndDrawing();
+    return selected;
 }
 
 void tDrawSettingsFrame(int* selected)

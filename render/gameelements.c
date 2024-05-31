@@ -141,8 +141,15 @@ Vector2 _tStatisticsElement(const char* label, long value, Rectangle bounds)
     return (Vector2){0, 0};
 }
 
-void tDrawStatistics(const Record* current_record, Rectangle bounds)
+void tDrawStatistics(const Record* current_record, int begin_x)
 {
+    Rectangle bounds;
+    bounds.x = begin_x - 320;
+    if (bounds.x < 20) bounds.x = 20;
+    bounds.y = 30;
+    bounds.width = begin_x - 20 - bounds.x;
+    bounds.height = GetRenderHeight() - 30;
+
     Vector2 measured;
     measured = _tStatisticsElement("Score", current_record->score, bounds);
     bounds.y += measured.y;
@@ -161,8 +168,14 @@ void tDrawStatistics(const Record* current_record, Rectangle bounds)
     bounds.height -= measured.y;
 }
 
-void tDrawNextShapes(Rectangle bounds)
+void tDrawNextShapes(int begin_x)
 {
+    Rectangle bounds;
+    bounds.x = GetRenderWidth() / 2 + (GetRenderWidth() / 2 - begin_x) + 30;
+    bounds.y = 30;
+    bounds.width = 100;
+    bounds.height = GetRenderHeight() - 60;
+
     int rectangle_size = bounds.width / SHAPE_SIZE;
     int bag_lookup_size = MIN(bounds.height / (rectangle_size * SHAPE_SIZE), BAG_SIZE);
     int* bag_info = (int*)malloc(sizeof(int) * bag_lookup_size);

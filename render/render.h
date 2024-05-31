@@ -22,6 +22,6 @@ const static char* game_over_strings[GAME_OVER_ITEM_COUNT] = {"To menu"};
 void tDrawGameFrame(const Field* field, const Shape* shape, const Record* record);
 int tDrawMenuFrame();
 void tDrawGameOverFrame(int lines_cleared);
-void tDrawPauseFrame(int* selected);
+int tDrawPauseFrame(const Field* field, const Shape* shape, const Record *record);
 
 #endif
