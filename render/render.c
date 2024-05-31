@@ -1,6 +1,7 @@
 #include "render.h"
 #include "ui.h"
 #include "gameelements.h"
+#include "bg.h"
 
 void tDrawGameFrame(const Field* field, const Shape* shape, const Record *record)
 {
@@ -31,6 +32,7 @@ int tDrawMenuFrame()
 {
     BeginDrawing();
     ClearBackground(RAYWHITE);
+    tDrawMenuBackground();
     const float sector_height = 20;
     int sector_count = MENU_ITEM_COUNT * 2 - 1;
     int y_center = GetRenderHeight() / 2;

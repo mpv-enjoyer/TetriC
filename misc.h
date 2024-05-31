@@ -27,5 +27,6 @@
 #define MAX(l, r) l > r ? l : r
 
 void shuffle(int *array, size_t n);
+int random(int left_bound, int right_bound);
 
 #endif

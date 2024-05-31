@@ -19,3 +19,8 @@ void shuffle(int *array, size_t n)
         }
     }
 }
+
+int random(int left_bound, int right_bound)
+{
+  return (rand() % (right_bound - left_bound)) + left_bound;
+}
