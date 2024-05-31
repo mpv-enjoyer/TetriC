@@ -7,6 +7,7 @@
 #include "playing.h"
 #include "gameover.h"
 #include "pause.h"
+#include "settings.h"
 
 void tInit()
 {
@@ -39,7 +40,7 @@ void tMainLoop()
             case (STATE_GAME_OVER): shared_data = tGameOver(shared_data); break;
             case (STATE_IN_MENU): shared_data = tMenu(shared_data); break;
             case (STATE_PAUSED): shared_data = tPause(shared_data); break;
-            case (STATE_IN_SETTINGS): break;
+            case (STATE_IN_SETTINGS): shared_data = tSettings(shared_data); break;
             case (STATE_EXITING): return;
         }
     }

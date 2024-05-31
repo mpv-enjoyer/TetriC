@@ -79,10 +79,10 @@ int tDrawPauseFrame(const Field* field, const Shape* shape, const Record *record
     return selected;
 }
 
-void tDrawSettingsFrame(int* selected)
+void tDrawSettingsFrame(const Config* config)
 {
     BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawText("Settings frame.\nDon't mind me.\n(click ESC to proceed)", 0, 0, DEFAULT_FONT_SIZE, BLACK);
+        DrawText("Settings frame.\nDon't mind me.\n(click ESC to return to menu)", 0, 0, DEFAULT_FONT_SIZE, BLACK);
     EndDrawing();
 }
