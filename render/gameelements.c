@@ -37,7 +37,7 @@ void tDrawShadowBlock(float rectangle_size, int x, int y, int color_type)
     tDrawFieldBlockRotated(rectangle_size, x, y, color_type, true, true, 0, (Vector2){0, 0});
 }
 
-void tDrawShadowRotated(const Shape* shape, float rectangle_size, float rotation, int x, int y)
+void tDrawShapeRotated(const Shape* shape, float rectangle_size, float rotation, int x, int y)
 {
     Vector2 origin;
     for (int yi = 0; yi < SHAPE_SIZE; yi++)

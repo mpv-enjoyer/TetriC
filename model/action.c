@@ -2,31 +2,9 @@
 #include "bag.h"
 #include "collision.h"
 
-Bag _bag;
-bool _bag_empty = true;
-
-void tResetRNG()
-{
-    if (_bag_empty)
-    {
-        _bag = tCreateBag(-1);
-        _bag_empty = false;
-    }
-    else
-    {
-        int previous = tGetLastInBag(&_bag);
-        _bag = tCreateBag(previous);
-    }
-};
-
 bool tMakeShape(const Field* field, Shape* shape)
 {
-    int type = tGetNextInBag(&_bag);
-    if (type == -1)
-    {
-        tResetRNG();
-        type = tGetNextInBag(&_bag);
-    }
+    int type = tGetNextInBag();
     *shape = Shapes[type];
     D_ASSERT(type < SHAPE_TYPE_COUNT);
     shape->rotate_state = SHAPE_DEFAULT_ROTATION;

@@ -20,7 +20,7 @@ void tDrawFieldBlockRotated(float rectangle_size, int x, int y, int color_type, 
 void tDrawFieldBlock(float rectangle_size, int x, int y, int color_type);
 void tDrawShapeBlock(float rectangle_size, int x, int y, int color_type);
 void tDrawShadowBlock(float rectangle_size, int x, int y, int color_type);
-void tDrawShadowRotated(const Shape *shape, float rectangle_size, float rotation, int x, int y);
+void tDrawShapeRotated(const Shape *shape, float rectangle_size, float rotation, int x, int y);
 void tDrawField(const Field *field, int begin_x, int rectangle_size);
 void tDrawShape(const Shape* shape, int begin_x, int rectangle_size);
 void tDrawStatistics(const Record *current_record, Rectangle bounds);

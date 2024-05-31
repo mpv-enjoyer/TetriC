@@ -1,5 +1,6 @@
 #include "playing.h"
 #include "input.h"
+#include "bag.h"
 
 bool _tKeyFrame(Field* field, Shape* shape, Record* record);
 double _tCalculateFrameTime(int level, double begin, double acceleration, double min);
@@ -18,7 +19,7 @@ Shared tPlaying(Shared shared)
     else
     {
         D_ASSERT(shared.shape == nullptr);
-        tResetRNG();
+        tResetBag();
         shape = (Shape*)malloc(sizeof(Shape));
         field = (Field*)calloc(FIELD_HEIGHT * FIELD_WIDTH, sizeof(char));
         tMakeShape(field, shape);

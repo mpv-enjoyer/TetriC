@@ -31,8 +31,6 @@ void tMainLoop()
     config.lines_for_acceleration = 5;
     config.min_keyframe_seconds = 1.0f / 60.0f;
 
-    tResetRNG();
-
     while (true)
     {
         switch (shared_data.state)

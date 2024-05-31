@@ -20,13 +20,10 @@ void tInitMenuBackground()
 {
     for (int i = 0; i < BG_MENU_SHAPE_COUNT; i++)
     {
-        if (shapes[i] != nullptr) continue;
-        if (rand() % 5 == 0) 
-        {
-            shapes[i] = _tMakeBGShape();
-            shapes[i]->x = rand() % GetRenderWidth();
-            shapes[i]->y = rand() % GetRenderHeight();
-        }
+        if (shapes[i] != nullptr) continue; 
+        shapes[i] = _tMakeBGShape();
+        shapes[i]->x = random(- BG_MENU_OFFSCREEN, GetRenderWidth() + BG_MENU_OFFSCREEN);
+        shapes[i]->y = random(- BG_MENU_OFFSCREEN, GetRenderHeight() + BG_MENU_OFFSCREEN);
     }
 }
 
@@ -62,7 +59,7 @@ void tDrawMenuBackground()
         shapes[i]->x = shapes[i]->x + delta_time * shapes[i]->velocity.x;
         shapes[i]->y = shapes[i]->y + delta_time * shapes[i]->velocity.y;
         shapes[i]->rotation = shapes[i]->rotation + delta_time * shapes[i]->angular_velocity;
-        tDrawShadowRotated(&(shapes[i]->shape), shapes[i]->rectangle_size, shapes[i]->rotation, shapes[i]->x, shapes[i]->y);
+        tDrawShapeRotated(&(shapes[i]->shape), shapes[i]->rectangle_size, shapes[i]->rotation, shapes[i]->x, shapes[i]->y);
     }
 }
 

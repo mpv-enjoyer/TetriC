@@ -3,13 +3,15 @@
 
 #include "shape.h"
 
+#define BAG_SIZE SHAPE_TYPE_COUNT
+
 typedef struct {
-    int data[SHAPE_TYPE_COUNT];
+    int data[BAG_SIZE];
     int index;
 } Bag;
 
-Bag tCreateBag(int previous);
-int tGetNextInBag(Bag* bag);
-int tGetLastInBag(Bag* bag);
+void tResetBag();
+int tGetNextInBag();
+void tPeekBag(int* values, int count);
 
 #endif
