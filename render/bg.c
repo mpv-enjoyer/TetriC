@@ -100,8 +100,8 @@ _BGShape* _tMakeBGShape()
         bgshape->velocity.x = velocity_undirected;
         break;
     }*/
-    bgshape->angular_velocity = 0;
-    bgshape->rotation = 0;
+    bgshape->angular_velocity = random(-30, 30);
+    bgshape->rotation = rand() % 360;
     bgshape->time = GetTime();
     bgshape->rectangle_size = random(BG_MENU_BLOCK_SIZE_MAX, BG_MENU_BLOCK_SIZE_MIN);
     return bgshape;

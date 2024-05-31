@@ -18,9 +18,11 @@ void tDrawFieldBlockRotated(float rectangle_size, int x, int y, int color_type, 
         default: D_ASSERT(false);
     }
     if (shadow) color.a = 80;
+    Color bound_color = current_shape ? color : BLACK;
     Rectangle rect = { x, y, rectangle_size, rectangle_size };
-    DrawRectanglePro(rect, origin, rotation, color);
-    if (!current_shape && rotation == 0.0f) DrawRectangleLinesEx(rect, 1, BLACK);
+    DrawRectanglePro(rect, origin, rotation, bound_color);
+    Rectangle bound = tResizeCentered(rect, -2, -2);
+    DrawRectanglePro(bound, origin, rotation, color);
 }
 
 void tDrawFieldBlock(float rectangle_size, int x, int y, int color_type)
@@ -45,12 +47,12 @@ void tDrawShapeRotated(const Shape* shape, float rectangle_size, float rotation,
     {
         for (int xi = 0; xi < SHAPE_SIZE; xi++)
         {
-            float origin_x_coeff = (SHAPE_SIZE - 1) / 2.0f - xi;
-            float origin_y_coeff = (SHAPE_SIZE - 1) / 2.0f - yi;
-            origin.x = 0; - origin_x_coeff * rectangle_size;
-            origin.y = 0; - origin_y_coeff * rectangle_size;
-            int xc = xi * rectangle_size + x;
-            int yc = yi * rectangle_size + y;
+            float origin_x_coeff = - xi + SHAPE_SIZE / 2;
+            float origin_y_coeff = - yi + SHAPE_SIZE / 2;
+            origin.x = origin_x_coeff * rectangle_size;
+            origin.y = origin_y_coeff * rectangle_size;
+            int xc = xi * rectangle_size + x + origin.x;
+            int yc = yi * rectangle_size + y + origin.y;
             int shape_offset = yi * SHAPE_SIZE + xi;
             if (shape->hitboxes[shape->rotate_state][shape_offset] == '0') continue;
             tDrawFieldBlockRotated(rectangle_size, xc, yc, shape->type + 1, false, false, rotation, origin);
