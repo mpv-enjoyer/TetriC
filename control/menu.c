@@ -2,9 +2,11 @@
 #include "render.h"
 #include "shared.h"
 #include "helpers.h"
+#include "bg.h"
 
 Shared tMenu(Shared shared)
 {
+    tInitMenuBackground();
     while (shared.state == STATE_IN_MENU)
     {
         int selected = tDrawMenuFrame();

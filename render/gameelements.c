@@ -1,5 +1,6 @@
 #include "gameelements.h"
 #include "helpers.h"
+#include "bag.h"
 
 void tDrawFieldBlockRotated(float rectangle_size, int x, int y, int color_type, bool current_shape, bool shadow, float rotation, Vector2 origin)
 {
@@ -156,4 +157,18 @@ void tDrawStatistics(const Record* current_record, Rectangle bounds)
     measured = _tStatisticsElement("Time", current_record->time, bounds);
     bounds.y += measured.y;
     bounds.height -= measured.y;
+}
+
+void tDrawNextShapes(Rectangle bounds)
+{
+    int rectangle_size = bounds.width / SHAPE_SIZE;
+    int bag_lookup_size = MIN(bounds.height / (rectangle_size * SHAPE_SIZE), BAG_SIZE);
+    int* bag_info = (int*)malloc(sizeof(int) * bag_lookup_size);
+    tPeekBag(bag_info, bag_lookup_size);
+    for (int i = 0; i < bag_lookup_size; i++)
+    {
+        Shape shape = Shapes[bag_info[i]];
+        shape.rotate_state = 0;
+        tDrawShapeRotated(&shape, rectangle_size, 0, bounds.x, rectangle_size * 4 * i + bounds.y);
+    }
 }

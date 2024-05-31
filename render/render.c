@@ -25,6 +25,10 @@ void tDrawGameFrame(const Field* field, const Shape* shape, const Record *record
         statistics_bounds.width = begin_x - 20 - statistics_bounds.x;
         statistics_bounds.height = GetRenderHeight() - 30;
         tDrawStatistics(record, statistics_bounds);
+        Rectangle next_shapes_bounds = statistics_bounds;
+        next_shapes_bounds.x = GetRenderWidth() / 2 + (GetRenderWidth() / 2 - begin_x) + 30;
+        next_shapes_bounds.width = 100;
+        tDrawNextShapes(next_shapes_bounds);
     EndDrawing();
 }
 
@@ -50,7 +54,7 @@ void tDrawGameOverFrame(int lines_cleared)
 {
     BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawText("Game over frame.\nDon't mind me.", 0, 0, DEFAULT_FONT_SIZE, BLACK);
+        DrawText("Game over frame.\nDon't mind me.\n(click Enter to proceed)", 0, 0, DEFAULT_FONT_SIZE, BLACK);
     EndDrawing();
 }
 
@@ -59,5 +63,13 @@ void tDrawPauseFrame(int* selected)
     BeginDrawing();
         ClearBackground(RAYWHITE);
         DrawText("Paused frame.\nDon't mind me.\n(click Enter to proceed)", 0, 0, DEFAULT_FONT_SIZE, BLACK);
+    EndDrawing();
+}
+
+void tDrawSettingsFrame(int* selected)
+{
+    BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawText("Settings frame.\nDon't mind me.\n(click ESC to proceed)", 0, 0, DEFAULT_FONT_SIZE, BLACK);
     EndDrawing();
 }

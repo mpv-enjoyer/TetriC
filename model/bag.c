@@ -33,7 +33,7 @@ int tGetNextInBag()
 
 void tPeekBag(int *values, int count)
 {
-    D_ASSERT(count < BAG_SIZE);
+    D_ASSERT(count <= BAG_SIZE);
     D_ASSERT(!_bag_empty);
     int index = 0;
     for (int i = _bag.index; i < BAG_SIZE; i++)

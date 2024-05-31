@@ -20,7 +20,7 @@ void tInitMenuBackground()
 {
     for (int i = 0; i < BG_MENU_SHAPE_COUNT; i++)
     {
-        if (shapes[i] != nullptr) continue; 
+        if (shapes[i] != nullptr) free(shapes[i]); 
         shapes[i] = _tMakeBGShape();
         shapes[i]->x = random(- BG_MENU_OFFSCREEN, GetRenderWidth() + BG_MENU_OFFSCREEN);
         shapes[i]->y = random(- BG_MENU_OFFSCREEN, GetRenderHeight() + BG_MENU_OFFSCREEN);
@@ -29,12 +29,6 @@ void tInitMenuBackground()
 
 void tDrawMenuBackground()
 {
-    int found = 0;
-    for (int i = 0; i < BG_MENU_SHAPE_COUNT; i++)
-    {
-        if (shapes[i] != nullptr) found++;
-    }
-    if (found == 0) tInitMenuBackground();
     for (int i = 0; i < BG_MENU_SHAPE_COUNT; i++)
     {
         if (shapes[i] == nullptr)
