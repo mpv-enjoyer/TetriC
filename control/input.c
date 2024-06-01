@@ -6,7 +6,7 @@ int last_key = KEY_NULL;
 double last_key_begin_time = 0;
 double last_action_time = 0;
 
-int tInput(Field* field, Shape* shape, double time)
+int tInput(Field* field, Shape* shape, Shape* hold_shape, double time)
 {
     int callback = CALLBACK_NOTHING;
     int key = GetKeyPressed();

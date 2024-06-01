@@ -18,11 +18,12 @@ typedef struct Shared
     int state;
     Field* field;
     Shape* shape;
+    Shape* shape_hold;
     Config* config;
     Record current_record;
     Record* all_records;
 } Shared;
 
-bool tLoadFromShared(const Shared* shared, Field** field, Shape** shape, Config** config, Record* current_record);
+bool tLoadFromShared(const Shared* shared, Field** field, Shape** shape, Shape** shape_hold, Config** config, Record* current_record);
 
 #endif

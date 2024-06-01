@@ -7,6 +7,7 @@ double _tCalculateFrameTime(int level, double begin, double acceleration, double
 
 Shared tPlaying(Shared shared)
 {
+    Shape* shape_hold;
     Shape* shape;
     Field* field;
     double wait_keyframe;
@@ -14,7 +15,7 @@ Shared tPlaying(Shared shared)
     {
         D_ASSERT(shared.shape != nullptr);
         Config* config;
-        tLoadFromShared(&shared, &field, &shape, &config, nullptr);
+        tLoadFromShared(&shared, &field, &shape, &shape_hold, &config, nullptr);
     }
     else
     {
@@ -22,9 +23,11 @@ Shared tPlaying(Shared shared)
         tResetBag();
         shape = (Shape*)malloc(sizeof(Shape));
         field = (Field*)calloc(FIELD_HEIGHT * FIELD_WIDTH, sizeof(char));
+        shape_hold = nullptr;
         tMakeShape(field, shape);
         shared.field = field;
         shared.shape = shape;
+        shared.shape_hold = shape_hold;
         wait_keyframe = shared.config->begin_keyframe_seconds;
         shared.current_record.config = nullptr;
         shared.current_record.lines_cleared = 0;

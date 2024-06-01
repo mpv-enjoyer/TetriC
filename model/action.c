@@ -133,3 +133,8 @@ void tUpdateShapeShadow(const Field *field, Shape* shape)
     while (!tCollision(field, &shadow)) shadow.y += 1;
     shape->y_shadow = shadow.y - 1;
 }
+
+void tHoldShape(Shape* shape, Shape* shape_hold)
+{
+    if (shape_hold)
+}
