@@ -41,10 +41,10 @@ const _WallKickData _wallkickI
     }
 };
 
-bool tCollisionSRS(const Field *field, Shape *shape, SRSRotateType type)
+bool tCollisionSRS(const _Field *field, SRSRotateType type)
 {
     const _WallKickData* current_wall_kicks = nullptr;
-    switch (shape->type)
+    switch (field->shape->type)
     {
         case SHAPE_TYPE_J: current_wall_kicks = &_wallkickJLTSZ; break;
         case SHAPE_TYPE_L: current_wall_kicks = &_wallkickJLTSZ; break;
@@ -60,35 +60,35 @@ bool tCollisionSRS(const Field *field, Shape *shape, SRSRotateType type)
         int dy;
         if (type == Left)
         {
-            int initial_rotation = LOOP_PLUS(shape->rotate_state, SHAPE_ROTATE_SIZE);
+            int initial_rotation = LOOP_PLUS(field->shape->rotate_state, SHAPE_ROTATE_SIZE);
             dx = current_wall_kicks->Left[initial_rotation][i * 2];
             dy = current_wall_kicks->Left[initial_rotation][i * 2 + 1];
         }
         else if (type == Right)
         {
-            int initial_rotation = LOOP_MINUS(shape->rotate_state, SHAPE_ROTATE_SIZE);
+            int initial_rotation = LOOP_MINUS(field->shape->rotate_state, SHAPE_ROTATE_SIZE);
             dx = current_wall_kicks->Right[initial_rotation][i * 2];
             dy = current_wall_kicks->Right[initial_rotation][i * 2 + 1];
         }
-        shape->x += dx;
-        shape->y += dy;
-        if (!tCollision(field, shape)) return false;
-        shape->x -= dx;
-        shape->y -= dy;
+        field->shape->x += dx;
+        field->shape->y += dy;
+        if (!tCollision(field)) return false;
+        field->shape->x -= dx;
+        field->shape->y -= dy;
     }
     return true;
 }
 
-bool tCollision(const Field* field, const Shape* shape)
+bool tCollision(const _Field* field)
 {
-    return tCollisionY(field, shape, nullptr);
+    return tCollisionEx(field, field->shape, nullptr);
 }
 
-bool tCollisionY(const Field* field, const Shape* shape, int* y_top)
+bool tCollisionEx(const char* field_data, const Shape* shape, int* y_top)
 {
     for (int yi = 0; yi < SHAPE_SIZE; yi++)
     {
-        if (y_top) *y_top = yi;
+        if (y_top != nullptr) *y_top = yi;
         for (int xi = 0; xi < SHAPE_SIZE; xi++)
         {
             int shape_offset = yi * SHAPE_SIZE + xi;
@@ -99,7 +99,7 @@ bool tCollisionY(const Field* field, const Shape* shape, int* y_top)
             if (shape_y < 0) continue;
             if (shape_y >= FIELD_HEIGHT) return true;
             int field_offset = shape_y * FIELD_WIDTH + shape_x;
-            if (field[field_offset]) return true;
+            if (field_data[field_offset]) return true;
         }
     }
     return false;

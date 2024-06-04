@@ -2,7 +2,7 @@
 #define FIELD_H
 
 #include "shape.h"
-
+#include "config.h"
 
 #define FIELD_WIDTH 10
 #define FIELD_HEIGHT 20
@@ -10,13 +10,16 @@
 
 typedef char Field;
 
-struct _Field
+typedef struct _Field
 {
-    const char* data;
+    char* data;
     Shape* shape;
     Shape* shape_hold;
     bool can_hold;
+    Config* config
+} _Field;
 
-};
+int tGetFieldXY(const _Field* field, int x, int y);
+void tSetFieldXY(_Field *field, int x, int y, int value);
 
 #endif

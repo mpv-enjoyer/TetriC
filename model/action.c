@@ -2,101 +2,103 @@
 #include "bag.h"
 #include "collision.h"
 
-bool tMakeShape(const Field* field, Shape* shape)
+bool tMakeShape(_Field* field)
 {
     int type = tGetNextInBag();
-    *shape = Shapes[type];
+    return tMakeShapeKnown(field, type);
+}
+
+bool tMakeShapeKnown(_Field* field, int type)
+{
+    *(field->shape) = Shapes[type];
     D_ASSERT(type < SHAPE_TYPE_COUNT);
-    shape->rotate_state = SHAPE_DEFAULT_ROTATION;
-    shape->x = SHAPE_DEFAULT_X;
-    shape->y = SHAPE_DEFAULT_Y;
-    shape->type = type;
-    tUpdateShapeShadow(field, shape);
-    return !tCollision(field, shape);
+    field->shape->rotate_state = SHAPE_DEFAULT_ROTATION;
+    field->shape->x = SHAPE_DEFAULT_X;
+    field->shape->y = SHAPE_DEFAULT_Y;
+    field->shape->type = type;
+    tUpdateShapeShadow(field);
+    field->can_hold = true;
+    return !tCollision(field);
 }
 
-bool tHardDropShape(const Field* field, Shape* shape)
+bool tHardDropShape(const _Field* field)
 {
-    int y_before = shape->y;
-    int y_collision_top;
-    while (!tCollisionY(field, shape, &y_collision_top)) shape->y += 1;
-    D_ASSERT(y_before != shape->y);
-    shape->y -= 1;
-    return shape->y != y_before;
+    int y_before = field->shape->y;
+    while (!tCollision(field)) field->shape->y += 1;
+    D_ASSERT(y_before != field->shape->y);
+    field->shape->y -= 1;
+    return field->shape->y != y_before;
 }
 
-bool tRotateShapeLeft(const Field* field, Shape* shape)
+bool tRotateShapeLeft(const _Field* field)
 {
-    shape->rotate_state = LOOP_MINUS(shape->rotate_state, SHAPE_ROTATE_SIZE);
-    if (!tCollision(field, shape)) return true;
-    if (!tCollisionSRS(field, shape, Left)) return true;
-    shape->rotate_state = LOOP_PLUS(shape->rotate_state, SHAPE_ROTATE_SIZE);
+    field->shape->rotate_state = LOOP_MINUS(field->shape->rotate_state, SHAPE_ROTATE_SIZE);
+    if (!tCollision(field)) return true;
+    if (!tCollisionSRS(field, Left)) return true;
+    field->shape->rotate_state = LOOP_PLUS(field->shape->rotate_state, SHAPE_ROTATE_SIZE);
     return false;
 }
 
-bool tRotateShapeRight(const Field* field, Shape* shape)
+bool tRotateShapeRight(_Field* field)
 {
-    shape->rotate_state = LOOP_PLUS(shape->rotate_state, SHAPE_ROTATE_SIZE);
-    if (!tCollision(field, shape)) return true;
-    if (!tCollisionSRS(field, shape, Right)) return true;
-    shape->rotate_state = LOOP_MINUS(shape->rotate_state, SHAPE_ROTATE_SIZE);
+    field->shape->rotate_state = LOOP_PLUS(field->shape->rotate_state, SHAPE_ROTATE_SIZE);
+    if (!tCollision(field)) return true;
+    if (!tCollisionSRS(field, Right)) return true;
+    field->shape->rotate_state = LOOP_MINUS(field->shape->rotate_state, SHAPE_ROTATE_SIZE);
     return false;
 }
 
-bool tMoveShapeLeft(const Field *field, Shape *shape)
+bool tMoveShapeLeft(const _Field *field)
 {
-    shape->x -= 1;
-    if (!tCollision(field, shape)) return true;
-    shape->x += 1;
+    field->shape->x -= 1;
+    if (!tCollision(field)) return true;
+    field->shape->x += 1;
     return false;
 }
 
-bool tMoveShapeRight(const Field *field, Shape *shape)
+bool tMoveShapeRight(_Field *field)
 {
-    shape->x += 1;
-    if (!tCollision(field, shape)) return true;
-    shape->x -= 1;
+    field->shape->x += 1;
+    if (!tCollision(field)) return true;
+    field->shape->x -= 1;
     return false;
 }
 
-bool tGravity(const Field* field, Shape* shape)
+bool tGravityShape(_Field* field)
 {
-    shape->y += 1;
-    if (!tCollision(field, shape)) return true;
-    shape->y -= 1;
+    field->shape->y += 1;
+    if (!tCollision(field)) return true;
+    field->shape->y -= 1;
     return false;
 }
 
-bool tPlaceShape(Field *field, const Shape *shape)
+bool tPlaceShape(_Field *field)
 {
-    D_ASSERT(!tCollision(field, shape));
-    int color = shape->type + 1;
+    D_ASSERT(!tCollision(field));
+    int color = field->shape->type + 1;
     D_ASSERT(color <= SHAPE_COLOR_COUNT && color > 0);
     for (int xi = 0; xi < SHAPE_SIZE; xi++)
     {
         for (int yi = 0; yi < SHAPE_SIZE; yi++)
         {
-            int shape_offset = yi * SHAPE_SIZE + xi;
-            if (shape->hitboxes[shape->rotate_state][shape_offset] == '0') continue;
-            int shape_y = shape->y + yi;
-            int shape_x = shape->x + xi;
+            if (!tGetShapeHitbox(field->shape, xi, yi)) continue;
+            int shape_y = field->shape->y + yi;
+            int shape_x = field->shape->x + xi;
             if (shape_y <= 0) return false;
-            int field_offset = shape_y * FIELD_WIDTH + shape_x;
-            field[field_offset] = color;
+            tSetFieldXY(field, shape_x, shape_y, color);
         }
     }
     return true;
 }
 
-int tFindLine(const Field *field)
+int tFindLine(const _Field* field)
 {
     for (int yi = 0; yi < FIELD_HEIGHT; yi++)
     {
         bool air_found = false;
         for (int xi = 0; xi < FIELD_WIDTH; xi++)
         {
-            int field_offset = yi * FIELD_WIDTH + xi;
-            if (field[field_offset] == 0)
+            if (!tGetFieldXY(field, xi, yi))
             {
                 air_found = true;
                 break;
@@ -107,34 +109,40 @@ int tFindLine(const Field *field)
     return -1;
 }
 
-void tRemoveLine(Field* field, int y)
+void tRemoveLine(_Field* field, int y)
 {
     D_ASSERT(y > 0 && y < FIELD_HEIGHT);
     for (int yi = y; yi > 0; yi--)
     {
         for (int xi = 0; xi < FIELD_WIDTH; xi++)
         {
-            int field_offset_upper = (yi - 1) * FIELD_WIDTH + xi;
-            int field_offset = yi * FIELD_WIDTH + xi;
-            field[field_offset] = field[field_offset_upper];
-            field[field_offset_upper] = 0;
+            int upper = tGetFieldXY(field, xi, yi - 1);
+            tSetFieldXY(field, xi, yi, upper);
+            tSetFieldXY(field, xi, yi - 1, 0);
         }
     }
     for (int xi = 0; xi < FIELD_WIDTH; xi++)
     {
-        int field_offset = xi;
-        field[field_offset] = 0;
+        tSetFieldXY(field, xi, 0, 0);
     }
 }
 
-void tUpdateShapeShadow(const Field *field, Shape* shape)
+void tUpdateShapeShadow(const _Field *field)
 {
-    Shape shadow = *shape;
-    while (!tCollision(field, &shadow)) shadow.y += 1;
-    shape->y_shadow = shadow.y - 1;
+    int shape_y_backup = field->shape->y;
+    while (!tCollision(field)) field->shape->y += 1;
+    field->shape->y_shadow = field->shape->y - 1;
+    field->shape->y = shape_y_backup;
 }
 
-void tHoldShape(Shape* shape, Shape* shape_hold)
+bool tHoldShape(_Field* field)
 {
-    if (shape_hold)
+    if (!field->can_hold) return false;
+    D_ASSERT(field->shape != nullptr);
+    Shape* to_hold = field->shape;
+    bool result;
+    if (field->shape_hold == nullptr) result = tMakeShape(field);
+    else result = tMakeShapeKnown(field, field->shape_hold->type);
+    field->shape_hold = to_hold;
+    return result;
 }

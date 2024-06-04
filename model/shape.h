@@ -29,6 +29,8 @@ typedef struct Shape
     int y_shadow;
 } Shape;
 
+bool tGetShapeHitbox(const Shape* shape, int x, int y);
+
 const static Shape Shapes[SHAPE_TYPE_COUNT] = 
 {{{
 "0110"
