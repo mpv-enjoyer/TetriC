@@ -6,7 +6,7 @@ int last_key = KEY_NULL;
 double last_key_begin_time = 0;
 double last_action_time = 0;
 
-int tInput(Field* field, Shape* shape, Shape* hold_shape, double time)
+int tInput(_Field* field, double time)
 {
     int callback = CALLBACK_NOTHING;
     int key = GetKeyPressed();
@@ -14,11 +14,11 @@ int tInput(Field* field, Shape* shape, Shape* hold_shape, double time)
     {
         switch (key)
         {
-        case KEY_Z: if (!tRotateShapeLeft(field, shape)) callback |= CALLBACK_COLLISION; break;
-        case KEY_X: if (!tRotateShapeRight(field, shape)) callback |= CALLBACK_COLLISION; break;
-        case KEY_UP: if (!tRotateShapeRight(field, shape)) callback |= CALLBACK_COLLISION; break;
+        case KEY_Z: if (!tRotateShapeLeft(field)) callback |= CALLBACK_COLLISION; break;
+        case KEY_X: if (!tRotateShapeRight(field)) callback |= CALLBACK_COLLISION; break;
+        case KEY_UP: if (!tRotateShapeRight(field)) callback |= CALLBACK_COLLISION; break;
         case KEY_LEFT: 
-            if (!tMoveShapeLeft(field, shape)) callback |= CALLBACK_COLLISION;
+            if (!tMoveShapeLeft(field)) callback |= CALLBACK_COLLISION;
             if (last_key != KEY_LEFT)
             {
                 last_key = KEY_LEFT;
@@ -27,7 +27,7 @@ int tInput(Field* field, Shape* shape, Shape* hold_shape, double time)
             }
             break;
         case KEY_RIGHT: 
-            if (!tMoveShapeRight(field, shape)) callback |= CALLBACK_COLLISION; 
+            if (!tMoveShapeRight(field)) callback |= CALLBACK_COLLISION; 
             if (last_key != KEY_RIGHT)
             {
                 last_key = KEY_RIGHT;
@@ -36,7 +36,7 @@ int tInput(Field* field, Shape* shape, Shape* hold_shape, double time)
             }
             break;
         case KEY_SPACE: 
-            if (tHardDropShape(field, shape)) callback |= CALLBACK_HARDDROP;
+            if (tHardDropShape(field)) callback |= CALLBACK_HARDDROP;
             callback |= CALLBACK_KEYFRAME;
             break;
         case KEY_ESCAPE: callback |= CALLBACK_PAUSE; break;
@@ -56,8 +56,8 @@ int tInput(Field* field, Shape* shape, Shape* hold_shape, double time)
     if (time - last_key_begin_time > HOLD_TIMEOUT && time - last_action_time > HOLD_INTERVAL)
     {
         last_action_time = time;
-        if (last_key == KEY_LEFT && !tMoveShapeLeft(field, shape)) callback |= CALLBACK_COLLISION;
-        if (last_key == KEY_RIGHT && !tMoveShapeRight(field, shape)) callback |= CALLBACK_COLLISION;
+        if (last_key == KEY_LEFT && !tMoveShapeLeft(field)) callback |= CALLBACK_COLLISION;
+        if (last_key == KEY_RIGHT && !tMoveShapeRight(field)) callback |= CALLBACK_COLLISION;
     }
     return callback;
 }

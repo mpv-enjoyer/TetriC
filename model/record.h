@@ -2,6 +2,7 @@
 #define RECORD_H
 
 #include "config.h"
+#include "misc.h"
 
 typedef struct Record
 {
@@ -11,5 +12,8 @@ typedef struct Record
     int level;
     double time;
 } Record;
+
+void tMakeRecord(Record* record, Config* config);
+double tCalculateFrameTime(const Record* record, bool player_requests_faster);
 
 #endif

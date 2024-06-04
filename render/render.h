@@ -19,10 +19,10 @@ const static char* menu_item_strings[MENU_ITEM_COUNT] = {"Play", "Settings", "Ex
 const static char* pause_item_strings[PAUSE_ITEM_COUNT] = {"Continue", "To menu"};
 const static char* game_over_strings[GAME_OVER_ITEM_COUNT] = {"To menu"};
 
-void tDrawGameFrame(const Field* field, const Shape* shape, const Record* record);
+void tDrawGameFrame(const _Field *field, const Record *record);
 int tDrawMenuFrame();
 void tDrawGameOverFrame(int lines_cleared);
-int tDrawPauseFrame(const Field* field, const Shape* shape, const Record *record);
+int tDrawPauseFrame(const _Field *field, const Record *record);
 void tDrawSettingsFrame(const Config *config);
 
 #endif

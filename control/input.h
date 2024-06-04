@@ -14,6 +14,6 @@
 #define HOLD_TIMEOUT 0.15
 #define HOLD_INTERVAL 0.04
 
-int tInput(Field* field, Shape* shape, Shape* hold_shape, double time);
+int tInput(_Field* field, double time);
 
 #endif

@@ -1,76 +1,52 @@
 #include "playing.h"
 #include "input.h"
 #include "bag.h"
+#include "field.h"
 
-bool _tKeyFrame(Field* field, Shape* shape, Record* record);
-double _tCalculateFrameTime(int level, double begin, double acceleration, double min);
+bool _tKeyFrame(_Field* field, Record* record);
 
 Shared tPlaying(Shared shared)
 {
-    Shape* shape_hold;
-    Shape* shape;
-    Field* field;
     double wait_keyframe;
     if (shared.field != nullptr)
     {
-        D_ASSERT(shared.shape != nullptr);
         Config* config;
         tLoadFromShared(&shared, &field, &shape, &shape_hold, &config, nullptr);
     }
     else
     {
-        D_ASSERT(shared.shape == nullptr);
         tResetBag();
-        shape = (Shape*)malloc(sizeof(Shape));
-        field = (Field*)calloc(FIELD_HEIGHT * FIELD_WIDTH, sizeof(char));
-        shape_hold = nullptr;
-        tMakeShape(field, shape);
-        shared.field = field;
-        shared.shape = shape;
-        shared.shape_hold = shape_hold;
-        wait_keyframe = shared.config->begin_keyframe_seconds;
-        shared.current_record.config = nullptr;
-        shared.current_record.lines_cleared = 0;
-        shared.current_record.score = 0;
-        shared.current_record.time = 0;
-        shared.current_record.config = shared.config;
-        shared.current_record.level = 0;
+        shared.field = tAllocField();
+        tMakeField(shared.field, shared.config);
+        tMakeShape(shared.field);
+        tMakeRecord(shared.current_record, shared.config);
     }
 
     double previous_keyframe = GetTime();
     while (shared.state == STATE_PLAYING)
     {
         double current_time = GetTime();
-        int level = shared.current_record.level;
-        double begin_sec = shared.config->begin_keyframe_seconds;
-        double acceleration = shared.config->acceleration;
-        double min_sec = shared.config->min_keyframe_seconds;
-        
-        wait_keyframe = _tCalculateFrameTime(level, begin_sec, acceleration, min_sec);
-        double faster_keyframe = wait_keyframe / 2;
-        double current_wait_time = wait_keyframe;
-        
-        int input_callback = tInput(field, shape, current_time);
-        if (input_callback & CALLBACK_FASTER_KEYFRAME) current_wait_time = faster_keyframe;
-        if (input_callback & CALLBACK_PAUSE) shared.state = STATE_PAUSED;
-        tUpdateShapeShadow(field, shape);
 
+        int input_callback = tInput(shared.field, current_time);
+        bool want_faster_keyframe = input_callback & CALLBACK_FASTER_KEYFRAME;
+        if (input_callback & CALLBACK_PAUSE) shared.state = STATE_PAUSED;
         bool should_keyframe = ( input_callback & CALLBACK_KEYFRAME );
-        should_keyframe |= GetTime() - previous_keyframe >= current_wait_time;
+
+        double wait_keyframe = tCalculateFrameTime(shared.current_record, want_faster_keyframe);
+        double delta_keyframe_time = current_time - previous_keyframe;
+        should_keyframe |= delta_keyframe_time >= wait_keyframe;
+        tUpdateShapeShadow(shared.field);
         if (should_keyframe)
         {
-            double deltatime = GetTime() - previous_keyframe;
-            shared.current_record.time += deltatime;
-            if (!_tKeyFrame(field, shape, &shared.current_record))
+            shared.current_record->time += delta_keyframe_time;
+            if (!_tKeyFrame(shared.field, shared.current_record))
             {
                 shared.state = STATE_GAME_OVER;
-                free(field);
-                free(shape);
+                tFreeField(shared.field);
                 shared.field = nullptr;
-                shared.shape = nullptr;
                 break;
             }
-            previous_keyframe = GetTime();
+            previous_keyframe = current_time;
         }
         else
         {
@@ -85,12 +61,12 @@ Shared tPlaying(Shared shared)
     return shared;
 }
 
-bool _tKeyFrame(Field* field, Shape* shape, Record* record)
+bool _tKeyFrame(_Field* field, Record* record)
 {
-    bool falling = tGravity(field, shape);
+    bool falling = tGravityShape(field);
     if (!falling)
     {
-        bool good_placement = tPlaceShape(field, shape);
+        bool good_placement = tPlaceShape(field);
         if (!good_placement) return false;
         int lines_cleared = 0;
         while (true)
@@ -112,19 +88,10 @@ bool _tKeyFrame(Field* field, Shape* shape, Record* record)
             default: D_ASSERT(false);
         }
         record->score += points_increment;
-        bool good_spawn = tMakeShape(field, shape);
+        bool good_spawn = tMakeShape(field);
         if (!good_spawn) return false;
         record->level = (record->lines_cleared / record->config->lines_for_acceleration);
     }
     tDrawGameFrame(field, shape, record);
     return true;
-}
-
-double _tCalculateFrameTime(int level, double begin, double acceleration, double min)
-{
-    D_ASSERT(level >= 0);
-    D_ASSERT(min >= 0);
-    double output = begin - acceleration * level;
-    if (output < min) output = min;
-    return output;
 }

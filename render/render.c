@@ -3,7 +3,7 @@
 #include "gameelements.h"
 #include "bg.h"
 
-void tDrawGameFrame(const Field* field, const Shape* shape, const Record *record)
+void tDrawGameFrame(const _Field* field, const Record *record)
 {
     float rectangle_size = GetRenderHeight() / (FIELD_HEIGHT + FIELD_OUTSIDE_HEIGHT);
     float begin_x = GetRenderWidth() / 2 - rectangle_size * FIELD_WIDTH / 2;
@@ -17,7 +17,7 @@ void tDrawGameFrame(const Field* field, const Shape* shape, const Record *record
     BeginDrawing();
     ClearBackground(FIELD_OUTSIDE_COLOR);
         tDrawField(field, begin_x, rectangle_size);
-        tDrawShape(shape, begin_x, rectangle_size);
+        tDrawShape(field->shape, begin_x, rectangle_size);
         tDrawStatistics(record, begin_x);
         tDrawNextShapes(begin_x);
     EndDrawing();
@@ -50,14 +50,14 @@ void tDrawGameOverFrame(int lines_cleared)
     EndDrawing();
 }
 
-int tDrawPauseFrame(const Field* field, const Shape* shape, const Record *record)
+int tDrawPauseFrame(const _Field* field, const Record *record)
 {
     BeginDrawing();
     ClearBackground(RAYWHITE);
     float rectangle_size = GetRenderHeight() / (FIELD_HEIGHT + FIELD_OUTSIDE_HEIGHT);
     float begin_x = GetRenderWidth() / 2 - rectangle_size * FIELD_WIDTH / 2;
     tDrawField(field, begin_x, rectangle_size);
-    tDrawShape(shape, begin_x, rectangle_size);
+    tDrawShape(field->shape, begin_x, rectangle_size);
     tDrawStatistics(record, begin_x);
     tDrawNextShapes(begin_x);
 

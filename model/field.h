@@ -20,6 +20,9 @@ typedef struct _Field
 } _Field;
 
 int tGetFieldXY(const _Field* field, int x, int y);
-void tSetFieldXY(_Field *field, int x, int y, int value);
+void tSetFieldXY(_Field* field, int x, int y, int value);
+_Field* tAllocField();
+void tMakeField(_Field *field, Config *config);
+void tFreeField(_Field* field);
 
 #endif
