@@ -70,17 +70,7 @@ bool _tKeyFrame(_Field* field, Record* record)
             tRemoveLine(field, found);
         }
         record->lines_cleared += lines_cleared;
-        int points_increment = 0;
-        switch (lines_cleared)
-        {
-            case 0: points_increment = 0; break;
-            case 1: points_increment = 40; break;
-            case 2: points_increment = 100; break;
-            case 3: points_increment = 300; break;
-            case 4: points_increment = 1200; break;
-            default: D_ASSERT(false);
-        }
-        record->score += points_increment;
+        record->score += tCalculatePointsIncrement(record, lines_cleared);
         bool good_spawn = tMakeShape(field);
         if (!good_spawn) return false;
         record->level = (record->lines_cleared / record->config->lines_for_acceleration);

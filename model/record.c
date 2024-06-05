@@ -18,3 +18,19 @@ double tCalculateFrameTime(const Record *record, bool player_requests_faster)
     if (player_requests_faster) output /= 2.0f;
     return output;
 }
+
+int tCalculatePointsIncrement(const Record* record, int current_lines_cleared)
+{
+    int output = 0;
+    switch (current_lines_cleared)
+    {
+        case 0: output = 0; break;
+        case 1: output = 40; break;
+        case 2: output = 100; break;
+        case 3: output = 300; break;
+        case 4: output = 1200; break;
+        default: D_ASSERT(false);
+    }
+    output *= (record->level + 1);
+    return output;
+}

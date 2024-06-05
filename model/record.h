@@ -15,5 +15,6 @@ typedef struct Record
 
 void tMakeRecord(Record* record, Config* config);
 double tCalculateFrameTime(const Record* record, bool player_requests_faster);
+int tCalculatePointsIncrement(const Record *record, int current_lines_cleared);
 
 #endif

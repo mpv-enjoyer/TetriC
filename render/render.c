@@ -16,6 +16,7 @@ void tDrawGameFrame(const _Field* field, const Record *record)
 
     BeginDrawing();
     ClearBackground(FIELD_OUTSIDE_COLOR);
+        DrawFPS(0, 0);
         tDrawField(field, begin_x, rectangle_size);
         tDrawShape(field->shape, begin_x, rectangle_size);
         tDrawStatistics(record, begin_x);
@@ -29,7 +30,7 @@ int tDrawMenuFrame()
     BeginDrawing();
     ClearBackground(RAYWHITE);
     tDrawMenuBackground();
-    const float sector_height = 20;
+    const float sector_height = 22;
     int sector_count = MENU_ITEM_COUNT * 2 - 1;
     int y_center = GetRenderHeight() / 2;
     int y_center_begin = y_center - sector_height * ((sector_count - 1) / 2.0f);
@@ -37,7 +38,7 @@ int tDrawMenuFrame()
     for (int i = 0; i < MENU_ITEM_COUNT; i++)
     {
         int y_center_current = y_center_begin + i * 2 * sector_height;
-        if (tCenteredButton(y_center_current, menu_item_strings[i])) selected = i;
+        if (tCenteredButton(y_center_current, menu_item_strings[i], nullptr)) selected = i;
     }
     EndDrawing();
     return selected;
@@ -67,7 +68,7 @@ int tDrawPauseFrame(const _Field* field, const Record *record)
     darker.a = 200;
     DrawRectangle(0, 0, GetRenderWidth(), GetRenderHeight(), darker);
 
-    const float sector_height = 20;
+    const float sector_height = 22;
     int sector_count = PAUSE_ITEM_COUNT * 2 - 1;
     int y_center = GetRenderHeight() / 2;
     int y_center_begin = y_center - sector_height * ((sector_count - 1) / 2.0f);
@@ -75,7 +76,7 @@ int tDrawPauseFrame(const _Field* field, const Record *record)
     for (int i = 0; i < PAUSE_ITEM_COUNT; i++)
     {
         int y_center_current = y_center_begin + i * 2 * sector_height;
-        if (tCenteredButton(y_center_current, pause_item_strings[i])) selected = i;
+        if (tCenteredButton(y_center_current, pause_item_strings[i], nullptr)) selected = i;
     }
     EndDrawing();
     return selected;
@@ -85,6 +86,11 @@ void tDrawSettingsFrame(const Config* config)
 {
     BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawText("Settings frame.\nDon't mind me.\n(click ESC to return to menu)", 0, 0, DEFAULT_FONT_SIZE, BLACK);
+        static bool some_value = false;
+        int h1;
+        tCheckbox(&some_value, 0, 10, "Some value", &h1);
+        int h2;
+        tCheckbox(&some_value, 0, 10 + h1, "The same value", &h2);
+        tButton(0, 10 + h1 + h2, "Button", nullptr);
     EndDrawing();
 }
