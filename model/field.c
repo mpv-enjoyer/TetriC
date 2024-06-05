@@ -21,7 +21,9 @@ void tSetFieldXY(_Field* field, int x, int y, int value)
 _Field* tAllocField()
 {
     _Field* output = (_Field*)malloc(sizeof(_Field));
-    output->data = (char*)malloc(sizeof(FIELD_WIDTH * FIELD_HEIGHT * sizeof(char)));
+    output->data = (char*)malloc(FIELD_WIDTH * FIELD_HEIGHT * sizeof(char));
+    int shape_size = sizeof(Shape);
+    output->shape = (Shape*)malloc(shape_size);
     return output;
 }
 
@@ -30,13 +32,19 @@ void tMakeField(_Field* field, Config* config)
     field->can_hold = true;
     D_ASSERT(config != nullptr);
     field->config = config;
-    memset(field->data, 0, FIELD_HEIGHT * FIELD_WIDTH * sizeof(char));
-    field->shape = nullptr;
+    for (int x = 0; x < FIELD_WIDTH; x++)
+    {
+        for (int y = 0; y < FIELD_HEIGHT; y++)
+        {
+            tSetFieldXY(field, x, y, 0);
+        }
+    }
     field->shape_hold = nullptr;
 }
 
 void tFreeField(_Field* field)
 {
     free(field->data);
+    free(field->shape);
     free(field);
 }

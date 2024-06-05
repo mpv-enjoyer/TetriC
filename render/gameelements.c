@@ -60,17 +60,16 @@ void tDrawShapeRotated(const Shape* shape, float rectangle_size, float rotation,
     }
 }
 
-void tDrawField(const Field *field, int begin_x, int rectangle_size)
+void tDrawField(const _Field *field, int begin_x, int rectangle_size)
 {
     for (int yi = 0; yi < FIELD_HEIGHT; yi++)
     {
         for (int xi = 0; xi < FIELD_WIDTH; xi++)
         {
-            Color color;
-            int offset = yi * FIELD_WIDTH + xi;
+            int color_type = tGetFieldXY(field, xi, yi);
             int x = begin_x + xi * rectangle_size;
             int y = (yi + FIELD_OUTSIDE_HEIGHT) * rectangle_size;
-            tDrawFieldBlock(rectangle_size, x, y, field[offset]);
+            tDrawFieldBlock(rectangle_size, x, y, color_type);
         }
     }
 }
@@ -83,8 +82,7 @@ void tDrawShape(const Shape *shape, int begin_x, int rectangle_size)
         {
             int x = begin_x + (xi + shape->x) * rectangle_size;
             int y = (yi + shape->y + FIELD_OUTSIDE_HEIGHT) * rectangle_size;
-            int shape_offset = yi * SHAPE_SIZE + xi;
-            if (shape->hitboxes[shape->rotate_state][shape_offset] == '0') continue;
+            if (!tGetShapeHitbox(shape, xi, yi)) continue;
             tDrawShapeBlock(rectangle_size, x, y, shape->type + 1);
             int y_shadow = (yi + shape->y_shadow + FIELD_OUTSIDE_HEIGHT) * rectangle_size;
             tDrawShadowBlock(rectangle_size, x, y_shadow, shape->type + 1);

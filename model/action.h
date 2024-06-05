@@ -15,7 +15,7 @@ bool tGravityShape(_Field* field);
 bool tPlaceShape(_Field* field);
 int tFindLine(const _Field* field);
 void tRemoveLine(_Field* field, int y);
-void tUpdateShapeShadow(const _Field* field);
+void tUpdateShapeShadow(_Field* field);
 bool tHoldShape(_Field* field);
 
 #endif

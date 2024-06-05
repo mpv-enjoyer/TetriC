@@ -22,10 +22,11 @@ void tMainLoop()
 {
     Shared shared_data;
     Config config;
+    Record current_record;
     shared_data.config = &config;
     shared_data.state = STATE_IN_MENU;
     shared_data.field = nullptr;
-    shared_data.shape = nullptr;
+    shared_data.current_record = &current_record;
 
     config.begin_keyframe_seconds = 0.2f;
     config.acceleration = 0.02f;

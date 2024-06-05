@@ -7,13 +7,7 @@ bool _tKeyFrame(_Field* field, Record* record);
 
 Shared tPlaying(Shared shared)
 {
-    double wait_keyframe;
-    if (shared.field != nullptr)
-    {
-        Config* config;
-        tLoadFromShared(&shared, &field, &shape, &shape_hold, &config, nullptr);
-    }
-    else
+    if (shared.field == nullptr)
     {
         tResetBag();
         shared.field = tAllocField();
@@ -50,7 +44,7 @@ Shared tPlaying(Shared shared)
         }
         else
         {
-            tDrawGameFrame(field, shape, &(shared.current_record));
+            tDrawGameFrame(shared.field, shared.current_record);
         }
         if (WindowShouldClose())
         {
@@ -92,6 +86,6 @@ bool _tKeyFrame(_Field* field, Record* record)
         if (!good_spawn) return false;
         record->level = (record->lines_cleared / record->config->lines_for_acceleration);
     }
-    tDrawGameFrame(field, shape, record);
+    tDrawGameFrame(field, record);
     return true;
 }

@@ -8,15 +8,13 @@
 #define FIELD_HEIGHT 20
 #define FIELD_OUTSIDE_HEIGHT 2
 
-typedef char Field;
-
 typedef struct _Field
 {
     char* data;
     Shape* shape;
     Shape* shape_hold;
     bool can_hold;
-    Config* config
+    Config* config;
 } _Field;
 
 int tGetFieldXY(const _Field* field, int x, int y);

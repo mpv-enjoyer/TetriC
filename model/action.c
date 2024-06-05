@@ -127,7 +127,7 @@ void tRemoveLine(_Field* field, int y)
     }
 }
 
-void tUpdateShapeShadow(const _Field *field)
+void tUpdateShapeShadow(_Field *field)
 {
     int shape_y_backup = field->shape->y;
     while (!tCollision(field)) field->shape->y += 1;

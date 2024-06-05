@@ -81,7 +81,7 @@ bool tCollisionSRS(const _Field *field, SRSRotateType type)
 
 bool tCollision(const _Field* field)
 {
-    return tCollisionEx(field, field->shape, nullptr);
+    return tCollisionEx(field->data, field->shape, nullptr);
 }
 
 bool tCollisionEx(const char* field_data, const Shape* shape, int* y_top)

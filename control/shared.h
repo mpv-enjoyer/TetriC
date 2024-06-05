@@ -22,6 +22,4 @@ typedef struct Shared
     Record* all_records;
 } Shared;
 
-bool tLoadFromShared(const Shared* shared, Field** field, Shape** shape, Shape** shape_hold, Config** config, Record* current_record);
-
 #endif
