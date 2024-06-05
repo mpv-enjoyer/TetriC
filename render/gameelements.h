@@ -16,7 +16,7 @@
 #define SHAPE_Z_COLOR (Color){202,72,79,255}
 #define SHAPE_S_COLOR (Color){142,191,61,255}
 
-void tDrawFieldBlockRotated(float rectangle_size, int x, int y, int color_type, bool current_shape, bool shadow, float rotation);
+void tDrawFieldBlockRotated(float rectangle_size, int x, int y, int color_type, bool current_shape, bool shadow, float rotation, Vector2 origin);
 void tDrawFieldBlock(float rectangle_size, int x, int y, int color_type);
 void tDrawShapeBlock(float rectangle_size, int x, int y, int color_type);
 void tDrawShadowBlock(float rectangle_size, int x, int y, int color_type);
@@ -24,7 +24,7 @@ void tDrawShapeRotated(const Shape *shape, float rectangle_size, float rotation,
 void tDrawField(const _Field *field, int begin_x, int rectangle_size);
 void tDrawShape(const Shape* shape, int begin_x, int rectangle_size);
 void tDrawStatistics(const Record *current_record, int begin_x);
-void tDrawNextShapes(int begin_x);
+void tDrawNextShapes(const Bag *bag, int begin_x);
 void tDrawHoldShape(Shape *shape, int begin_x, int rectangle_size);
 
 #endif

@@ -17,9 +17,9 @@ void tDrawFieldBlockRotated(float rectangle_size, int x, int y, int color_type, 
         case 7: color = SHAPE_S_COLOR; break;
         default: D_ASSERT(false);
     }
-    if (shadow) color.a = 80;
+    if (shadow) color.a = 60;
     Color bound_color = current_shape ? color : BLACK;
-    Rectangle rect = { x, y, rectangle_size, rectangle_size };
+    Rectangle rect = { (float)x, (float)y, rectangle_size, rectangle_size };
     DrawRectanglePro(rect, origin, rotation, bound_color);
     Rectangle bound = tResizeCentered(rect, -2, -2);
     DrawRectanglePro(bound, origin, rotation, color);
@@ -166,12 +166,12 @@ void tDrawStatistics(const Record* current_record, int begin_x)
     bounds.height -= measured.y;
 }
 
-void tDrawNextShapes(int begin_x)
+void tDrawNextShapes(const Bag* bag, int begin_x)
 {
     Rectangle bounds;
     bounds.x = GetRenderWidth() / 2 + (GetRenderWidth() / 2 - begin_x) + 30;
     bounds.y = 50;
-    bounds.width = 100;
+    bounds.width = 200;
     bounds.height = GetRenderHeight() - 60;
 
     DrawText("Next:", bounds.x, 10, 30, GRAY);
@@ -180,7 +180,7 @@ void tDrawNextShapes(int begin_x)
     int rectangle_size = bounds.width / SHAPE_SIZE;
     int bag_lookup_size = MIN(bounds.height / (rectangle_size * SHAPE_SIZE), BAG_SIZE);
     int* bag_info = (int*)malloc(sizeof(int) * bag_lookup_size);
-    tPeekBag(bag_info, bag_lookup_size);
+    tPeekBag(bag, bag_info, bag_lookup_size);
     for (int i = 0; i < bag_lookup_size; i++)
     {
         Shape shape = Shapes[bag_info[i]];

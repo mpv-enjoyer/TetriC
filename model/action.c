@@ -4,7 +4,7 @@
 
 bool tMakeShape(_Field* field)
 {
-    int type = tGetNextInBag();
+    int type = tGetNextInBag(field->bag);
     return tMakeShapeKnown(field, type);
 }
 

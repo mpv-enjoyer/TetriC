@@ -3,6 +3,7 @@
 
 #include "shape.h"
 #include "config.h"
+#include "bag.h"
 
 #define FIELD_WIDTH 10
 #define FIELD_HEIGHT 20
@@ -11,6 +12,7 @@
 typedef struct _Field
 {
     char* data;
+    Bag* bag;
     Shape* shape;
     Shape* shape_hold;
     bool can_hold;

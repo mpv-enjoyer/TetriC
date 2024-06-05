@@ -20,10 +20,10 @@ Rectangle tCalculateCenteredText(const char *text, int x, int y, int font_size)
 {
     Vector2 measured = tMeasureTextFix(text, font_size);
     Rectangle output;
-    output.x = x - measured.x / 2;
-    output.y = y - measured.y / 2;
-    output.width = measured.x;
-    output.height = measured.y;
+    output.x = (int)(x - measured.x / 2);
+    output.y = (int)(y - measured.y / 2);
+    output.width = (int)(measured.x);
+    output.height = (int)(measured.y);
     return output;
 }
 

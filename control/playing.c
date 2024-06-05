@@ -9,7 +9,6 @@ Shared tPlaying(Shared shared)
 {
     if (shared.field == nullptr)
     {
-        tResetBag();
         shared.field = tAllocField();
         tMakeField(shared.field, shared.config);
         tMakeShape(shared.field);

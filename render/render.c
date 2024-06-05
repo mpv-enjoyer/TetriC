@@ -20,7 +20,7 @@ void tDrawGameFrame(const _Field* field, const Record *record)
         tDrawShape(field->shape, begin_x, rectangle_size);
         tDrawStatistics(record, begin_x);
         tDrawHoldShape(field->shape_hold, begin_x, rectangle_size);
-        tDrawNextShapes(begin_x);
+        tDrawNextShapes(field->bag, begin_x);
     EndDrawing();
 }
 
@@ -61,7 +61,7 @@ int tDrawPauseFrame(const _Field* field, const Record *record)
     tDrawShape(field->shape, begin_x, rectangle_size);
     tDrawStatistics(record, begin_x);
     tDrawHoldShape(field->shape_hold, begin_x, rectangle_size);
-    tDrawNextShapes(begin_x);
+    tDrawNextShapes(field->bag, begin_x);
 
     Color darker = BLACK;
     darker.a = 200;
