@@ -89,3 +89,54 @@ bool tCheckbox(bool* value, int x, int y, const char* text, int* height)
     if (height) *height = outline_hitbox.height;
     return changed;
 }
+
+bool tTextBox(char* data, int max_length, int x, int y, int mode, const char* text, int* height, bool* active)
+{
+    const int outline_value = 5;
+    int font_size = 35;
+    x += outline_value * 2;
+    y += outline_value;
+    Vector2 measured = tMeasureTextFix(text, font_size);
+    int text_x = GetRenderWidth() - measured.x - outline_value;
+    Vector2 measured_data = tMeasureTextFix(data, font_size);
+    bool show_right_text = true;
+    if (x + measured_data.x + outline_value + measured.x > GetRenderWidth()) show_right_text = false;
+    Rectangle hitbox;
+    hitbox.x = x - outline_value;
+    hitbox.y = y;
+    hitbox.width = text_x - x - outline_value;
+    hitbox.height = measured_data.y;
+    DrawRectanglePro(hitbox, (Vector2){0, 0}, 0, LIGHTGRAY);
+    DrawText(data, x, y, font_size, BLACK);
+    DrawText(text, text_x, y, font_size, BLACK);
+    if (height) *height = hitbox.height + outline_value;
+    bool hovered = CheckCollisionPointRec(GetMousePosition(), hitbox);
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+    {
+        *active = hovered;
+    }
+    if (!(*active)) return false;
+    if (IsKeyPressed(KEY_ENTER)) return true;
+    int length = TextLength(data);
+    D_ASSERT(length + 1 <= max_length);
+    if (length != 0 && IsKeyPressed(KEY_BACKSPACE))
+    {
+        data[length - 1] = '\0';
+    }
+    if ((int)GetTime() % 2) DrawLine(x + measured_data.x + outline_value, y, x + measured_data.x + outline_value, y + measured_data.y, BLACK);
+    if (length + 1 == max_length) return false;
+    int input_char = GetCharPressed();
+    while (input_char != 0 && length + 1 < max_length)
+    {
+        bool is_number = input_char >= '0' || input_char <= '9';
+        bool is_number_delimiter = input_char == ',' || input_char == '.';
+        if (mode == TEXTBOX_MODE_INT && !is_number) continue;
+        if (mode == TEXTBOX_MODE_FLOAT && (!is_number && !is_number_delimiter)) continue;
+        if (input_char == '\n') continue;
+        data[length] = input_char;
+        data[length + 1] = '\0';
+        length++;
+        input_char = GetCharPressed();
+    }
+    return false;
+}

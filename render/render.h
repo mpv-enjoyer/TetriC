@@ -19,10 +19,16 @@ const static char* menu_item_strings[MENU_ITEM_COUNT] = {"Play", "Settings", "Ex
 const static char* pause_item_strings[PAUSE_ITEM_COUNT] = {"Continue", "To menu"};
 const static char* game_over_strings[GAME_OVER_ITEM_COUNT] = {"To menu"};
 
+typedef struct RenderInputCallback
+{
+    int index;
+    float value;
+} RenderInputCallback;
+
 void tDrawGameFrame(const _Field *field, const Record *record);
 int tDrawMenuFrame();
 void tDrawGameOverFrame(int lines_cleared);
 int tDrawPauseFrame(const _Field *field, const Record *record);
-void tDrawSettingsFrame(const Config *config);
+void tDrawSettingsFrame(const Config *config, int active_element);
 
 #endif

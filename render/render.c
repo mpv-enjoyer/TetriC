@@ -82,15 +82,17 @@ int tDrawPauseFrame(const _Field* field, const Record *record)
     return selected;
 }
 
-void tDrawSettingsFrame(const Config* config)
+void tDrawSettingsFrame(const Config* config, int active_element)
 {
     BeginDrawing();
         ClearBackground(RAYWHITE);
         static bool some_value = false;
+        static char string[100];
         int h1;
         tCheckbox(&some_value, 0, 10, "Some value", &h1);
         int h2;
-        tCheckbox(&some_value, 0, 10 + h1, "The same value", &h2);
-        tButton(0, 10 + h1 + h2, "Button", nullptr);
+        tButton(0, 10 + h1, "Button", &h2);
+        static bool active = true;
+        tTextBox(string, 10, 0, 10 + h1 + h2, TEXTBOX_MODE_STRING, "Text", nullptr, &active);
     EndDrawing();
 }
