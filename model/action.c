@@ -139,10 +139,15 @@ bool tHoldShape(_Field* field)
 {
     if (!field->can_hold) return false;
     D_ASSERT(field->shape != nullptr);
-    Shape* to_hold = field->shape;
+    Shape to_hold = *(field->shape);
     bool result;
-    if (field->shape_hold == nullptr) result = tMakeShape(field);
+    if (field->shape_hold == nullptr)
+    {
+        field->shape_hold = (Shape*)malloc(sizeof(Shape));
+        result = tMakeShape(field);
+    }
     else result = tMakeShapeKnown(field, field->shape_hold->type);
-    field->shape_hold = to_hold;
+    *(field->shape_hold) = to_hold;
+    field->can_hold = false;
     return result;
 }

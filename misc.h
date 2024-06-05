@@ -8,7 +8,7 @@
 #include <malloc.h>
 
 #ifndef NDEBUG
- #define D_ASSERT(expr) if (!(expr)) raise(SIGSEGV);
+ #define D_ASSERT(expr) if (!(expr)) raise(SIGSEGV)
 #else
  #define D_ASSERT(expr)
 #endif

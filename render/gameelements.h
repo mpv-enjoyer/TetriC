@@ -25,5 +25,6 @@ void tDrawField(const _Field *field, int begin_x, int rectangle_size);
 void tDrawShape(const Shape* shape, int begin_x, int rectangle_size);
 void tDrawStatistics(const Record *current_record, int begin_x);
 void tDrawNextShapes(int begin_x);
+void tDrawHoldShape(Shape *shape, int begin_x, int rectangle_size);
 
 #endif

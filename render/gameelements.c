@@ -144,9 +144,9 @@ void tDrawStatistics(const Record* current_record, int begin_x)
     Rectangle bounds;
     bounds.x = begin_x - 320;
     if (bounds.x < 20) bounds.x = 20;
-    bounds.y = 30;
+    bounds.y = GetRenderHeight() / 2;
     bounds.width = begin_x - 20 - bounds.x;
-    bounds.height = GetRenderHeight() - 30;
+    bounds.height = GetRenderHeight() / 2 - 30;
 
     Vector2 measured;
     measured = _tStatisticsElement("Score", current_record->score, bounds);
@@ -170,9 +170,12 @@ void tDrawNextShapes(int begin_x)
 {
     Rectangle bounds;
     bounds.x = GetRenderWidth() / 2 + (GetRenderWidth() / 2 - begin_x) + 30;
-    bounds.y = 30;
+    bounds.y = 50;
     bounds.width = 100;
     bounds.height = GetRenderHeight() - 60;
+
+    DrawText("Next:", bounds.x, 10, 30, GRAY);
+    DrawText("Next:", bounds.x, 10, 30, RAYWHITE);
 
     int rectangle_size = bounds.width / SHAPE_SIZE;
     int bag_lookup_size = MIN(bounds.height / (rectangle_size * SHAPE_SIZE), BAG_SIZE);
@@ -184,4 +187,14 @@ void tDrawNextShapes(int begin_x)
         shape.rotate_state = 0;
         tDrawShapeRotated(&shape, rectangle_size, 0, bounds.x, rectangle_size * 4 * i + bounds.y);
     }
+}
+
+void tDrawHoldShape(Shape* shape, int begin_x, int rectangle_size)
+{
+    if (shape == nullptr) return;
+    int x = begin_x - 6 * rectangle_size - 50;
+    int y = 50;
+    DrawText("Hold:", x, 10, 30, GRAY);
+    DrawText("Hold:", x, 10, 30, RAYWHITE);
+    tDrawShapeRotated(shape, rectangle_size * 2, 0.0f, x, y);
 }

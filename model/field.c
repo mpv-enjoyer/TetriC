@@ -22,8 +22,7 @@ _Field* tAllocField()
 {
     _Field* output = (_Field*)malloc(sizeof(_Field));
     output->data = (char*)malloc(FIELD_WIDTH * FIELD_HEIGHT * sizeof(char));
-    int shape_size = sizeof(Shape);
-    output->shape = (Shape*)malloc(shape_size);
+    output->shape = (Shape*)malloc(sizeof(Shape));
     return output;
 }
 
@@ -46,5 +45,6 @@ void tFreeField(_Field* field)
 {
     free(field->data);
     free(field->shape);
+    if (field->shape_hold) free(field->shape_hold);
     free(field);
 }

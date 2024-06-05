@@ -16,6 +16,7 @@ int tInput(_Field* field, double time)
         {
         case KEY_Z: if (!tRotateShapeLeft(field)) callback |= CALLBACK_COLLISION; break;
         case KEY_X: if (!tRotateShapeRight(field)) callback |= CALLBACK_COLLISION; break;
+        case KEY_C: if (tHoldShape(field)) callback |= CALLBACK_KEYFRAME; break;
         case KEY_UP: if (!tRotateShapeRight(field)) callback |= CALLBACK_COLLISION; break;
         case KEY_LEFT: 
             if (!tMoveShapeLeft(field)) callback |= CALLBACK_COLLISION;
