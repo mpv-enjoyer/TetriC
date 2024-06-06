@@ -122,21 +122,24 @@ bool tTextBox(char* data, int max_length, int x, int y, int mode, const char* te
     if (length != 0 && IsKeyPressed(KEY_BACKSPACE))
     {
         data[length - 1] = '\0';
+        length -= 1;
     }
     if ((int)GetTime() % 2) DrawLine(x + measured_data.x + outline_value, y, x + measured_data.x + outline_value, y + measured_data.y, BLACK);
     if (length + 1 == max_length) return false;
     int input_char = GetCharPressed();
-    while (input_char != 0 && length + 1 < max_length)
+    int new_input_char = input_char;
+    while (new_input_char != 0 && length + 1 < max_length)
     {
-        bool is_number = input_char >= '0' || input_char <= '9';
+        bool is_number = input_char >= '0' && input_char <= '9';
         bool is_number_delimiter = input_char == ',' || input_char == '.';
+        new_input_char = GetCharPressed();
         if (mode == TEXTBOX_MODE_INT && !is_number) continue;
-        if (mode == TEXTBOX_MODE_FLOAT && (!is_number && !is_number_delimiter)) continue;
+        if (mode == TEXTBOX_MODE_FLOAT && !(is_number || is_number_delimiter)) continue;
         if (input_char == '\n') continue;
         data[length] = input_char;
         data[length + 1] = '\0';
         length++;
-        input_char = GetCharPressed();
+        input_char = new_input_char;
     }
     return false;
 }

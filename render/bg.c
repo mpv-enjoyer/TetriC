@@ -72,34 +72,6 @@ _BGShape* _tMakeBGShape()
     bgshape->y = inside_coordinate_y;
     bgshape->velocity.x = - velocity_directed;
     bgshape->velocity.y = velocity_undirected;
-    /*int border = rand() % 4;
-    switch (border)
-    {
-    case 0:
-        bgshape->x = - outside_coordinate;
-        bgshape->y = inside_coordinate_y;
-        bgshape->velocity.x = velocity_directed;
-        bgshape->velocity.y = velocity_undirected;
-        break;
-    case 1:
-        bgshape->y = - outside_coordinate;
-        bgshape->x = inside_coordinate_x;
-        bgshape->velocity.y = velocity_directed;
-        bgshape->velocity.x = velocity_undirected;
-        break;
-    case 2:
-        bgshape->x = GetRenderWidth() + outside_coordinate;
-        bgshape->y = inside_coordinate_y;
-        bgshape->velocity.x = - velocity_directed;
-        bgshape->velocity.y = velocity_undirected;
-        break;
-    case 3:
-        bgshape->y = GetRenderHeight() + outside_coordinate;
-        bgshape->x = inside_coordinate_x;
-        bgshape->velocity.y = - velocity_directed;
-        bgshape->velocity.x = velocity_undirected;
-        break;
-    }*/
     bgshape->angular_velocity = random(-30, 30);
     bgshape->rotation = rand() % 360;
     bgshape->time = GetTime();
