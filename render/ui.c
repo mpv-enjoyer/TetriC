@@ -75,7 +75,7 @@ void tDrawUpdateUIDoubleBox(UIDoubleBox *doublebox)
     if (was_active && !is_active)
     {
         if (doublebox->data_changed) doublebox->value = atof(doublebox->data);
-        else snprintf(doublebox->data, doublebox->data_size, "%f", doublebox->value);
+        snprintf(doublebox->data, doublebox->data_size, "%f", doublebox->value);
     }
 }
 
@@ -91,11 +91,11 @@ void tMakeUIIntBox(UIIntBox *intbox, int x, int y, const char *label, char *data
 void tDrawUpdateUIIntBox(UIIntBox *intbox)
 {
     bool was_active = intbox->active;
-    intbox->data_changed = tTextBox(intbox->data, intbox->data_size, intbox->x, intbox->y, TEXTBOX_MODE_DOUBLE, intbox->label, &(intbox->height), &(intbox->active));
+    intbox->data_changed = tTextBox(intbox->data, intbox->data_size, intbox->x, intbox->y, TEXTBOX_MODE_INT, intbox->label, &(intbox->height), &(intbox->active));
     bool is_active = intbox->active;
     if (was_active && !is_active)
     {
         if (intbox->data_changed) intbox->value = atoi(intbox->data);
-        else snprintf(intbox->data, intbox->data_size, "%f", intbox->value);
+        snprintf(intbox->data, intbox->data_size, "%i", intbox->value);
     }
 }

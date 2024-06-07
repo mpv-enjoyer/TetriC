@@ -31,7 +31,7 @@ int tDrawMenuFrame()
     BeginDrawing();
     ClearBackground(RAYWHITE);
     tDrawMenuBackground();
-    const float sector_height = 22;
+    const float sector_height = 23;
     int sector_count = item_count * 2 - 1;
     int y_center = GetRenderHeight() / 2;
     int y_center_begin = y_center - sector_height * ((sector_count - 1) / 2.0f);
@@ -71,7 +71,7 @@ int tDrawPauseFrame(const Field* field, const Record *record)
     darker.a = 200;
     DrawRectangle(0, 0, GetRenderWidth(), GetRenderHeight(), darker);
 
-    const float sector_height = 22;
+    const float sector_height = 23;
     int sector_count = item_count * 2 - 1;
     int y_center = GetRenderHeight() / 2;
     int y_center_begin = y_center - sector_height * ((sector_count - 1) / 2.0f);
