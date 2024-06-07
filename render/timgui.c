@@ -92,6 +92,10 @@ bool tCheckbox(bool* value, int x, int y, const char* text, int* height)
 
 bool tTextBox(char* data, int max_length, int x, int y, int mode, const char* text, int* height, bool* active)
 {
+    static double backspace_press_begin = 0.0f;
+    static double backspace_press_last_emitted = 0.0f;
+    const double backspace_emit_period = 0.1f;
+    const double backspace_before_emit_period = 0.4f;
     const int outline_value = 5;
     int font_size = 35;
     x += outline_value * 2;
@@ -123,10 +127,21 @@ bool tTextBox(char* data, int max_length, int x, int y, int mode, const char* te
     }
     int length = TextLength(data);
     D_ASSERT(length + 1 <= max_length);
-    if (length != 0 && IsKeyPressed(KEY_BACKSPACE))
+    bool should_emit_backspace = IsKeyDown(KEY_BACKSPACE);
+    should_emit_backspace = should_emit_backspace && backspace_press_begin != 0.0f;
+    should_emit_backspace = should_emit_backspace && (GetTime() - backspace_press_begin) > backspace_before_emit_period;
+    should_emit_backspace = should_emit_backspace && (GetTime() - backspace_press_last_emitted) > backspace_emit_period; 
+    if ((length != 0 && IsKeyPressed(KEY_BACKSPACE)) || should_emit_backspace)
     {
         data[length - 1] = '\0';
         length -= 1;
+        if (backspace_press_begin == 0.0f) backspace_press_begin = GetTime();
+        backspace_press_last_emitted = GetTime();
+    }
+    else if (!IsKeyDown(KEY_BACKSPACE))
+    {
+        backspace_press_begin = 0.0f;
+        backspace_press_last_emitted = 0.0f;
     }
     if ((int)GetTime() % 2) DrawLine(x + measured_data.x + outline_value, y, x + measured_data.x + outline_value, y + measured_data.y, BLACK);
     if (length + 1 == max_length) return false;

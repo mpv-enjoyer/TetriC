@@ -44,9 +44,11 @@ typedef struct UIDoubleBox
     int data_size;
     bool active;
     double value;
+    double min;
+    double max;
 } UIDoubleBox;
 
-void tMakeUIDoubleBox(UIDoubleBox* doublebox, int x, int y, const char* label, char* data, int data_size, double value);
+void tMakeUIDoubleBox(UIDoubleBox* doublebox, int x, int y, const char* label, char* data, int data_size, double value, double min, double max);
 void tDrawUpdateUIDoubleBox(UIDoubleBox* doublebox);
 
 typedef struct UIIntBox
@@ -55,9 +57,11 @@ typedef struct UIIntBox
     int data_size;
     bool active;
     int value;
+    int min;
+    int max;
 } UIIntBox;
 
-void tMakeUIIntBox(UIIntBox* intbox, int x, int y, const char* label, char* data, int data_size, int value);
+void tMakeUIIntBox(UIIntBox* intbox, int x, int y, const char* label, char* data, int data_size, int value, int min, int max);
 void tDrawUpdateUIIntBox(UIIntBox* intbox);
 
 #endif

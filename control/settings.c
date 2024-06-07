@@ -32,15 +32,18 @@ void _tMakeSettingsFrameData(SettingsFrameData *frame_data, const Config* config
     tMakeUIButton(&(frame_data->back), 10, 10, "Exit", false);
     tMakeUIButton(&(frame_data->save_and_back), 10, -1, "Save and exit", false);
     char* buffer = (char*)malloc(buffer_size * sizeof(char));
-    tMakeUIIntBox(&(frame_data->lines_for_acceleration_box), 10, -1, "Lines for acceleration", buffer, buffer_size, config->lines_for_acceleration);
+    tMakeUIIntBox(&(frame_data->lines_for_acceleration_box), 10, -1, "Lines for acceleration", buffer, buffer_size, config->lines_for_acceleration, 1, 1000);
     buffer = (char*)malloc(buffer_size * sizeof(char));
-    tMakeUIDoubleBox(&(frame_data->min_keyframe_seconds_box), 10, -1, "Min keyframe seconds", buffer, buffer_size, config->min_keyframe_seconds);
+    tMakeUIDoubleBox(&(frame_data->min_keyframe_seconds_box), 10, -1, "Min keyframe seconds", buffer, buffer_size, config->min_keyframe_seconds, 0.0001f, 1);
 }
 
 bool _tProcessFinalFrame(const SettingsFrameData *frame_data, Config *config)
 {
+    bool is_last_frame = frame_data->back.data || frame_data->save_and_back.data;
+    if (!is_last_frame) return false;
+    free(frame_data->min_keyframe_seconds_box.data);
+    free(frame_data->lines_for_acceleration_box.data);
     if (frame_data->back.data) return true;
-    if (!frame_data->save_and_back.data) return false;
     config->min_keyframe_seconds = frame_data->min_keyframe_seconds_box.value;
     config->lines_for_acceleration = frame_data->lines_for_acceleration_box.value;
     return true;

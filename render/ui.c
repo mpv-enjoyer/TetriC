@@ -58,12 +58,15 @@ void tDrawUpdateUITextBox(UITextBox *textbox)
     }
 }
 
-void tMakeUIDoubleBox(UIDoubleBox *doublebox, int x, int y, const char *label, char *data, int data_size, double value)
+void tMakeUIDoubleBox(UIDoubleBox *doublebox, int x, int y, const char *label, char *data, int data_size, double value, double min, double max)
 {
     SETUP_UI_ELEMENT(doublebox);
     doublebox->value = value;
     doublebox->data_size = data_size;
     doublebox->active = false;
+    doublebox->min = min;
+    doublebox->max = max;
+    D_ASSERT(min < value && value < max);
     snprintf(data, data_size, "%f", value);
 }
 
@@ -74,17 +77,23 @@ void tDrawUpdateUIDoubleBox(UIDoubleBox *doublebox)
     bool is_active = doublebox->active;
     if (was_active && !is_active)
     {
-        if (doublebox->data_changed) doublebox->value = atof(doublebox->data);
+        double parsed = atof(doublebox->data);
+        if (parsed < doublebox->min) parsed = doublebox->min;
+        if (parsed > doublebox->max) parsed = doublebox->max;
+        if (doublebox->data_changed) doublebox->value = parsed;
         snprintf(doublebox->data, doublebox->data_size, "%f", doublebox->value);
     }
 }
 
-void tMakeUIIntBox(UIIntBox *intbox, int x, int y, const char *label, char *data, int data_size, int value)
+void tMakeUIIntBox(UIIntBox *intbox, int x, int y, const char *label, char *data, int data_size, int value, int min, int max)
 {
     SETUP_UI_ELEMENT(intbox);
     intbox->value = value;
     intbox->data_size = data_size;
     intbox->active = false;
+    intbox->min = min;
+    intbox->max = max;
+    D_ASSERT(min < value && value < max);
     snprintf(data, data_size, "%i", value);
 }
 
@@ -95,7 +104,10 @@ void tDrawUpdateUIIntBox(UIIntBox *intbox)
     bool is_active = intbox->active;
     if (was_active && !is_active)
     {
-        if (intbox->data_changed) intbox->value = atoi(intbox->data);
+        int parsed = atoi(intbox->data);
+        if (parsed < intbox->min) parsed = intbox->min;
+        if (parsed > intbox->max) parsed = intbox->max;
+        if (intbox->data_changed) intbox->value = parsed;
         snprintf(intbox->data, intbox->data_size, "%i", intbox->value);
     }
 }
