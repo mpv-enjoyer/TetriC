@@ -108,7 +108,7 @@ int tDrawSettingsFrame(const Config* config, int active_element, char* data, int
 
         bool was_active = active_element == 1;
         bool is_active;
-        bool ready = tTextBox(input_buffer, input_buffer_size, x, y, TEXTBOX_MODE_FLOAT, item_strings[1], &height, &is_active);
+        bool ready = tTextBox(input_buffer, input_buffer_size, x, y, TEXTBOX_MODE_DOUBLE, item_strings[1], &height, &is_active);
         if (!was_active && is_active)
         {
             snprintf(input_buffer, input_buffer_size, "%s");
@@ -128,6 +128,6 @@ int tDrawSettingsFrame(const Config* config, int active_element, char* data, int
         int h3;
         tTextBox(string1, 10, 0, 10 + h1 + h2, TEXTBOX_MODE_STRING, "Any text", &h3, &active1);
         static bool active2 = false;
-        tTextBox(string2, 10, 0, 10 + h1 + h2 + h3, TEXTBOX_MODE_FLOAT, "Input float here :D", nullptr, &active2);
+        tTextBox(string2, 10, 0, 10 + h1 + h2 + h3, TEXTBOX_MODE_DOUBLE, "Input float here :D", nullptr, &active2);
     EndDrawing();
 }
