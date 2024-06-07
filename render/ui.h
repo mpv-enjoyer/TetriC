@@ -17,7 +17,7 @@ typedef struct UIButton
 } UIButton;
 
 void tMakeUIButton(UIButton* button, int x, int y, const char* label, bool data);
-void tDrawUpdateUIButton(UIButton* button);
+void tDrawUpdateUIButton(UIButton* button, int* next_element_y);
 
 typedef struct UICheckBox
 {
@@ -25,7 +25,7 @@ typedef struct UICheckBox
 } UICheckBox;
 
 void tMakeUICheckBox(UICheckBox* checkbox, int x, int y, const char* label, bool data);
-void tDrawUpdateUICheckBox(UICheckBox* checkbox);
+void tDrawUpdateUICheckBox(UICheckBox* checkbox, int* next_element_y);
 
 typedef struct UITextBox
 {
@@ -36,7 +36,7 @@ typedef struct UITextBox
 } UITextBox;
 
 void tMakeUITextBox(UITextBox *textbox, int x, int y, const char *label, char *data, char *data_backup, int data_size, const char *value);
-void tDrawUpdateUITextBox(UITextBox* textbox);
+void tDrawUpdateUITextBox(UITextBox* textbox, int* next_element_y);
 
 typedef struct UIDoubleBox
 {
@@ -49,7 +49,7 @@ typedef struct UIDoubleBox
 } UIDoubleBox;
 
 void tMakeUIDoubleBox(UIDoubleBox* doublebox, int x, int y, const char* label, char* data, int data_size, double value, double min, double max);
-void tDrawUpdateUIDoubleBox(UIDoubleBox* doublebox);
+void tDrawUpdateUIDoubleBox(UIDoubleBox* doublebox, int* next_element_y);
 
 typedef struct UIIntBox
 {
@@ -62,6 +62,6 @@ typedef struct UIIntBox
 } UIIntBox;
 
 void tMakeUIIntBox(UIIntBox* intbox, int x, int y, const char* label, char* data, int data_size, int value, int min, int max);
-void tDrawUpdateUIIntBox(UIIntBox* intbox);
+void tDrawUpdateUIIntBox(UIIntBox* intbox, int* next_element_y);
 
 #endif

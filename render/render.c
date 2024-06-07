@@ -89,22 +89,11 @@ void tDrawSettingsFrame(const Config* config, SettingsFrameData* frame_data)
 {
     BeginDrawing();
         ClearBackground(RAYWHITE);
-        
-        int y = frame_data->back.y;
-        tDrawUpdateUIButton(&(frame_data->back));
-        y += frame_data->back.height;
 
-        frame_data->save_and_back.y = y;
-        tDrawUpdateUIButton(&(frame_data->save_and_back));
-        y += frame_data->save_and_back.height;
-
-        frame_data->min_keyframe_seconds_box.y = y;
-        tDrawUpdateUIDoubleBox(&(frame_data->min_keyframe_seconds_box));
-        y += frame_data->min_keyframe_seconds_box.height;
-
-        frame_data->lines_for_acceleration_box.y = y;
-        tDrawUpdateUIIntBox(&(frame_data->lines_for_acceleration_box));
-        y += frame_data->lines_for_acceleration_box.height;
+        tDrawUpdateUIButton(&(frame_data->back), &(frame_data->save_and_back.y));
+        tDrawUpdateUIButton(&(frame_data->save_and_back), &(frame_data->min_keyframe_seconds_box.y));
+        tDrawUpdateUIDoubleBox(&(frame_data->min_keyframe_seconds_box), &(frame_data->lines_for_acceleration_box.y));
+        tDrawUpdateUIIntBox(&(frame_data->lines_for_acceleration_box), nullptr);
 
     EndDrawing();
 }
