@@ -10,8 +10,8 @@ typedef enum
     Right
 } SRSRotateType;
 
-bool tCollisionSRS(const _Field* field, SRSRotateType type);
-bool tCollision(const _Field* field);
+bool tCollisionSRS(const Field* field, SRSRotateType type);
+bool tCollision(const Field* field);
 bool tCollisionEx(const char* field_data, const Shape *shape, int *y_top);
 
 #endif

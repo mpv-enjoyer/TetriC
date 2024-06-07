@@ -2,13 +2,13 @@
 #include "bag.h"
 #include "collision.h"
 
-bool tMakeShape(_Field* field)
+bool tMakeShape(Field* field)
 {
     int type = tGetNextInBag(field->bag);
     return tMakeShapeKnown(field, type);
 }
 
-bool tMakeShapeKnown(_Field* field, int type)
+bool tMakeShapeKnown(Field* field, int type)
 {
     *(field->shape) = Shapes[type];
     D_ASSERT(type < SHAPE_TYPE_COUNT);
@@ -21,7 +21,7 @@ bool tMakeShapeKnown(_Field* field, int type)
     return !tCollision(field);
 }
 
-bool tHardDropShape(const _Field* field)
+bool tHardDropShape(const Field* field)
 {
     int y_before = field->shape->y;
     while (!tCollision(field)) field->shape->y += 1;
@@ -30,7 +30,7 @@ bool tHardDropShape(const _Field* field)
     return field->shape->y != y_before;
 }
 
-bool tRotateShapeLeft(const _Field* field)
+bool tRotateShapeLeft(const Field* field)
 {
     field->shape->rotate_state = LOOP_MINUS(field->shape->rotate_state, SHAPE_ROTATE_SIZE);
     if (!tCollision(field)) return true;
@@ -39,7 +39,7 @@ bool tRotateShapeLeft(const _Field* field)
     return false;
 }
 
-bool tRotateShapeRight(_Field* field)
+bool tRotateShapeRight(Field* field)
 {
     field->shape->rotate_state = LOOP_PLUS(field->shape->rotate_state, SHAPE_ROTATE_SIZE);
     if (!tCollision(field)) return true;
@@ -48,7 +48,7 @@ bool tRotateShapeRight(_Field* field)
     return false;
 }
 
-bool tMoveShapeLeft(const _Field *field)
+bool tMoveShapeLeft(const Field *field)
 {
     field->shape->x -= 1;
     if (!tCollision(field)) return true;
@@ -56,7 +56,7 @@ bool tMoveShapeLeft(const _Field *field)
     return false;
 }
 
-bool tMoveShapeRight(_Field *field)
+bool tMoveShapeRight(Field *field)
 {
     field->shape->x += 1;
     if (!tCollision(field)) return true;
@@ -64,7 +64,7 @@ bool tMoveShapeRight(_Field *field)
     return false;
 }
 
-bool tGravityShape(_Field* field)
+bool tGravityShape(Field* field)
 {
     field->shape->y += 1;
     if (!tCollision(field)) return true;
@@ -72,7 +72,7 @@ bool tGravityShape(_Field* field)
     return false;
 }
 
-bool tPlaceShape(_Field *field)
+bool tPlaceShape(Field *field)
 {
     D_ASSERT(!tCollision(field));
     int color = field->shape->type + 1;
@@ -91,7 +91,7 @@ bool tPlaceShape(_Field *field)
     return true;
 }
 
-int tFindLine(const _Field* field)
+int tFindLine(const Field* field)
 {
     for (int yi = 0; yi < FIELD_HEIGHT; yi++)
     {
@@ -109,7 +109,7 @@ int tFindLine(const _Field* field)
     return -1;
 }
 
-void tRemoveLine(_Field* field, int y)
+void tRemoveLine(Field* field, int y)
 {
     D_ASSERT(y > 0 && y < FIELD_HEIGHT);
     for (int yi = y; yi > 0; yi--)
@@ -127,7 +127,7 @@ void tRemoveLine(_Field* field, int y)
     }
 }
 
-void tUpdateShapeShadow(_Field *field)
+void tUpdateShapeShadow(Field *field)
 {
     int shape_y_backup = field->shape->y;
     while (!tCollision(field)) field->shape->y += 1;
@@ -135,7 +135,7 @@ void tUpdateShapeShadow(_Field *field)
     field->shape->y = shape_y_backup;
 }
 
-bool tHoldShape(_Field* field)
+bool tHoldShape(Field* field)
 {
     if (!field->can_hold) return false;
     D_ASSERT(field->shape != nullptr);

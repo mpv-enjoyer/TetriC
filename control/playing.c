@@ -3,7 +3,7 @@
 #include "bag.h"
 #include "field.h"
 
-bool _tKeyFrame(_Field* field, Record* record);
+bool _tKeyFrame(Field* field, Record* record);
 
 Shared tPlaying(Shared shared)
 {
@@ -54,7 +54,7 @@ Shared tPlaying(Shared shared)
     return shared;
 }
 
-bool _tKeyFrame(_Field* field, Record* record)
+bool _tKeyFrame(Field* field, Record* record)
 {
     bool falling = tGravityShape(field);
     if (!falling)

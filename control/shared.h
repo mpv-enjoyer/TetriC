@@ -16,7 +16,7 @@
 typedef struct Shared
 {
     int state;
-    _Field* field;
+    Field* field;
     Config* config;
     Record* current_record;
     Record* all_records;

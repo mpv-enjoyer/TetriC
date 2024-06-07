@@ -58,7 +58,7 @@ void tDrawUpdateUITextBox(UITextBox *textbox)
     }
 }
 
-void tMakeUIDoubleBox(UIDoubleBox *doublebox, int x, int y, const char *label, char *data, int data_size, float value)
+void tMakeUIDoubleBox(UIDoubleBox *doublebox, int x, int y, const char *label, char *data, int data_size, double value)
 {
     SETUP_UI_ELEMENT(doublebox);
     doublebox->value = value;

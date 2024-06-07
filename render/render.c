@@ -2,7 +2,7 @@
 #include "gameelements.h"
 #include "bg.h"
 
-void tDrawGameFrame(const _Field* field, const Record *record)
+void tDrawGameFrame(const Field* field, const Record *record)
 {
     float rectangle_size = GetRenderHeight() / (FIELD_HEIGHT + FIELD_OUTSIDE_HEIGHT);
     float begin_x = GetRenderWidth() / 2 - rectangle_size * FIELD_WIDTH / 2;
@@ -53,7 +53,7 @@ void tDrawGameOverFrame(int lines_cleared)
     EndDrawing();
 }
 
-int tDrawPauseFrame(const _Field* field, const Record *record)
+int tDrawPauseFrame(const Field* field, const Record *record)
 {
     const static int item_count = 2;
     const static char* item_strings[item_count] = {"Continue", "To menu"};
@@ -85,49 +85,26 @@ int tDrawPauseFrame(const _Field* field, const Record *record)
     return selected;
 }
 
-int tDrawSettingsFrame(const Config* config, int active_element, char* data, int data_size)
+void tDrawSettingsFrame(const Config* config, SettingsFrameData* frame_data)
 {
-    const static int item_count = 6;
-    const static char* item_strings[item_count] = {"To menu",
-                                                   "Acceleration per level (sec)",
-                                                   "Gravitation at level 0 (sec)",
-                                                   "Lines to level up",
-                                                   "Maximum gravitation (sec)",
-                                                   "Super Rotation System"};
-    
-    const static int input_buffer_size = 15;
-    static char input_buffer[input_buffer_size];
     BeginDrawing();
         ClearBackground(RAYWHITE);
-        int x = 10;
-        int y = 10;
-
-        int height;
-        if (tButton(x, y, item_strings[0], &height)) return 0;
-        y += height;
-
-        bool was_active = active_element == 1;
-        bool is_active;
-        bool ready = tTextBox(input_buffer, input_buffer_size, x, y, TEXTBOX_MODE_DOUBLE, item_strings[1], &height, &is_active);
-        if (!was_active && is_active)
-        {
-            snprintf(input_buffer, input_buffer_size, "%s");
-        }
-        if (ready) strncpy(data, input_buffer, MIN(data_size, input_buffer_size));
-        if (ready) return 1;
-
         
-        static bool some_value = false;
-        static char string1[100];
-        static char string2[100];
-        int h1;
-        tCheckbox(&some_value, 0, 10, "Some value", &h1);
-        int h2;
-        tButton(0, 10 + h1, "Button", &h2);
-        static bool active1 = true;
-        int h3;
-        tTextBox(string1, 10, 0, 10 + h1 + h2, TEXTBOX_MODE_STRING, "Any text", &h3, &active1);
-        static bool active2 = false;
-        tTextBox(string2, 10, 0, 10 + h1 + h2 + h3, TEXTBOX_MODE_DOUBLE, "Input float here :D", nullptr, &active2);
+        int y = frame_data->back.y;
+        tDrawUpdateUIButton(&(frame_data->back));
+        y += frame_data->back.height;
+
+        frame_data->save_and_back.y = y;
+        tDrawUpdateUIButton(&(frame_data->save_and_back));
+        y += frame_data->save_and_back.height;
+
+        frame_data->min_keyframe_seconds_box.y = y;
+        tDrawUpdateUIDoubleBox(&(frame_data->min_keyframe_seconds_box));
+        y += frame_data->min_keyframe_seconds_box.height;
+
+        frame_data->lines_for_acceleration_box.y = y;
+        tDrawUpdateUIIntBox(&(frame_data->lines_for_acceleration_box));
+        y += frame_data->lines_for_acceleration_box.height;
+
     EndDrawing();
 }

@@ -4,18 +4,18 @@
 #include "field.h"
 #include "shape.h"
 
-bool tMakeShape(_Field* field);
-bool tMakeShapeKnown(_Field *field, int type);
-bool tHardDropShape(const _Field *field);
-bool tRotateShapeLeft(const _Field* field);
-bool tRotateShapeRight(_Field* field);
-bool tMoveShapeLeft(const _Field* field);
-bool tMoveShapeRight(_Field* field);
-bool tGravityShape(_Field* field);
-bool tPlaceShape(_Field* field);
-int tFindLine(const _Field* field);
-void tRemoveLine(_Field* field, int y);
-void tUpdateShapeShadow(_Field* field);
-bool tHoldShape(_Field* field);
+bool tMakeShape(Field* field);
+bool tMakeShapeKnown(Field *field, int type);
+bool tHardDropShape(const Field *field);
+bool tRotateShapeLeft(const Field* field);
+bool tRotateShapeRight(Field* field);
+bool tMoveShapeLeft(const Field* field);
+bool tMoveShapeRight(Field* field);
+bool tGravityShape(Field* field);
+bool tPlaceShape(Field* field);
+int tFindLine(const Field* field);
+void tRemoveLine(Field* field, int y);
+void tUpdateShapeShadow(Field* field);
+bool tHoldShape(Field* field);
 
 #endif

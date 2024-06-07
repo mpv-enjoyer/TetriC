@@ -41,7 +41,7 @@ const _WallKickData _wallkickI
     }
 };
 
-bool tCollisionSRS(const _Field *field, SRSRotateType type)
+bool tCollisionSRS(const Field *field, SRSRotateType type)
 {
     const _WallKickData* current_wall_kicks = nullptr;
     switch (field->shape->type)
@@ -79,7 +79,7 @@ bool tCollisionSRS(const _Field *field, SRSRotateType type)
     return true;
 }
 
-bool tCollision(const _Field* field)
+bool tCollision(const Field* field)
 {
     return tCollisionEx(field->data, field->shape, nullptr);
 }

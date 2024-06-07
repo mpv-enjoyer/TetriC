@@ -60,7 +60,7 @@ void tDrawShapeRotated(const Shape* shape, float rectangle_size, float rotation,
     }
 }
 
-void tDrawField(const _Field *field, int begin_x, int rectangle_size)
+void tDrawField(const Field *field, int begin_x, int rectangle_size)
 {
     for (int yi = 0; yi < FIELD_HEIGHT; yi++)
     {

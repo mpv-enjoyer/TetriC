@@ -32,7 +32,7 @@ bool tCalculateMultipleCenteredText(const char* text_array[], int count, Rectang
     int h = GetRenderHeight();
     int w = GetRenderWidth();
     int sectors = count * 2 - 1;
-    Rectangle precalculated = tCalculateCenteredText("Welp", w / 2, h / 2, font_size);
+    Rectangle precalculated = tCalculateCenteredText("Some text", w / 2, h / 2, font_size);
     float text_height = precalculated.height;
     int begin_draw_y = ( h / 2 ) - text_height * (sectors / 2.0f);
     for (int i = 0; i < sectors; i++)

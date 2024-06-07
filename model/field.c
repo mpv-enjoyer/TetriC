@@ -1,6 +1,6 @@
 #include "field.h"
 
-int tGetFieldXY(const _Field* field, int x, int y)
+int tGetFieldXY(const Field* field, int x, int y)
 {
     if (y < 0) return -1;
     D_ASSERT(y < FIELD_HEIGHT);
@@ -9,7 +9,7 @@ int tGetFieldXY(const _Field* field, int x, int y)
     return field->data[offset];
 }
 
-void tSetFieldXY(_Field* field, int x, int y, int value)
+void tSetFieldXY(Field* field, int x, int y, int value)
 {
     D_ASSERT(y >= 0 && y < FIELD_HEIGHT);
     D_ASSERT(x >= 0 && x < FIELD_WIDTH);
@@ -18,16 +18,16 @@ void tSetFieldXY(_Field* field, int x, int y, int value)
     field->data[offset] = value;
 }
 
-_Field* tAllocField()
+Field* tAllocField()
 {
-    _Field* output = (_Field*)malloc(sizeof(_Field));
+    Field* output = (Field*)malloc(sizeof(Field));
     output->data = (char*)malloc(FIELD_WIDTH * FIELD_HEIGHT * sizeof(char));
     output->shape = (Shape*)malloc(sizeof(Shape));
     output->bag = (Bag*)malloc(sizeof(Bag));
     return output;
 }
 
-void tMakeField(_Field* field, Config* config)
+void tMakeField(Field* field, Config* config)
 {
     field->can_hold = true;
     D_ASSERT(config != nullptr);
@@ -43,7 +43,7 @@ void tMakeField(_Field* field, Config* config)
     tMakeBag(field->bag);
 }
 
-void tFreeField(_Field* field)
+void tFreeField(Field* field)
 {
     free(field->data);
     free(field->shape);

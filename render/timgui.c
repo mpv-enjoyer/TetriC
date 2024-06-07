@@ -116,7 +116,11 @@ bool tTextBox(char* data, int max_length, int x, int y, int mode, const char* te
         *active = hovered;
     }
     if (!(*active)) return false;
-    if (IsKeyPressed(KEY_ENTER)) return true;
+    if (IsKeyPressed(KEY_ENTER)) 
+    {
+        *active = false;
+        return true;
+    }
     int length = TextLength(data);
     D_ASSERT(length + 1 <= max_length);
     if (length != 0 && IsKeyPressed(KEY_BACKSPACE))
