@@ -32,6 +32,7 @@ void tMainLoop()
     config.acceleration = 0.02f;
     config.lines_for_acceleration = 5;
     config.min_keyframe_seconds = 1.0f / 60.0f;
+    config.srs = true;
 
     while (true)
     {

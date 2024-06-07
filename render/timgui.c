@@ -105,10 +105,15 @@ bool tTextBox(char* data, int max_length, int x, int y, int mode, const char* te
     Vector2 measured_data = tMeasureTextFix(data, font_size);
     bool show_right_text = true;
     if (x + measured_data.x + outline_value + measured.x > GetRenderWidth()) show_right_text = false;
-    Rectangle hitbox = {.x = (float)x, .y = (float)y, .width = (float)text_x - x - outline_value, .height = measured_data.y};
+    Rectangle hitbox;
+    hitbox.x = x - outline_value;
+    hitbox.y = y;
+    hitbox.width = text_x - x - outline_value;
+    hitbox.height = measured_data.y;
+    if (show_right_text) DrawText(text, text_x, y, font_size, BLACK);
+    else hitbox.width = GetRenderWidth() - x - outline_value;
     DrawRectanglePro(hitbox, (Vector2){0, 0}, 0, LIGHTGRAY);
     DrawText(data, x, y, font_size, BLACK);
-    DrawText(text, text_x, y, font_size, BLACK);
     if (height) *height = hitbox.height + outline_value;
     bool hovered = CheckCollisionPointRec(GetMousePosition(), hitbox);
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))

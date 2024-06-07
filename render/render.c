@@ -91,9 +91,12 @@ void tDrawSettingsFrame(const Config* config, SettingsFrameData* frame_data)
         ClearBackground(RAYWHITE);
 
         tDrawUpdateUIButton(&(frame_data->back), &(frame_data->save_and_back.y));
-        tDrawUpdateUIButton(&(frame_data->save_and_back), &(frame_data->min_keyframe_seconds_box.y));
-        tDrawUpdateUIDoubleBox(&(frame_data->min_keyframe_seconds_box), &(frame_data->lines_for_acceleration_box.y));
-        tDrawUpdateUIIntBox(&(frame_data->lines_for_acceleration_box), nullptr);
+        tDrawUpdateUIButton(&(frame_data->save_and_back), &(frame_data->min_speed.y));
+        tDrawUpdateUIDoubleBox(&(frame_data->min_speed), &(frame_data->max_speed.y));
+        tDrawUpdateUIDoubleBox(&(frame_data->max_speed), &(frame_data->acceleration.y));
+        tDrawUpdateUIDoubleBox(&(frame_data->acceleration), &(frame_data->lines_for_next_level.y));
+        tDrawUpdateUIIntBox(&(frame_data->lines_for_next_level), &(frame_data->srs.y));
+        tDrawUpdateUICheckBox(&(frame_data->srs), nullptr);
 
     EndDrawing();
 }

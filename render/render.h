@@ -16,8 +16,11 @@ typedef struct SettingsFrameData
 {
     UIButton back;
     UIButton save_and_back;
-    UIIntBox lines_for_acceleration_box;
-    UIDoubleBox min_keyframe_seconds_box;
+    UIIntBox lines_for_next_level;
+    UIDoubleBox min_speed;
+    UIDoubleBox acceleration;
+    UIDoubleBox max_speed;
+    UICheckBox srs;
 } SettingsFrameData;
 
 void tDrawGameFrame(const Field *field, const Record *record);

@@ -7,6 +7,7 @@ typedef struct Config
     double acceleration;
     int lines_for_acceleration;
     double min_keyframe_seconds;
+    bool srs;
 } Config;
 
 #endif
