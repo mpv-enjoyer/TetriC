@@ -29,7 +29,7 @@ void tMainLoop()
     shared_data.current_record = &current_record;
 
     tMakeConfigDefault(&config);
-    tLoadConfig(&config, "settings.data");
+    tLoadConfig(&config, "tetriC.data");
 
     while (shared_data.state != STATE_EXITING)
     {
@@ -42,7 +42,7 @@ void tMainLoop()
             case (STATE_IN_SETTINGS): shared_data = tSettings(shared_data); break;
         }
     }
-    tSaveConfig(&config, "settings.data");
+    tSaveConfig(&config, "tetriC.data");
 }
 
 void tEnd()

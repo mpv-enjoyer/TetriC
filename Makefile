@@ -16,4 +16,4 @@ all:
 	g++ $(SOURCES) $(LIBS) $(INCLUDES) -O0 -g -o exec
 
 windows:
-	x86_64-w64-mingw32-g++ $(SOURCES) $(LIBS) $(INCLUDES) -L$(RAYPATH)/lib -I$(RAYPATH)/include -g -o exec
+	x86_64-w64-mingw32-g++ $(SOURCES) -static -l:libraylib.dll.a -l:libraylib.a $(INCLUDES) -L$(RAYPATH)/lib -I$(RAYPATH)/include -O3 -g -o tetriC

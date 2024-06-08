@@ -7,6 +7,10 @@
 #include <string.h>
 #include <malloc.h>
 
+#ifdef _WIN32
+#include <cstdio>
+#endif
+
 #ifndef NDEBUG
  #define D_ASSERT(expr) if (!(expr)) raise(SIGSEGV)
 #else
