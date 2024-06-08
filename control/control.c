@@ -28,13 +28,10 @@ void tMainLoop()
     shared_data.field = nullptr;
     shared_data.current_record = &current_record;
 
-    config.begin_keyframe_seconds = 0.2f;
-    config.acceleration = 0.02f;
-    config.lines_for_acceleration = 5;
-    config.min_keyframe_seconds = 1.0f / 60.0f;
-    config.srs = true;
+    tMakeConfigDefault(&config);
+    tLoadConfig(&config, "settings.data");
 
-    while (true)
+    while (shared_data.state != STATE_EXITING)
     {
         switch (shared_data.state)
         {
@@ -43,9 +40,9 @@ void tMainLoop()
             case (STATE_IN_MENU): shared_data = tMenu(shared_data); break;
             case (STATE_PAUSED): shared_data = tPause(shared_data); break;
             case (STATE_IN_SETTINGS): shared_data = tSettings(shared_data); break;
-            case (STATE_EXITING): return;
         }
     }
+    tSaveConfig(&config, "settings.data");
 }
 
 void tEnd()

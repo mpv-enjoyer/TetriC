@@ -10,4 +10,8 @@ typedef struct Config
     bool srs;
 } Config;
 
+void tMakeConfigDefault(Config* config);
+bool tLoadConfig(Config* config, const char* file_name);
+bool tSaveConfig(const Config* config, const char* file_name);
+
 #endif

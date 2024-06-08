@@ -69,7 +69,6 @@ void tMakeUIDoubleBox(UIDoubleBox *doublebox, int x, int y, const char *label, c
     doublebox->active = false;
     doublebox->min = min;
     doublebox->max = max;
-    D_ASSERT(min <= value && value <= max);
     snprintf(data, data_size, "%f", value);
 }
 
@@ -97,7 +96,6 @@ void tMakeUIIntBox(UIIntBox *intbox, int x, int y, const char *label, char *data
     intbox->active = false;
     intbox->min = min;
     intbox->max = max;
-    D_ASSERT(min <= value && value <= max);
     snprintf(data, data_size, "%i", value);
 }
 
