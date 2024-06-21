@@ -11,7 +11,8 @@
 #define STATE_IN_MENU     2
 #define STATE_PAUSED      3
 #define STATE_IN_SETTINGS 4
-#define STATE_EXITING     5
+#define STATE_REPLAY      5
+#define STATE_EXITING     6
 
 typedef struct Shared
 {
@@ -20,6 +21,7 @@ typedef struct Shared
     Config* config;
     Record* current_record;
     Record* all_records;
+    char* current_replay;
 } Shared;
 
 #endif

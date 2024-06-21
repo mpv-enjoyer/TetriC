@@ -39,7 +39,8 @@ typedef struct tString
 tString* tAllocString();
 size_t tActualStringSize(tString* string);
 void tAppendString(tString* string, char c);
-void tFreeString(tString* string);
+size_t tSizeUntilCharString(const tString *string, size_t begin, char c);
+void tFreeString(tString *string);
 
 void shuffle(int *array, size_t n);
 int random(int left_bound, int right_bound);

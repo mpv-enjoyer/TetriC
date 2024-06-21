@@ -36,6 +36,16 @@ void tAppendString(tString* string, char c)
     string->data[index] = c;
 }
 
+size_t tSizeUntilCharString(const tString* string, size_t begin, char c)
+{
+    for (size_t i = begin; i < string->size; i++)
+    {
+        if (string->data[i] == '\0') return i - begin; 
+        if (string->data[i] == c) return i - begin;
+    }
+    D_ASSERT(false);
+}
+
 void tFreeString(tString* string)
 {
     free(string->data);

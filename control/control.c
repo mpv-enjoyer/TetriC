@@ -8,6 +8,7 @@
 #include "gameover.h"
 #include "pause.h"
 #include "settings.h"
+#include "replay.h"
 
 void tInit()
 {
@@ -27,6 +28,7 @@ void tMainLoop()
     shared_data.state = STATE_IN_MENU;
     shared_data.field = nullptr;
     shared_data.current_record = &current_record;
+    shared_data.current_replay = nullptr;
 
     tMakeConfigDefault(&config);
     tLoadConfig(&config, "tetriC.data");
@@ -40,6 +42,7 @@ void tMainLoop()
             case (STATE_IN_MENU): shared_data = tMenu(shared_data); break;
             case (STATE_PAUSED): shared_data = tPause(shared_data); break;
             case (STATE_IN_SETTINGS): shared_data = tSettings(shared_data); break;
+            case (STATE_REPLAY): shared_data = tReplay(shared_data); break;
         }
     }
     tSaveConfig(&config, "tetriC.data");

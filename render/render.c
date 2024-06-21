@@ -2,7 +2,7 @@
 #include "gameelements.h"
 #include "bg.h"
 
-void tDrawGameFrame(const Field* field, const Record *record)
+void _tDrawGameFrameEx(const Field* field, const Record* record, bool is_replay)
 {
     float rectangle_size = GetRenderHeight() / (FIELD_HEIGHT + FIELD_OUTSIDE_HEIGHT);
     float begin_x = GetRenderWidth() / 2 - rectangle_size * FIELD_WIDTH / 2;
@@ -13,21 +13,28 @@ void tDrawGameFrame(const Field* field, const Record *record)
         begin_x = 0;
     }
 
+    if (is_replay) DrawText("REPLAY", 0, 0, 50, RED);
+    else DrawFPS(0, 0);
+    
+    tDrawField(field, begin_x, rectangle_size);
+    tDrawShape(field->shape, begin_x, rectangle_size);
+    tDrawStatistics(record, begin_x);
+    tDrawHoldShape(field->shape_hold, begin_x, rectangle_size);
+    if (!is_replay) tDrawNextShapes(field->bag, begin_x);
+}
+
+void tDrawGameFrame(const Field* field, const Record *record)
+{
     BeginDrawing();
-    ClearBackground(FIELD_OUTSIDE_COLOR);
-        DrawFPS(0, 0);
-        tDrawField(field, begin_x, rectangle_size);
-        tDrawShape(field->shape, begin_x, rectangle_size);
-        tDrawStatistics(record, begin_x);
-        tDrawHoldShape(field->shape_hold, begin_x, rectangle_size);
-        tDrawNextShapes(field->bag, begin_x);
+        ClearBackground(FIELD_OUTSIDE_COLOR);
+        _tDrawGameFrameEx(field, record, false);
     EndDrawing();
 }
 
 int tDrawMenuFrame()
 {
-    const static int item_count = 3;
-    const static char* item_strings[item_count] = {"Play", "Settings", "Exit"};
+    const static int item_count = 4;
+    const static char* item_strings[item_count] = {"Play", "Replay last game", "Settings", "Exit"};
     BeginDrawing();
     ClearBackground(RAYWHITE);
     tDrawMenuBackground();
@@ -59,13 +66,8 @@ int tDrawPauseFrame(const Field* field, const Record *record)
     const static char* item_strings[item_count] = {"Continue", "To menu"};
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    float rectangle_size = GetRenderHeight() / (FIELD_HEIGHT + FIELD_OUTSIDE_HEIGHT);
-    float begin_x = GetRenderWidth() / 2 - rectangle_size * FIELD_WIDTH / 2;
-    tDrawField(field, begin_x, rectangle_size);
-    tDrawShape(field->shape, begin_x, rectangle_size);
-    tDrawStatistics(record, begin_x);
-    tDrawHoldShape(field->shape_hold, begin_x, rectangle_size);
-    tDrawNextShapes(field->bag, begin_x);
+
+    _tDrawGameFrameEx(field, record, false);
 
     Color darker = BLACK;
     darker.a = 200;
@@ -98,5 +100,13 @@ void tDrawSettingsFrame(const Config* config, SettingsFrameData* frame_data)
         tDrawUpdateUIIntBox(&(frame_data->lines_for_next_level), &(frame_data->srs.y));
         tDrawUpdateUICheckBox(&(frame_data->srs), nullptr);
 
+    EndDrawing();
+}
+
+void tDrawReplayFrame(const Field* field, const Record* record)
+{
+    BeginDrawing();
+    ClearBackground(FIELD_OUTSIDE_COLOR);
+    _tDrawGameFrameEx(field, record, true);
     EndDrawing();
 }

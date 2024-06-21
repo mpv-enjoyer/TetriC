@@ -28,5 +28,6 @@ int tDrawMenuFrame();
 void tDrawGameOverFrame(int lines_cleared);
 int tDrawPauseFrame(const Field *field, const Record *record);
 void tDrawSettingsFrame(const Config *config, SettingsFrameData* frame_data);
+void tDrawReplayFrame(const Field *field, const Record *record);
 
 #endif
