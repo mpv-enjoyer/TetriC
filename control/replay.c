@@ -19,7 +19,7 @@ Shared tReplay(Shared shared)
 
     size_t index = 0;
 
-    double previous_keyframe = - shared.current_record->config->begin_keyframe_seconds;
+    double previous_keyframe = GetTime();
     while (shared.state == STATE_REPLAY)
     {
         double current_time = GetTime();
