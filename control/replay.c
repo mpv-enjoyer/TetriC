@@ -17,9 +17,9 @@ Shared tReplay(Shared shared)
     tMakeShapeKnown(shared.field, shared.current_replay[0] - '0');
     tMakeRecord(shared.current_record, shared.config);
 
-    size_t index = 1;
+    size_t index = 0;
 
-    double previous_keyframe = GetTime();
+    double previous_keyframe = - shared.current_record->config->begin_keyframe_seconds;
     while (shared.state == STATE_REPLAY)
     {
         double current_time = GetTime();
@@ -51,7 +51,7 @@ Shared tReplay(Shared shared)
                 if (shared.current_replay[index] == '\0') game_ended = true;
                 index++;
             }
-            next_figure_type = next_figure_type = shared.current_replay[index + 1] - '0';
+            next_figure_type = shared.current_replay[index + 1] - '0';
             game_ended |= !_tKeyFrame(shared.field, shared.current_record, next_figure_type);
             previous_keyframe = current_time;
         }
