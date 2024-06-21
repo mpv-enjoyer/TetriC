@@ -9,7 +9,7 @@ Shared tPlaying(Shared shared)
 {
     if (shared.field == nullptr)
     {
-        shared.field = tAllocField();
+        shared.field = tAllocField(shared.config->replay);
         tMakeField(shared.field, shared.config);
         tMakeShape(shared.field);
         tMakeRecord(shared.current_record, shared.config);
@@ -61,14 +61,7 @@ bool _tKeyFrame(Field* field, Record* record)
     {
         bool good_placement = tPlaceShape(field);
         if (!good_placement) return false;
-        int lines_cleared = 0;
-        while (true)
-        {
-            int found = tFindLine(field);
-            if (found == -1) break;
-            lines_cleared++;
-            tRemoveLine(field, found);
-        }
+        int lines_cleared = tRemoveFullLines(field);
         record->lines_cleared += lines_cleared;
         record->score += tCalculatePointsIncrement(record, lines_cleared);
         bool good_spawn = tMakeShape(field);

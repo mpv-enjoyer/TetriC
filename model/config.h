@@ -8,6 +8,7 @@ typedef struct Config
     int lines_for_acceleration;
     double min_keyframe_seconds;
     bool srs;
+    bool replay;
 } Config;
 
 void tMakeConfigDefault(Config* config);

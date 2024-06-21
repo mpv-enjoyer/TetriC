@@ -12,6 +12,7 @@ void tMakeConfigDefault(Config *config)
     config->lines_for_acceleration = 5;
     config->min_keyframe_seconds = 1.0f / 60.0f;
     config->srs = true;
+    config->replay = true;
 }
 
 bool tLoadConfig(Config *config, const char *file_name)

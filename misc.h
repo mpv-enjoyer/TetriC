@@ -30,6 +30,17 @@
 #define MIN(l, r) l < r ? l : r
 #define MAX(l, r) l > r ? l : r
 
+typedef struct tString
+{
+    char* data;
+    size_t size;
+} tString;
+
+tString* tAllocString();
+size_t tActualStringSize(tString* string);
+void tAppendString(tString* string, char c);
+void tFreeString(tString* string);
+
 void shuffle(int *array, size_t n);
 int random(int left_bound, int right_bound);
 

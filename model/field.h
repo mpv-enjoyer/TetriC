@@ -17,11 +17,12 @@ typedef struct Field
     Shape* shape_hold;
     bool can_hold;
     Config* config;
+    tString* replay;
 } Field;
 
 int tGetFieldXY(const Field* field, int x, int y);
 void tSetFieldXY(Field* field, int x, int y, int value);
-Field* tAllocField();
+Field* tAllocField(bool record_replay);
 void tMakeField(Field *field, Config *config);
 void tFreeField(Field* field);
 

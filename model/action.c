@@ -10,6 +10,7 @@ bool tMakeShape(Field* field)
 
 bool tMakeShapeKnown(Field* field, int type)
 {
+    if (field->replay) tAppendString(field->replay, ACTION_MAKE_FIGURE(type));
     *(field->shape) = Shapes[type];
     D_ASSERT(type < SHAPE_TYPE_COUNT);
     field->shape->rotate_state = SHAPE_DEFAULT_ROTATION;
@@ -23,6 +24,7 @@ bool tMakeShapeKnown(Field* field, int type)
 
 bool tHardDropShape(const Field* field)
 {
+    if (field->replay) tAppendString(field->replay, ACTION_HARD_DROP);
     int y_before = field->shape->y;
     while (!tCollision(field)) field->shape->y += 1;
     D_ASSERT(y_before != field->shape->y);
@@ -32,6 +34,7 @@ bool tHardDropShape(const Field* field)
 
 bool tRotateShapeLeft(const Field* field)
 {
+    if (field->replay) tAppendString(field->replay, ACTION_ROTATE_LEFT);
     field->shape->rotate_state = LOOP_MINUS(field->shape->rotate_state, SHAPE_ROTATE_SIZE);
     if (!tCollision(field)) return true;
     if (field->config->srs && !tCollisionSRS(field, Left)) return true;
@@ -41,6 +44,7 @@ bool tRotateShapeLeft(const Field* field)
 
 bool tRotateShapeRight(Field* field)
 {
+    if (field->replay) tAppendString(field->replay, ACTION_ROTATE_RIGHT);
     field->shape->rotate_state = LOOP_PLUS(field->shape->rotate_state, SHAPE_ROTATE_SIZE);
     if (!tCollision(field)) return true;
     if (field->config->srs && !tCollisionSRS(field, Right)) return true;
@@ -50,6 +54,7 @@ bool tRotateShapeRight(Field* field)
 
 bool tMoveShapeLeft(const Field *field)
 {
+    if (field->replay) tAppendString(field->replay, ACTION_LEFT);
     field->shape->x -= 1;
     if (!tCollision(field)) return true;
     field->shape->x += 1;
@@ -58,6 +63,7 @@ bool tMoveShapeLeft(const Field *field)
 
 bool tMoveShapeRight(Field *field)
 {
+    if (field->replay) tAppendString(field->replay, ACTION_RIGHT);
     field->shape->x += 1;
     if (!tCollision(field)) return true;
     field->shape->x -= 1;
@@ -66,6 +72,7 @@ bool tMoveShapeRight(Field *field)
 
 bool tGravityShape(Field* field)
 {
+    if (field->replay) tAppendString(field->replay, ACTION_GRAVITY);
     field->shape->y += 1;
     if (!tCollision(field)) return true;
     field->shape->y -= 1;
@@ -125,6 +132,19 @@ void tRemoveLine(Field* field, int y)
     {
         tSetFieldXY(field, xi, 0, 0);
     }
+}
+
+int tRemoveFullLines(Field *field)
+{
+    int lines_cleared = 0;
+    while (true)
+    {
+        int found = tFindLine(field);
+        if (found == -1) break;
+        lines_cleared++;
+        tRemoveLine(field, found);
+    }
+    return lines_cleared;
 }
 
 void tUpdateShapeShadow(Field *field)

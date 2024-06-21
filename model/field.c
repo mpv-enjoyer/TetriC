@@ -18,12 +18,13 @@ void tSetFieldXY(Field* field, int x, int y, int value)
     field->data[offset] = value;
 }
 
-Field* tAllocField()
+Field* tAllocField(bool record_replay)
 {
     Field* output = (Field*)malloc(sizeof(Field));
     output->data = (char*)malloc(FIELD_WIDTH * FIELD_HEIGHT * sizeof(char));
     output->shape = (Shape*)malloc(sizeof(Shape));
     output->bag = (Bag*)malloc(sizeof(Bag));
+    output->replay = tAllocString();
     return output;
 }
 
@@ -49,5 +50,6 @@ void tFreeField(Field* field)
     free(field->shape);
     if (field->shape_hold) free(field->shape_hold);
     free(field->bag);
+    if (field->replay) tFreeString(field->replay);
     free(field);
 }

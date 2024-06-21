@@ -1,10 +1,52 @@
 #include "misc.h"
 #include <stdlib.h>
 
+tString* tAllocString()
+{
+    tString* string = (tString*)malloc(sizeof(tString));
+    string->size = 32;
+    string->data = (char*)malloc(string->size * sizeof(char));
+    memset(string->data, '\0', string->size * sizeof(char));
+    return string;
+}
+
+size_t tActualStringSize(tString* string)
+{
+    size_t size = -1;
+    for (size_t i = 0; i < string->size; i++)
+    {
+        if (string->data[i] == '\0')
+        {
+            return i;
+        }
+    }
+    D_ASSERT(false);
+}
+
+void tAppendString(tString* string, char c)
+{
+    size_t index = tActualStringSize(string);
+    if (index == string->size - 1)
+    {
+        size_t previous_size = string->size;
+        string->size = previous_size * 2;
+        string->data = (char*)realloc(string->data, string->size * sizeof(char));
+        memset(string->data + previous_size, '\0', previous_size * sizeof(char));
+    }
+    string->data[index] = c;
+}
+
+void tFreeString(tString* string)
+{
+    free(string->data);
+    free(string);
+}
+
 /* Arrange the N elements of ARRAY in random order.
-   Only effective if N is much smaller than RAND_MAX;
-   if this may not be the case, use a better random
-   number generator. */
+    Only effective if N is much smaller than RAND_MAX;
+    if this may not be the case, use a better random
+    number generator. */
+
 void shuffle(int *array, size_t n)
 {
     if (n > 1)
@@ -12,10 +54,10 @@ void shuffle(int *array, size_t n)
         size_t i;
         for (i = 0; i < n - 1; i++) 
         {
-          size_t j = i + rand() / (RAND_MAX / (n - i) + 1);
-          int t = array[j];
-          array[j] = array[i];
-          array[i] = t;
+            size_t j = i + rand() / (RAND_MAX / (n - i) + 1);
+            int t = array[j];
+            array[j] = array[i];
+            array[i] = t;
         }
     }
 }
