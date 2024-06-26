@@ -3,7 +3,8 @@
 #include <raylib.h>
 
 bool _tStringToInt(const char* input, int* output);
-bool _tStringToDouble(const char* input, double* output);
+bool _tStringToBool(const char *input, bool *output);
+bool _tStringToDouble(const char *input, double *output);
 
 void tMakeConfigDefault(Config *config)
 {
@@ -23,10 +24,7 @@ bool tLoadConfig(Config *config, const char *file_name)
     const char** split_text = TextSplit(file_text, '\n', &split_text_size);
 
     _tStringToInt(split_text[0], &(config->lines_for_acceleration));
-    int srs;
-    _tStringToInt(split_text[1], &srs);
-    if (srs == 1) config->srs = true;
-    else config->srs = false;
+    _tStringToBool(split_text[1], &(config->srs));
     _tStringToDouble(split_text[2], &(config->acceleration));
     _tStringToDouble(split_text[3], &(config->begin_keyframe_seconds));
     _tStringToDouble(split_text[4], &(config->min_keyframe_seconds));
@@ -66,6 +64,17 @@ bool _tStringToInt(const char* input, int* output)
     for (int i = 0; i < length; i++)
     {
         if (input[i] < '0' || input[i] > '9') return false;
+    }
+    *output = atoi(input);
+    return true;
+}
+
+bool _tStringToBool(const char* input, bool* output)
+{
+    int length = TextLength(input);
+    for (int i = 0; i < length; i++)
+    {
+        if (input[i] < '0' || input[i] > '1') return false;
     }
     *output = atoi(input);
     return true;
