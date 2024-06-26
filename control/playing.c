@@ -6,6 +6,9 @@ bool _tKeyFrame(Field* field, Record* record);
 
 Shared tPlaying(Shared shared)
 {
+    Music music = LoadMusicStream("playing.mp3");
+    D_ASSERT(IsMusicReady(music));
+    
     if (shared.field == nullptr)
     {
         shared.field = tAllocField(shared.config->replay);
@@ -14,9 +17,22 @@ Shared tPlaying(Shared shared)
         tMakeRecord(shared.current_record, shared.config);
     }
 
+    SetMusicVolume(music, 0.3f);
+    PlayMusicStream(music);
+
     double previous_keyframe = GetTime();
+    float current_pitch = 1.0f + 0.05 * shared.current_record->level;
+    SetMusicPitch(music, current_pitch);
     while (shared.state == STATE_PLAYING)
     {
+        UpdateMusicStream(music);
+        if (current_pitch != (1.0f + 0.05 * shared.current_record->level))
+        {
+            current_pitch = (1.0f + 0.05 * shared.current_record->level);
+            SetMusicPitch(music, current_pitch);
+        }
+        //if (!IsMusicStreamPlaying(music)) PlayMusicStream(music);
+
         double current_time = GetTime();
 
         int input_callback = tInput(shared.field, current_time);
