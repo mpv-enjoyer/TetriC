@@ -4,25 +4,39 @@
 #include "helpers.h"
 #include "bg.h"
 
-#include "button.h"
+#include "uiitem.h"
 
 Shared tMenu(Shared shared)
 {
     tInitMenuBackground();
 
-    UIItem items[4];
+    const int item_count = 11;
+    UIItem items[item_count];
     tMakeButton(&(items[0]), "Play", nullptr, AnchorPassive);
     tMakeButton(&(items[1]), "Replay last game", &(items[0]), AnchorRight);
-    items[1].font_size = 10;
+    items[1].font_size = 20;
     items[1].data_button->resize_on_hover = false;
     tMakeButton(&(items[2]), "Settings", &(items[0]), AnchorBottom);
-    items[2].stretch_x = true;
-    items[2].secondary_anchor = AnchorLeft;
     tMakeButton(&(items[3]), "Exit", &(items[2]), AnchorBottom);
+    tMakeButton(&(items[4]), "Some button with big outline", &(items[2]), AnchorLeft);
+    items[4].outline_size = 10;
+    tMakeGroup(&(items[5]), "Group", nullptr, &(items[0]), 5);
+    tMakeButton(&(items[6]), "Button outside group", &(items[5]), AnchorRight);
+    items[6].secondary_anchor = AnchorBottom;
+    tMakeButton(&(items[7]), "Some more", &(items[6]), AnchorPassive);
+    items[7].secondary_anchor = AnchorLeft;
+    tMakeButton(&(items[8]), "Buttons :)", &(items[7]), AnchorBottom);
+    items[8].secondary_anchor = AnchorLeft;
+    tMakeGroup(&(items[9]), "Group2", &(items[6]), &(items[7]), 2);
+    items[9].position_anchor = AnchorBottom;
+    items[9].secondary_anchor = AnchorLeft;
+    tMakeButton(&(items[10]), "I am huge holy moly hahaha", &(items[5]), AnchorTop);
+    items[10].font_size = 60;
+    items[10].data_button->resized_text_size = 70;
 
     while (shared.state == STATE_IN_MENU)
     {
-        tDrawMenuFrame(&(items[0]), 4);
+        tDrawMenuFrame(&(items[0]), item_count);
         if (items[0].mouse_released) shared.state = STATE_PLAYING;
         if (items[1].mouse_released) shared.state = STATE_REPLAY;
         if (items[2].mouse_released) shared.state = STATE_IN_SETTINGS;
@@ -31,7 +45,7 @@ Shared tMenu(Shared shared)
         if (WindowShouldClose()) shared.state = STATE_EXITING;
     }
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < item_count; i++)
     {
         items[i].Free(&(items[i]));
     }

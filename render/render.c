@@ -37,10 +37,9 @@ void tDrawMenuFrame(UIItem* items, int items_count)
     ClearBackground(RAYWHITE);
     tDrawMenuBackground();
 
-    items[0].position.x = 100;
     for (int i = 0; i < items_count; i++)
     {
-        items->UpdateDraw(&(items[i]));
+        items[i].UpdateDraw(&(items[i]));
     }
 
     EndDrawing();

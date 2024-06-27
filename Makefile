@@ -14,6 +14,8 @@ LIBS = -lraylib
 
 RAYPATH = raylib_mingw64/
 
+#-fanalyzer
+
 all:
 	g++ $(SOURCES) $(LIBS) $(INCLUDES) -O0 -g -o exec
 

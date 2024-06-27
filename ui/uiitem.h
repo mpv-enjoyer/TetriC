@@ -43,6 +43,7 @@ typedef struct UIItem
     struct UIDataTextBox* data_textbox;
     struct UIDataIntBox* data_intbox;
     struct UIDataDoubleBox* data_doublebox;
+    struct UIDataGroup* data_group;
 } UIItem;
 
 void tMakeUIItem(UIItem* item, const char* label, UIItemAnchor anchor, UIItem* parent, UIItemFunction UpdateDraw, UIItemFunction Free);
@@ -51,5 +52,6 @@ Rectangle tGetUIItemHitbox(UIItem* item);
 void tUpdateUIItemMouse(UIItem* item);
 
 #include "button.h"
+#include "group.h"
 
 #endif

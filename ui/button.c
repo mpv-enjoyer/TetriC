@@ -6,10 +6,9 @@ void _Free(UIItem* item);
 void tMakeButton(UIItem* item, const char* label, UIItem* parent, UIItemAnchor anchor)
 {
     tMakeUIItem(item, label, anchor, parent, _UpdateDraw, _Free);
-    item->stretch_x = false;
     item->data_button = (UIDataButton*)malloc(sizeof(UIDataButton));
     item->data_button->resize_on_hover = true;
-    item->data_button->resized_text_size = 26;
+    item->data_button->resized_text_size = 46;
     item->data_button->text_color = BLACK;
     item->data_button->outline_color = BLACK;
     item->data_button->hovered_text_color = RED;
