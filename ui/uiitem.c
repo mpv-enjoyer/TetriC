@@ -16,7 +16,10 @@ void tMakeUIItem(UIItem *item, const char* label, UIItemAnchor anchor, UIItem* p
     item->position = (Vector2){0, 0};
     item->current_hitbox = (Vector2){0, 0};
     item->active = false;
-    item->hovered = false;
+    item->mouse_active = false;
+    item->mouse_hovered = false;
+    item->mouse_clicked = false;
+    item->mouse_released = false;
     item->position_anchor = anchor;
     item->secondary_anchor = AnchorCenter;
     item->UpdateDraw = UpdateDraw;
@@ -67,13 +70,19 @@ void tUpdateUIItemXY(UIItem *item)
     }
 }
 
-bool tIsUIItemHovered(UIItem *item)
-{
-    return CheckCollisionPointRec(GetMousePosition(), tGetUIItemHitbox(item));
-}
-
 Rectangle tGetUIItemHitbox(UIItem *item)
 {
     Rectangle hover_hitbox = {.x = item->position.x, .y = item->position.y, .width = item->current_hitbox.x, .height = item->current_hitbox.y};
     return hover_hitbox;
+}
+
+void tUpdateUIItemMouse(UIItem *item)
+{
+    bool pressed_before = item->mouse_active;
+    bool hovered_before = item->mouse_hovered;
+    item->mouse_clicked = !pressed_before && hovered_before && IsMouseButtonDown(MOUSE_LEFT_BUTTON);
+    item->mouse_released = pressed_before && hovered_before && !IsMouseButtonDown(MOUSE_LEFT_BUTTON);
+    if (item->mouse_clicked) item->mouse_active = true;
+    if (!hovered_before || item->mouse_released) item->mouse_active = false;
+    item->mouse_hovered = CheckCollisionPointRec(GetMousePosition(), tGetUIItemHitbox(item));
 }

@@ -5,8 +5,6 @@
 
 typedef struct UIDataButton
 {
-    bool clicked;
-    bool released;
     bool resize_on_hover;
     int resized_text_size;
     Color text_color;

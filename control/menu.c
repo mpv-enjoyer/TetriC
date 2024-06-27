@@ -23,10 +23,10 @@ Shared tMenu(Shared shared)
     while (shared.state == STATE_IN_MENU)
     {
         tDrawMenuFrame(&(items[0]), 4);
-        if (items[0].data_button->released) shared.state = STATE_PLAYING;
-        if (items[1].data_button->released) shared.state = STATE_REPLAY;
-        if (items[2].data_button->released) shared.state = STATE_IN_SETTINGS;
-        if (items[3].data_button->released) shared.state = STATE_EXITING;
+        if (items[0].mouse_released) shared.state = STATE_PLAYING;
+        if (items[1].mouse_released) shared.state = STATE_REPLAY;
+        if (items[2].mouse_released) shared.state = STATE_IN_SETTINGS;
+        if (items[3].mouse_released) shared.state = STATE_EXITING;
         if (IsKeyPressed(KEY_ENTER)) shared.state = STATE_PLAYING;
         if (WindowShouldClose()) shared.state = STATE_EXITING;
     }

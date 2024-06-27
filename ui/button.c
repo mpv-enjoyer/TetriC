@@ -8,8 +8,6 @@ void tMakeButton(UIItem* item, const char* label, UIItem* parent, UIItemAnchor a
     tMakeUIItem(item, label, anchor, parent, _UpdateDraw, _Free);
     item->stretch_x = false;
     item->data_button = (UIDataButton*)malloc(sizeof(UIDataButton));
-    item->data_button->clicked = false;
-    item->data_button->released = false;
     item->data_button->resize_on_hover = true;
     item->data_button->resized_text_size = 26;
     item->data_button->text_color = BLACK;
@@ -20,18 +18,15 @@ void tMakeButton(UIItem* item, const char* label, UIItem* parent, UIItemAnchor a
 void _UpdateDraw(UIItem* item)
 {
     D_ASSERT(item->data_button);
-    bool pressed_before = item->active;
     tUpdateUIItemXY(item);
 
-    bool hovered = tIsUIItemHovered(item);
-
     Color text_color = item->data_button->text_color;
+    Color outline_color = item->data_button->outline_color;
     int font_size = item->font_size;
     int outline = item->outline_size;
-
     Vector2 text_hitbox = tMeasureTextFix(item->label, font_size);
 
-    if (hovered)
+    if (item->mouse_hovered)
     {
         text_color = item->data_button->hovered_text_color;
         if (item->data_button->resize_on_hover)
@@ -52,14 +47,13 @@ void _UpdateDraw(UIItem* item)
         item->current_hitbox.x = item->max_xy.x - item->position.x;
     }
 
+    if (item->mouse_active) outline_color = item->data_button->hovered_text_color;
+
     DrawRectanglePro(tGetUIItemHitbox(item), (Vector2){0, 0}, 0.0f, WHITE);
-    DrawRectangleLinesEx(tGetUIItemHitbox(item), 2, item->data_button->outline_color);
+    DrawRectangleLinesEx(tGetUIItemHitbox(item), 2, outline_color);
     DrawText(item->label, text_x, item->position.y + outline, font_size, text_color);
-    
-    bool pressed = (hovered && IsMouseButtonDown(MOUSE_LEFT_BUTTON));
-    item->data_button->clicked = !pressed_before && pressed;
-    item->data_button->released = pressed_before && !pressed;
-    item->active = pressed;
+
+    tUpdateUIItemMouse(item);
 }
 
 void _Free(UIItem* item)

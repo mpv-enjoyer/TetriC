@@ -29,8 +29,11 @@ typedef struct UIItem
     Vector2 max_xy;
     Vector2 current_hitbox;
     const char* label;
+    bool mouse_active;
+    bool mouse_hovered;
+    bool mouse_clicked;
+    bool mouse_released;
     bool active;
-    bool hovered;
     UIItemFunction UpdateDraw;
     UIItemFunction Free;
     int font_size;
@@ -44,8 +47,8 @@ typedef struct UIItem
 
 void tMakeUIItem(UIItem* item, const char* label, UIItemAnchor anchor, UIItem* parent, UIItemFunction UpdateDraw, UIItemFunction Free);
 void tUpdateUIItemXY(UIItem* item);
-bool tIsUIItemHovered(UIItem* item);
 Rectangle tGetUIItemHitbox(UIItem* item);
+void tUpdateUIItemMouse(UIItem* item);
 
 #include "button.h"
 
