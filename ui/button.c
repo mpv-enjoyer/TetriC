@@ -45,16 +45,18 @@ void _UpdateDraw(UIItem* item)
     item->current_hitbox.x = text_hitbox.x + outline * 2;
     item->current_hitbox.y = text_hitbox.y + outline * 2;
 
+    int text_x = item->position.x + outline;
     if (item->stretch_x)
     {
+        text_x = text_x + (item->max_xy.x - item->position.x - text_hitbox.x) / 2;
         item->current_hitbox.x = item->max_xy.x - item->position.x;
     }
 
     DrawRectanglePro(tGetUIItemHitbox(item), (Vector2){0, 0}, 0.0f, WHITE);
     DrawRectangleLinesEx(tGetUIItemHitbox(item), 2, item->data_button->outline_color);
-    DrawText(item->label, item->position.x + outline, item->position.y + outline, font_size, text_color);
+    DrawText(item->label, text_x, item->position.y + outline, font_size, text_color);
     
-    bool pressed = (hovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON));
+    bool pressed = (hovered && IsMouseButtonDown(MOUSE_LEFT_BUTTON));
     item->data_button->clicked = !pressed_before && pressed;
     item->data_button->released = pressed_before && !pressed;
     item->active = pressed;

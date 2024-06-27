@@ -6,12 +6,6 @@
 #include "stdarg.h"
 #include "helpers.h"
 
-typedef struct UIDataButton;
-typedef struct UIDataCheckBox;
-typedef struct UIDataTextBox;
-typedef struct UIDataIntBox;
-typedef struct UIDataDoubleBox;
-
 typedef struct UIItem;
 typedef void (*UIItemFunction)(UIItem*);
 

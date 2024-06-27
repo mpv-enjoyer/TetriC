@@ -12,7 +12,7 @@ void tMakeUIItem(UIItem *item, const char* label, UIItemAnchor anchor, UIItem* p
 
     item->parent = parent;
     item->label = label;
-    Vector2 max_xy = { .x = GetRenderWidth(), .y = GetRenderHeight() };
+    item->max_xy = (Vector2){ .x = GetRenderWidth(), .y = GetRenderHeight() };
     item->position = (Vector2){0, 0};
     item->current_hitbox = (Vector2){0, 0};
     item->active = false;

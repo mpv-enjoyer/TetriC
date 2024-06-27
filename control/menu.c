@@ -16,6 +16,8 @@ Shared tMenu(Shared shared)
     items[1].font_size = 10;
     items[1].data_button->resize_on_hover = false;
     tMakeButton(&(items[2]), "Settings", &(items[0]), AnchorBottom);
+    items[2].stretch_x = true;
+    items[2].secondary_anchor = AnchorLeft;
     tMakeButton(&(items[3]), "Exit", &(items[2]), AnchorBottom);
 
     while (shared.state == STATE_IN_MENU)
