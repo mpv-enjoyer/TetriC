@@ -2,11 +2,13 @@ SOURCES = $(wildcard *.c)
 SOURCES += $(wildcard model/*.c)
 SOURCES += $(wildcard render/*.c)
 SOURCES += $(wildcard control/*.c)
+SOURCES += $(wildcard ui/*.c)
 
 INCLUDES = -I.
 INCLUDES += -Imodel
 INCLUDES += -Irender
 INCLUDES += -Icontrol
+INCLUDES += -Iui
 
 LIBS = -lraylib
 

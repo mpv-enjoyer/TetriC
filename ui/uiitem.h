@@ -32,7 +32,6 @@ typedef struct UIItem
     UIItemAnchor secondary_anchor;
     UIItem* parent;
     bool stretch_x;
-    bool stretch_y;
     Vector2 max_xy;
     Vector2 current_hitbox;
     const char* label;
@@ -40,6 +39,8 @@ typedef struct UIItem
     bool hovered;
     UIItemFunction UpdateDraw;
     UIItemFunction Free;
+    int font_size;
+    int outline_size;
     struct UIDataButton* data_button;
     struct UIDataCheckBox* data_checkbox;
     struct UIDataTextBox* data_textbox;
@@ -49,6 +50,8 @@ typedef struct UIItem
 
 void tMakeUIItem(UIItem* item, const char* label, UIItemAnchor anchor, UIItem* parent, UIItemFunction UpdateDraw, UIItemFunction Free);
 void tUpdateUIItemXY(UIItem* item);
+bool tIsUIItemHovered(UIItem* item);
+Rectangle tGetUIItemHitbox(UIItem* item);
 
 #include "button.h"
 

@@ -31,25 +31,19 @@ void tDrawGameFrame(const Field* field, const Record *record)
     EndDrawing();
 }
 
-int tDrawMenuFrame()
+void tDrawMenuFrame(UIItem* items, int items_count)
 {
-    const static int item_count = 4;
-    const static char* item_strings[item_count] = {"Play", "Replay last game", "Settings", "Exit"};
     BeginDrawing();
     ClearBackground(RAYWHITE);
     tDrawMenuBackground();
-    const float sector_height = 23;
-    int sector_count = item_count * 2 - 1;
-    int y_center = GetRenderHeight() / 2;
-    int y_center_begin = y_center - sector_height * ((sector_count - 1) / 2.0f);
-    int selected = -1;
-    for (int i = 0; i < item_count; i++)
+
+    items[0].position.x = 100;
+    for (int i = 0; i < items_count; i++)
     {
-        int y_center_current = y_center_begin + i * 2 * sector_height;
-        if (tCenteredButton(y_center_current, item_strings[i], nullptr)) selected = i;
+        items->UpdateDraw(&(items[i]));
     }
+
     EndDrawing();
-    return selected;
 }
 
 void tDrawGameOverFrame(int lines_cleared)

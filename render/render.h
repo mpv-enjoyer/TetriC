@@ -6,6 +6,7 @@
 #include "shape.h"
 #include "record.h"
 #include "ui.h"
+#include "uiitem.h"
 
 #define WIDTH 800
 #define HEIGHT 450
@@ -24,7 +25,7 @@ typedef struct SettingsFrameData
 } SettingsFrameData;
 
 void tDrawGameFrame(const Field *field, const Record *record);
-int tDrawMenuFrame();
+void tDrawMenuFrame(UIItem* items, int items_count);
 void tDrawGameOverFrame(int lines_cleared);
 int tDrawPauseFrame(const Field *field, const Record *record);
 void tDrawSettingsFrame(const Config *config, SettingsFrameData* frame_data);
