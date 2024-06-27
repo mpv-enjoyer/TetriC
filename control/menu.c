@@ -10,7 +10,7 @@ Shared tMenu(Shared shared)
 {
     tInitMenuBackground();
 
-    const int item_count = 11;
+    const int item_count = 12;
     UIItem items[item_count];
     tMakeButton(&(items[0]), "Play", nullptr, AnchorPassive);
     tMakeButton(&(items[1]), "Replay last game", &(items[0]), AnchorRight);
@@ -21,6 +21,7 @@ Shared tMenu(Shared shared)
     tMakeButton(&(items[4]), "Some button with big outline", &(items[2]), AnchorLeft);
     items[4].outline_size = 10;
     tMakeGroup(&(items[5]), "Group", nullptr, &(items[0]), 5);
+    items[5].position_anchor = AnchorPassive;
     tMakeButton(&(items[6]), "Button outside group", &(items[5]), AnchorRight);
     items[6].secondary_anchor = AnchorBottom;
     tMakeButton(&(items[7]), "Some more", &(items[6]), AnchorPassive);
@@ -33,6 +34,7 @@ Shared tMenu(Shared shared)
     tMakeButton(&(items[10]), "I am huge holy moly hahaha", &(items[5]), AnchorTop);
     items[10].font_size = 60;
     items[10].data_button->resized_text_size = 70;
+    tMakeGroup(&(items[11]), "Group3", nullptr, &(items[5]), 6);
 
     while (shared.state == STATE_IN_MENU)
     {

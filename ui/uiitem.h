@@ -50,6 +50,7 @@ void tMakeUIItem(UIItem* item, const char* label, UIItemAnchor anchor, UIItem* p
 void tUpdateUIItemXY(UIItem* item);
 Rectangle tGetUIItemHitbox(UIItem* item);
 void tUpdateUIItemMouse(UIItem* item);
+void tUpdateDrawUIItems(UIItem* items, int items_count);
 
 #include "button.h"
 #include "group.h"

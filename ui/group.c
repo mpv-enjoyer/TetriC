@@ -45,6 +45,8 @@ void _UpdateDrawGroup(UIItem *item)
 
         if (rdx > 0) inner_hitbox.width += rdx;
         if (rdy > 0) inner_hitbox.height += rdy;
+
+        printf("%s, %i item (%s) - x %f y %f w %f h %f\n", item->label, i, current_item->label, inner_hitbox.x, inner_hitbox.y, inner_hitbox.width, inner_hitbox.height);
     }
 
     item->data_group->items->position.x = relative_first_item_position.x + item->position.x;

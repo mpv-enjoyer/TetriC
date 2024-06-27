@@ -1,6 +1,16 @@
 #include "uiitem.h"
 
+typedef enum MouseState
+{
+    MouseStateUp,
+    MouseStatePressed,
+    MouseStateDown,
+    MouseStateReleased
+} MouseState;
+
 void _tUpdateUIItemXYNoParent(UIItem* item);
+
+MouseState _mouse_state;
 
 void tMakeUIItem(UIItem *item, const char* label, UIItemAnchor anchor, UIItem* parent, UIItemFunction UpdateDraw, UIItemFunction Free)
 {
@@ -120,9 +130,25 @@ void tUpdateUIItemMouse(UIItem *item)
 {
     bool pressed_before = item->mouse_active;
     bool hovered_before = item->mouse_hovered;
-    item->mouse_clicked = !pressed_before && hovered_before && IsMouseButtonDown(MOUSE_LEFT_BUTTON);
-    item->mouse_released = pressed_before && hovered_before && !IsMouseButtonDown(MOUSE_LEFT_BUTTON);
-    if (item->mouse_clicked) item->mouse_active = true;
-    if (!hovered_before || item->mouse_released) item->mouse_active = false;
     item->mouse_hovered = CheckCollisionPointRec(GetMousePosition(), tGetUIItemHitbox(item));
+    item->mouse_clicked = hovered_before && _mouse_state == MouseStatePressed;
+    item->mouse_released = item->mouse_active && hovered_before && _mouse_state == MouseStateReleased;
+    if (item->mouse_clicked) item->mouse_active = true;
+    if (_mouse_state == MouseStateReleased) item->mouse_active = false;
+}
+
+void tUpdateDrawUIItems(UIItem *items, int items_count)
+{
+    bool is_mouse_down = IsMouseButtonDown(MOUSE_LEFT_BUTTON);
+    switch (_mouse_state)
+    {
+        case MouseStateDown: if (!is_mouse_down) _mouse_state = MouseStateReleased; break;
+        case MouseStateReleased: _mouse_state = MouseStateUp; break;
+        case MouseStateUp: if (is_mouse_down) _mouse_state = MouseStatePressed; break;
+        case MouseStatePressed: _mouse_state = _mouse_state = MouseStateDown; break;
+    }
+    for (int i = 0; i < items_count; i++)
+    {
+        items[i].UpdateDraw(&(items[i]));
+    }
 }

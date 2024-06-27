@@ -46,7 +46,7 @@ void _UpdateDraw(UIItem* item)
         item->current_hitbox.x = item->max_xy.x - item->position.x;
     }
 
-    if (item->mouse_active) outline_color = item->data_button->hovered_text_color;
+    if (item->mouse_active && item->mouse_hovered) outline_color = item->data_button->hovered_text_color;
 
     DrawRectanglePro(tGetUIItemHitbox(item), (Vector2){0, 0}, 0.0f, WHITE);
     DrawRectangleLinesEx(tGetUIItemHitbox(item), 2, outline_color);
