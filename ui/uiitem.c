@@ -12,16 +12,33 @@ void _tUpdateUIItemXYNoParent(UIItem* item);
 
 MouseState _mouse_state;
 
-void tMakeUIItem(UIItem *item, const char* label, UIItemAnchor anchor, UIItem* parent, UIItemFunction UpdateDraw, UIItemFunction Free)
+void tBindUIItems(UIItem items[], int item_count, UIItem **item_slot, ...)
+{
+    *item_slot = &(items[0]);
+    va_list slots;
+    va_start(slots, item_count - 1);
+    for (int i = 1; i < item_count; i++)
+    {
+        UIItem** current_slot;
+        current_slot = va_arg(slots, UIItem**);
+        *current_slot = &(items[i]);
+    }
+    va_end(slots);
+}
+
+void tMakeUIItem(UIItem *item, const char *label, UIItemAnchor anchor, UIItem *parent, UIItemFunction UpdateDraw, UIItemFunction Free)
 {
     item->data_button = nullptr;
     item->data_checkbox = nullptr;
     item->data_doublebox = nullptr;
     item->data_intbox = nullptr;
     item->data_textbox = nullptr;
+    item->data_group = nullptr;
 
     item->stretch_x = false;
 
+    item->color_hitbox = (Color){0, 0, 0, 0};
+    item->color_text = BLACK;
     item->parent = parent;
     item->label = label;
     item->max_xy = (Vector2){ .x = GetRenderWidth(), .y = GetRenderHeight() };

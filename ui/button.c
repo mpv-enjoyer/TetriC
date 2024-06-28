@@ -9,9 +9,8 @@ void tMakeButton(UIItem* item, const char* label, UIItem* parent, UIItemAnchor a
     item->data_button = (UIDataButton*)malloc(sizeof(UIDataButton));
     item->data_button->resize_on_hover = true;
     item->data_button->resized_text_size = 46;
-    item->data_button->text_color = BLACK;
-    item->data_button->outline_color = BLACK;
-    item->data_button->hovered_text_color = RED;
+    item->color_hitbox = BLACK;
+    item->data_button->color_active = RED;
 }
 
 void _UpdateDraw(UIItem* item)
@@ -19,15 +18,15 @@ void _UpdateDraw(UIItem* item)
     D_ASSERT(item->data_button);
     tUpdateUIItemXY(item);
 
-    Color text_color = item->data_button->text_color;
-    Color outline_color = item->data_button->outline_color;
+    Color text_color = item->color_text;
+    Color outline_color = item->color_hitbox;
     int font_size = item->font_size;
     int outline = item->outline_size;
     Vector2 text_hitbox = tMeasureTextFix(item->label, font_size);
 
     if (item->mouse_hovered)
     {
-        text_color = item->data_button->hovered_text_color;
+        text_color = item->data_button->color_active;
         if (item->data_button->resize_on_hover)
         {
             font_size = item->data_button->resized_text_size;
@@ -46,7 +45,7 @@ void _UpdateDraw(UIItem* item)
         item->current_hitbox.x = item->max_xy.x - item->position.x;
     }
 
-    if (item->mouse_active && item->mouse_hovered) outline_color = item->data_button->hovered_text_color;
+    if (item->mouse_active && item->mouse_hovered) outline_color = item->data_button->color_active;
 
     DrawRectanglePro(tGetUIItemHitbox(item), (Vector2){0, 0}, 0.0f, WHITE);
     DrawRectangleLinesEx(tGetUIItemHitbox(item), 2, outline_color);

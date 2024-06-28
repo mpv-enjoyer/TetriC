@@ -38,14 +38,18 @@ typedef struct UIItem
     UIItemFunction Free;
     int font_size;
     int outline_size;
+    Color color_hitbox;
+    Color color_text;
     struct UIDataButton* data_button;
     struct UIDataCheckBox* data_checkbox;
     struct UIDataTextBox* data_textbox;
     struct UIDataIntBox* data_intbox;
     struct UIDataDoubleBox* data_doublebox;
     struct UIDataGroup* data_group;
+    struct UIDataText* data_text;
 } UIItem;
 
+void tBindUIItems(UIItem items[], int item_count, UIItem** item_slot, ...);
 void tMakeUIItem(UIItem* item, const char* label, UIItemAnchor anchor, UIItem* parent, UIItemFunction UpdateDraw, UIItemFunction Free);
 void tUpdateUIItemXY(UIItem* item);
 Rectangle tGetUIItemHitbox(UIItem* item);

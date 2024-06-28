@@ -5,10 +5,11 @@
 
 typedef struct UIDataGroup
 {
-    UIItem* items;
+    UIItem* passive_item;
+    UIItem** items;
     int item_count;
 } UIDataGroup;
 
-void tMakeGroup(UIItem *item, const char *label, UIItem *parent, UIItem *group_items, int group_item_count);
+void tMakeGroup(UIItem* item, const char* label, UIItem* parent, int group_item_count, UIItem* passive_item, ...);
 
 #endif
