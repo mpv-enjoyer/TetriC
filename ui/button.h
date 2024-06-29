@@ -7,6 +7,7 @@ typedef struct UIDataButton
 {
     bool resize_on_hover;
     int resized_text_size;
+    bool recolor_on_active;
     Color color_active;
 } UIDataButton;
 

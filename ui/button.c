@@ -1,22 +1,24 @@
 #include "button.h"
 
-void _UpdateDraw(UIItem *item);
-void _Free(UIItem* item);
+void _UpdateDrawButton(UIItem *item);
+void _FreeButton(UIItem* item);
 
 void tMakeButton(UIItem* item, const char* label, UIItem* parent, UIItemAnchor anchor)
 {
-    tMakeUIItem(item, label, anchor, parent, _UpdateDraw, _Free);
+    tMakeUIItem(item, label, anchor, parent, _UpdateDrawButton, _FreeButton);
+    item->color_hitbox = BLACK;
     item->data_button = (UIDataButton*)malloc(sizeof(UIDataButton));
     item->data_button->resize_on_hover = true;
     item->data_button->resized_text_size = 46;
-    item->color_hitbox = BLACK;
+    item->data_button->recolor_on_active = true;
     item->data_button->color_active = RED;
 }
 
-void _UpdateDraw(UIItem* item)
+void _UpdateDrawButton(UIItem* item)
 {
     D_ASSERT(item->data_button);
     tUpdateUIItemXY(item);
+    if (!tUpdateUIVisibility(item)) return;
 
     Color text_color = item->color_text;
     Color outline_color = item->color_hitbox;
@@ -26,7 +28,7 @@ void _UpdateDraw(UIItem* item)
 
     if (item->mouse_hovered)
     {
-        text_color = item->data_button->color_active;
+        if (item->data_button->recolor_on_active) text_color = item->data_button->color_active;
         if (item->data_button->resize_on_hover)
         {
             font_size = item->data_button->resized_text_size;
@@ -47,14 +49,14 @@ void _UpdateDraw(UIItem* item)
 
     if (item->mouse_active && item->mouse_hovered) outline_color = item->data_button->color_active;
 
-    DrawRectanglePro(tGetUIItemHitbox(item), (Vector2){0, 0}, 0.0f, WHITE);
+    DrawRectanglePro(tGetUIItemHitbox(item), (Vector2){0, 0}, 0.0f, item->color_background);
     DrawRectangleLinesEx(tGetUIItemHitbox(item), 2, outline_color);
     DrawText(item->label, text_x, item->position.y + outline, font_size, text_color);
 
     tUpdateUIItemMouse(item);
 }
 
-void _Free(UIItem* item)
+void _FreeButton(UIItem* item)
 {
     free(item->data_button);
 }

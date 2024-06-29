@@ -36,9 +36,7 @@ void tDrawMenuFrame(UIItem* items, int items_count)
     BeginDrawing();
     ClearBackground(RAYWHITE);
     tDrawMenuBackground();
-
     tUpdateDrawUIItems(items, items_count);
-
     EndDrawing();
 }
 

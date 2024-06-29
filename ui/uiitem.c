@@ -34,9 +34,12 @@ void tMakeUIItem(UIItem *item, const char *label, UIItemAnchor anchor, UIItem *p
     item->data_intbox = nullptr;
     item->data_textbox = nullptr;
     item->data_group = nullptr;
+    item->data_text = nullptr;
 
     item->stretch_x = false;
 
+    item->visible = true;
+    item->color_background = WHITE;
     item->color_hitbox = (Color){0, 0, 0, 0};
     item->color_text = BLACK;
     item->parent = parent;
@@ -61,11 +64,13 @@ void tMakeUIItem(UIItem *item, const char *label, UIItemAnchor anchor, UIItem *p
 void tUpdateUIItemXY(UIItem *item)
 {
     if (item->position_anchor == AnchorPassive) return;
-    if (!item->parent) return _tUpdateUIItemXYNoParent(item);
+    UIItem* parent = item->parent;
+    while (item->parent && !item->parent->visible) parent = parent->parent;
+    if (!parent) return _tUpdateUIItemXYNoParent(item);
     D_ASSERT(item->position_anchor != AnchorCenter);
     D_ASSERT(item->secondary_anchor != AnchorPassive);
-    Vector2 parent_position = item->parent->position;
-    Vector2 parent_size = item->parent->current_hitbox;
+    Vector2 parent_position = parent->position;
+    Vector2 parent_size = parent->current_hitbox;
     switch (item->position_anchor)
     {
         case AnchorBottom: item->position.y = parent_position.y + parent_size.y; break;
@@ -97,6 +102,16 @@ void tUpdateUIItemXY(UIItem *item)
             default: D_ASSERT(false);
         }
     }
+}
+
+bool tUpdateUIVisibility(UIItem *item)
+{
+    if (!item->visible)
+    {
+        item->current_hitbox.x = 0;
+        item->current_hitbox.y = 0;
+    }
+    return item->visible;
 }
 
 void _tUpdateUIItemXYNoParent(UIItem *item)
