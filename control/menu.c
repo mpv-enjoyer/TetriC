@@ -24,9 +24,11 @@ Shared tMenu(Shared shared)
     tMakeButton(exit, "Exit", settings, AnchorBottom);
     tMakeGroup(group, "Group", nullptr, 3, play, settings, exit);
     tMakeText(hint, "Replay unavailable", play, AnchorRight);
-    hint->outline_size = 1;
+    hint->outline_size = 3;
     hint->font_size = 20;
+    hint->color_background = WHITE;
     hint->color_text = GRAY;
+    hint->color_hitbox = DARKGRAY;
     hint->visible = !replay->visible;
 
     while (shared.state == STATE_IN_MENU)
