@@ -5,12 +5,15 @@
 void _tUpdateDrawTextBox(UIItem *item);
 void _tFreeTextBox(UIItem* item);
 void _tProcessTextBox(UIItem* item, Vector2 measured_data);
+void _tUpdateValueTextBox(UIItem* item);
+void _tRestoreValueTextBox(UIItem* item);
 
 void tMakeTextBox(UIItem *item, const char *label, UIItem* parent, UIItemAnchor anchor, const char *text, size_t max_size)
 {
     tMakeUIItem(item, label, anchor, parent, _tUpdateDrawTextBox, _tFreeTextBox);
     item->secondary_anchor = AnchorLeft;
     item->stretch_x = true;
+    item->padding = item->outline_size;
     DATA = (UIDataTextBox*)malloc(sizeof(UIDataTextBox));
     D_ASSERT(max_size > 0);
     DATA->text = (char*)malloc(sizeof(char) * max_size);
@@ -38,6 +41,8 @@ void tMakeTextBox(UIItem *item, const char *label, UIItem* parent, UIItemAnchor 
     DATA->is_backspace_pressed = false;
     DATA->is_integer = false;
     DATA->is_number = false;
+    DATA->UpdateValue = _tUpdateValueTextBox;
+    DATA->RestoreValue = _tRestoreValueTextBox;
     tMakeText(DATA->label_item, label, item, AnchorRight);
 }
 
@@ -51,12 +56,12 @@ void _tUpdateDrawTextBox(UIItem *item)
 
     Vector2 measured_label = tMeasureTextFix(item->label, item->font_size);
     Vector2 measured_data = tMeasureTextFix(DATA->text, item->font_size);
-    int label_x_difference = DATA->label_item->position.x - item->position.x - item->outline_size * 2 - measured_data.x;
-    if (item->stretch_x && label_x_difference > 0) DATA->label_item->padding = label_x_difference;
-    else DATA->label_item->padding = 0;
 
     item->current_hitbox.x = item->outline_size * 2 + measured_data.x;
     item->current_hitbox.y = item->outline_size * 2 + measured_data.y;
+    
+    int label_x_difference = GetRenderWidth() - DATA->label_item->current_hitbox.x - item->position.x - item->outline_size * 2 - measured_data.x;
+    if (item->stretch_x && label_x_difference > 0) item->current_hitbox.x += label_x_difference;
 
     DrawRectanglePro(tGetUIItemHitbox(item), (Vector2){0, 0}, 0, DATA->color_input_background);
     DrawText(DATA->text, item->position.x + item->outline_size, item->position.y + item->outline_size, item->font_size, item->color_text);
@@ -78,13 +83,13 @@ void _tUpdateDrawTextBox(UIItem *item)
         if (should_change_data)
         {
             item->active = false;
-            strncpy(DATA->text_backup, DATA->text, DATA->max_size);
+            DATA->UpdateValue(item);
             DATA->data_changed = true;
         }
         else if (should_keep_data)
         {
             item->active = false;
-            strncpy(DATA->text, DATA->text_backup, DATA->max_size);
+            DATA->RestoreValue(item);
         }
     }
 
@@ -144,4 +149,14 @@ void _tProcessTextBox(UIItem *item, Vector2 measured_data)
         length++;
         input_char = new_input_char;
     }
+}
+
+void _tUpdateValueTextBox(UIItem *item)
+{
+    strncpy(DATA->text_backup, DATA->text, DATA->max_size);
+}
+
+void _tRestoreValueTextBox(UIItem *item)
+{
+    strncpy(DATA->text, DATA->text_backup, DATA->max_size);
 }

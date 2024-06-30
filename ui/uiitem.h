@@ -66,5 +66,7 @@ void tUpdateDrawUIItems(UIItem* items, int items_count);
 #include "group.h"
 #include "text.h"
 #include "textbox.h"
+#include "doublebox.h"
+#include "intbox.h"
 
 #endif //UIITEM_H

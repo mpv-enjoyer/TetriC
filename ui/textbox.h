@@ -20,6 +20,8 @@ typedef struct UIDataTextBox
     double backspace_emit_period;
     double backspace_before_emit_period;
     bool data_changed;
+    UIItemFunction UpdateValue;
+    UIItemFunction RestoreValue;
 } UIDataTextBox;
 
 void tMakeTextBox(UIItem *item, const char *label, UIItem *parent, UIItemAnchor anchor, const char *text, size_t max_size);

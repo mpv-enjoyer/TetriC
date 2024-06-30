@@ -10,10 +10,10 @@ Shared tMenu(Shared shared)
 {
     tInitMenuBackground();
 
-    const int item_count = 7;
+    const int item_count = 9;
     UIItem items[item_count];
-    UIItem *play, *replay, *settings, *exit, *group, *hint, *input_name;
-    tBindUIItems(items, item_count, &play, &replay, &settings, &exit, &group, &hint, &input_name);
+    UIItem *play, *replay, *settings, *exit, *group, *hint, *input_name, *doublebox, *intbox;
+    tBindUIItems(items, item_count, &play, &replay, &settings, &exit, &group, &hint, &input_name, &doublebox, &intbox);
 
     tMakeButton(play, "Play", nullptr, AnchorPassive);
     tMakeButton(replay, "Replay", play, AnchorRight);
@@ -36,6 +36,9 @@ Shared tMenu(Shared shared)
     input_name->data_textbox->label_item->color_background = WHITE;
     input_name->data_textbox->is_number = true;
     input_name->data_textbox->is_integer = true;
+    tMakeDoubleBox(doublebox, "BOX", nullptr, AnchorTop, 10, 1, 100);
+    tMakeIntBox(intbox, "INTBOX !!!!", doublebox, AnchorTop, 10, 1, 1000);
+    
 
     while (shared.state == STATE_IN_MENU)
     {
