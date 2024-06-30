@@ -1,5 +1,7 @@
 #include "group.h"
 
+#define DATA item->data_group
+
 void _UpdateDrawGroup(UIItem *item);
 void _FreeGroup(UIItem* item);
 
@@ -7,32 +9,32 @@ void tMakeGroup(UIItem* item, const char* label, UIItem* parent, int group_item_
 {
     tMakeUIItem(item, label, AnchorCenter, parent, _UpdateDrawGroup, _FreeGroup);
     group_item_count -= 1;
-    item->data_group = (UIDataGroup*)malloc(sizeof(UIDataGroup));
-    item->data_group->passive_item = passive_item;
-    item->data_group->item_count = group_item_count;
-    item->data_group->items = (UIItem**)malloc(sizeof(UIItem*) * group_item_count);
+    DATA = (UIDataGroup*)malloc(sizeof(UIDataGroup));
+    DATA->passive_item = passive_item;
+    DATA->item_count = group_item_count;
+    DATA->items = (UIItem**)malloc(sizeof(UIItem*) * group_item_count);
     va_list group_items;
     va_start(group_items, group_item_count);
     for (int i = 0; i < group_item_count; i++) 
     {
-        item->data_group->items[i] = va_arg(group_items, UIItem*);
+        DATA->items[i] = va_arg(group_items, UIItem*);
     }
     va_end(group_items);
 }
 
 void _UpdateDrawGroup(UIItem *item)
 {
-    D_ASSERT(item->data_group);
+    D_ASSERT(DATA);
     tUpdateUIItemXY(item);
 
-    D_ASSERT(item->data_group->passive_item->position_anchor == AnchorPassive);
+    D_ASSERT(DATA->passive_item->position_anchor == AnchorPassive);
 
     Vector2 relative_first_item_position = {0, 0};
-    Rectangle inner_hitbox = tGetUIItemHitbox(item->data_group->passive_item);
+    Rectangle inner_hitbox = tGetUIItemHitbox(DATA->passive_item);
 
-    for (int i = 0; i < item->data_group->item_count; i++)
+    for (int i = 0; i < DATA->item_count; i++)
     {
-        UIItem* current_item = *(item->data_group->items + i);
+        UIItem* current_item = *(DATA->items + i);
         int ldx = inner_hitbox.x - current_item->position.x;
         int ldy = inner_hitbox.y - current_item->position.y;
         if (ldx > 0)
@@ -53,12 +55,10 @@ void _UpdateDrawGroup(UIItem *item)
 
         if (rdx > 0) inner_hitbox.width += rdx;
         if (rdy > 0) inner_hitbox.height += rdy;
-
-        printf("%s, %i item (%s) - x %f y %f w %f h %f\n", item->label, i, current_item->label, inner_hitbox.x, inner_hitbox.y, inner_hitbox.width, inner_hitbox.height);
     }
 
-    item->data_group->passive_item->position.x = relative_first_item_position.x + item->position.x;
-    item->data_group->passive_item->position.y = relative_first_item_position.y + item->position.y;
+    DATA->passive_item->position.x = relative_first_item_position.x + item->position.x;
+    DATA->passive_item->position.y = relative_first_item_position.y + item->position.y;
     item->current_hitbox.x = inner_hitbox.width;
     item->current_hitbox.y = inner_hitbox.height;
 
@@ -68,6 +68,6 @@ void _UpdateDrawGroup(UIItem *item)
 
 void _FreeGroup(UIItem *item)
 {
-    free(item->data_group->items);
-    free(item->data_group);
+    free(DATA->items);
+    free(DATA);
 }

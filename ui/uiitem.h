@@ -42,6 +42,7 @@ typedef struct UIItem
     Color color_hitbox;
     Color color_text;
     bool visible;
+    int padding;
     struct UIDataButton* data_button;
     struct UIDataCheckBox* data_checkbox;
     struct UIDataTextBox* data_textbox;
@@ -64,5 +65,6 @@ void tUpdateDrawUIItems(UIItem* items, int items_count);
 #include "button.h"
 #include "group.h"
 #include "text.h"
+#include "textbox.h"
 
 #endif //UIITEM_H

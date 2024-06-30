@@ -6,8 +6,8 @@ bool _tKeyFrame(Field* field, Record* record);
 
 Shared tPlaying(Shared shared)
 {
-    Music music = LoadMusicStream("playing.mp3");
-    D_ASSERT(IsMusicReady(music));
+    //Music music = LoadMusicStream("playing.mp3");
+    //D_ASSERT(IsMusicReady(music));
     
     if (shared.field == nullptr)
     {
@@ -17,19 +17,19 @@ Shared tPlaying(Shared shared)
         tMakeRecord(shared.current_record, shared.config);
     }
 
-    SetMusicVolume(music, 0.3f);
-    PlayMusicStream(music);
+    //SetMusicVolume(music, 0.3f);
+    //PlayMusicStream(music);
 
     double previous_keyframe = GetTime();
     float current_pitch = 1.0f + 0.05 * shared.current_record->level;
-    SetMusicPitch(music, current_pitch);
+    //SetMusicPitch(music, current_pitch);
     while (shared.state == STATE_PLAYING)
     {
-        UpdateMusicStream(music);
+        //UpdateMusicStream(music);
         if (current_pitch != (1.0f + 0.05 * shared.current_record->level))
         {
             current_pitch = (1.0f + 0.05 * shared.current_record->level);
-            SetMusicPitch(music, current_pitch);
+            //SetMusicPitch(music, current_pitch);
         }
         //if (!IsMusicStreamPlaying(music)) PlayMusicStream(music);
 
@@ -49,7 +49,9 @@ Shared tPlaying(Shared shared)
             shared.current_record->time += delta_keyframe_time;
             if (!_tKeyFrame(shared.field, shared.current_record))
             {
+#ifndef NO_FILESAVE
                 SaveFileText("replay.ggg", shared.field->replay->data);
+#endif
                 shared.state = STATE_GAME_OVER;
                 tFreeField(shared.field);
                 shared.field = nullptr;

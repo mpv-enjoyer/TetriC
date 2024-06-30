@@ -53,7 +53,9 @@ bool tSaveConfig(const Config *config, const char *file_name)
     sprintf(buffer + index, "%f\n\0", config->min_keyframe_seconds);
     index = TextLength(buffer);
 
+#ifndef NO_FILESAVE
     if (!SaveFileText(file_name, buffer)) return false;
+#endif
     free(buffer);
     return true;
 }

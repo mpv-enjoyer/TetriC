@@ -37,7 +37,7 @@ void tMakeUIItem(UIItem *item, const char *label, UIItemAnchor anchor, UIItem *p
     item->data_text = nullptr;
 
     item->stretch_x = false;
-
+    item->padding = 0;
     item->visible = true;
     item->color_background = WHITE;
     item->color_hitbox = (Color){0, 0, 0, 0};
@@ -73,10 +73,10 @@ void tUpdateUIItemXY(UIItem *item)
     Vector2 parent_size = parent->current_hitbox;
     switch (item->position_anchor)
     {
-        case AnchorBottom: item->position.y = parent_position.y + parent_size.y; break;
-        case AnchorTop: item->position.y = parent_position.y - item->current_hitbox.y; break;
-        case AnchorLeft: item->position.x = parent_position.x - item->current_hitbox.x; break;
-        case AnchorRight: item->position.x = parent_position.x + parent_size.x; break;
+        case AnchorBottom: item->position.y = parent_position.y + parent_size.y + item->padding; break;
+        case AnchorTop: item->position.y = parent_position.y - item->current_hitbox.y - item->padding; break;
+        case AnchorLeft: item->position.x = parent_position.x - item->current_hitbox.x - item->padding; break;
+        case AnchorRight: item->position.x = parent_position.x + parent_size.x + item->padding; break;
         default: break;
     }
 
@@ -120,10 +120,10 @@ void _tUpdateUIItemXYNoParent(UIItem *item)
     item->max_xy.y = GetRenderHeight();
     switch (item->position_anchor)
     {
-        case AnchorBottom: item->position.y = 0; break;
-        case AnchorTop: item->position.y = item->max_xy.y - item->current_hitbox.y; break;
-        case AnchorLeft: item->position.x = item->max_xy.x - item->current_hitbox.x; break;
-        case AnchorRight: item->position.x = 0; break;
+        case AnchorBottom: item->position.y = item->padding; break;
+        case AnchorTop: item->position.y = item->max_xy.y - item->current_hitbox.y - item->padding; break;
+        case AnchorLeft: item->position.x = item->max_xy.x - item->current_hitbox.x - item->padding; break;
+        case AnchorRight: item->position.x = item->padding; break;
         case AnchorCenter: item->position.x = (item->max_xy.x - item->current_hitbox.x) / 2;
                            item->position.y = (item->max_xy.y - item->current_hitbox.y) / 2;
                            return;

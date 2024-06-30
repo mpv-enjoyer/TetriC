@@ -1,5 +1,7 @@
 #include "button.h"
 
+#define DATA item->data_button
+
 void _UpdateDrawButton(UIItem *item);
 void _FreeButton(UIItem* item);
 
@@ -7,11 +9,11 @@ void tMakeButton(UIItem* item, const char* label, UIItem* parent, UIItemAnchor a
 {
     tMakeUIItem(item, label, anchor, parent, _UpdateDrawButton, _FreeButton);
     item->color_hitbox = BLACK;
-    item->data_button = (UIDataButton*)malloc(sizeof(UIDataButton));
-    item->data_button->resize_on_hover = true;
-    item->data_button->resized_text_size = 46;
-    item->data_button->recolor_on_active = true;
-    item->data_button->color_active = RED;
+    DATA = (UIDataButton*)malloc(sizeof(UIDataButton));
+    DATA->resize_on_hover = true;
+    DATA->resized_text_size = 46;
+    DATA->recolor_on_active = true;
+    DATA->color_active = RED;
 }
 
 void _UpdateDrawButton(UIItem* item)
@@ -28,10 +30,10 @@ void _UpdateDrawButton(UIItem* item)
 
     if (item->mouse_hovered)
     {
-        if (item->data_button->recolor_on_active) text_color = item->data_button->color_active;
-        if (item->data_button->resize_on_hover)
+        if (DATA->recolor_on_active) text_color = DATA->color_active;
+        if (DATA->resize_on_hover)
         {
-            font_size = item->data_button->resized_text_size;
+            font_size = DATA->resized_text_size;
             outline *= 2;
             text_hitbox = tMeasureTextFix(item->label, font_size);
         }
@@ -47,9 +49,9 @@ void _UpdateDrawButton(UIItem* item)
         item->current_hitbox.x = item->max_xy.x - item->position.x;
     }
 
-    if (item->mouse_active && item->mouse_hovered && item->data_button->recolor_on_active)
+    if (item->mouse_active && item->mouse_hovered && DATA->recolor_on_active)
     {
-        outline_color = item->data_button->color_active;
+        outline_color = DATA->color_active;
     }
 
     DrawRectanglePro(tGetUIItemHitbox(item), (Vector2){0, 0}, 0.0f, item->color_background);
@@ -61,5 +63,5 @@ void _UpdateDrawButton(UIItem* item)
 
 void _FreeButton(UIItem* item)
 {
-    free(item->data_button);
+    free(DATA);
 }
