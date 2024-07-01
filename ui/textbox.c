@@ -63,9 +63,6 @@ void _tUpdateDrawTextBox(UIItem *item)
     int label_x_difference = GetRenderWidth() - DATA->label_item->current_hitbox.x - item->position.x - item->outline_size * 2 - measured_data.x;
     if (item->stretch_x && label_x_difference > 0) item->current_hitbox.x += label_x_difference;
 
-    DrawRectanglePro(tGetUIItemHitbox(item), (Vector2){0, 0}, 0, DATA->color_input_background);
-    DrawText(DATA->text, item->position.x + item->outline_size, item->position.y + item->outline_size, item->font_size, item->color_text);
-
     DATA->data_changed = false;
     if (item->mouse_clicked)
     {
@@ -92,6 +89,10 @@ void _tUpdateDrawTextBox(UIItem *item)
             DATA->RestoreValue(item);
         }
     }
+
+    DrawRectanglePro(tGetUIItemHitbox(item), (Vector2){0, 0}, 0, DATA->color_input_background);
+    DrawRectangleLinesEx(tGetUIItemHitbox(item), 2, item->color_hitbox);
+    DrawText(DATA->text, item->position.x + item->outline_size, item->position.y + item->outline_size, item->font_size, item->color_text);
 
     tUpdateUIItemMouse(item);
 }

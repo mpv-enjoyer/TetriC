@@ -63,9 +63,11 @@ void tMakeUIItem(UIItem *item, const char *label, UIItemAnchor anchor, UIItem *p
 
 void tUpdateUIItemXY(UIItem *item)
 {
+    item->max_xy.x = GetRenderWidth();
+    item->max_xy.y = GetRenderHeight();
     if (item->position_anchor == AnchorPassive) return;
     UIItem* parent = item->parent;
-    while (item->parent && !item->parent->visible) parent = parent->parent;
+    while (parent && parent->parent && !parent->visible) parent = parent->parent;
     if (!parent) return _tUpdateUIItemXYNoParent(item);
     D_ASSERT(item->position_anchor != AnchorCenter);
     D_ASSERT(item->secondary_anchor != AnchorPassive);
@@ -116,8 +118,6 @@ bool tUpdateUIVisibility(UIItem *item)
 
 void _tUpdateUIItemXYNoParent(UIItem *item)
 {
-    item->max_xy.x = GetRenderWidth();
-    item->max_xy.y = GetRenderHeight();
     switch (item->position_anchor)
     {
         case AnchorBottom: item->position.y = item->padding; break;

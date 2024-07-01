@@ -11,10 +11,10 @@ Shared tMenu(Shared shared)
 {
     tInitMenuBackground();
 
-    const int item_count = 6;
+    const int item_count = 8;
     UIItem items[item_count];
-    UIItem *play, *replay, *settings, *exit, *group, *hint;
-    tBindUIItems(items, item_count, &play, &replay, &settings, &exit, &group, &hint);
+    UIItem *play, *replay, *settings, *exit, *group1, *hint, *picture, *group2;
+    tBindUIItems(items, item_count, &play, &replay, &settings, &exit, &hint, &group1, &picture, &group2);
 
     tMakeButton(play, "Play", nullptr, AnchorPassive);
     tMakeButton(replay, "Replay", play, AnchorRight);
@@ -23,13 +23,17 @@ Shared tMenu(Shared shared)
     replay->data_button->resize_on_hover = false;
     tMakeButton(settings, "Settings", play, AnchorBottom);
     tMakeButton(exit, "Exit", settings, AnchorBottom);
-    tMakeGroup(group, "Group", nullptr, 3, play, settings, exit);
     tMakeText(hint, "Replay unavailable", play, AnchorRight);
     hint->font_size = 20;
     hint->color_background = WHITE;
     hint->color_text = GRAY;
     hint->color_hitbox = LIGHTGRAY;
     hint->visible = !replay->visible;
+    tMakePictureBox(picture, "assets/linus.png", group1, AnchorRight);
+    picture->padding = 50;
+    tMakeGroup(group1, "Group1", nullptr, 4, play, settings, exit, hint);
+    group1->position_anchor = AnchorPassive;
+    tMakeGroup(group2, "Group2", nullptr, 2, group1, picture);
 
     while (shared.state == STATE_IN_MENU)
     {

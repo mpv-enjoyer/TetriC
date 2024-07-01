@@ -18,7 +18,7 @@ void tMakeButton(UIItem* item, const char* label, UIItem* parent, UIItemAnchor a
 
 void _UpdateDrawButton(UIItem* item)
 {
-    D_ASSERT(item->data_button);
+    D_ASSERT(DATA);
     tUpdateUIItemXY(item);
     if (!tUpdateUIVisibility(item)) return;
 

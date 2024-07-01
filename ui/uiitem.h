@@ -50,6 +50,7 @@ typedef struct UIItem
     struct UIDataDoubleBox* data_doublebox;
     struct UIDataGroup* data_group;
     struct UIDataButton* data_text;
+    struct UIDataPictureBox* data_picturebox;
 } UIItem;
 
 void tBindUIItems(UIItem items[], int item_count, UIItem** item_slot, ...);
@@ -68,5 +69,7 @@ void tUpdateDrawUIItems(UIItem* items, int items_count);
 #include "textbox.h"
 #include "doublebox.h"
 #include "intbox.h"
+#include "checkbox.h"
+#include "picturebox.h"
 
 #endif //UIITEM_H
