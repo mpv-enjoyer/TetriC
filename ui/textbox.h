@@ -22,6 +22,7 @@ typedef struct UIDataTextBox
     bool data_changed;
     UIItemFunction UpdateValue;
     UIItemFunction RestoreValue;
+    bool allow_edit;
 } UIDataTextBox;
 
 void tMakeTextBox(UIItem *item, const char *label, UIItem *parent, UIItemAnchor anchor, const char *text, size_t max_size);

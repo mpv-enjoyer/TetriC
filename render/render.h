@@ -15,8 +15,8 @@
 
 void tDrawGameFrame(const Field *field, const Record *record);
 void tDrawMenuFrame(UIItem* items, int items_count);
-void tDrawGameOverFrame(int lines_cleared);
-int tDrawPauseFrame(const Field *field, const Record *record);
+void tDrawGameOverFrame(UIItem* items, int item_count);
+void tDrawPauseFrame(UIItem* items, int item_count, const Field *field, const Record *record);
 void tDrawSettingsFrame(UIItem* items, int item_count);
 void tDrawReplayFrame(const Field *field, const Record *record);
 

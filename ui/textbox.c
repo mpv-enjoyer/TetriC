@@ -11,7 +11,7 @@ void _tRestoreValueTextBox(UIItem* item);
 void tMakeTextBox(UIItem *item, const char *label, UIItem* parent, UIItemAnchor anchor, const char *text, size_t max_size)
 {
     tMakeUIItem(item, label, anchor, parent, _tUpdateDrawTextBox, _tFreeTextBox);
-    item->secondary_anchor = AnchorLeft;
+    if (anchor != AnchorLeft && anchor != AnchorRight) item->secondary_anchor = AnchorLeft;
     item->stretch_x = true;
     item->padding = item->outline_size;
     DATA = (UIDataTextBox*)malloc(sizeof(UIDataTextBox));
@@ -41,6 +41,7 @@ void tMakeTextBox(UIItem *item, const char *label, UIItem* parent, UIItemAnchor 
     DATA->is_backspace_pressed = false;
     DATA->is_integer = false;
     DATA->is_number = false;
+    DATA->allow_edit = true;
     DATA->UpdateValue = _tUpdateValueTextBox;
     DATA->RestoreValue = _tRestoreValueTextBox;
     tMakeText(DATA->label_item, label, item, AnchorRight);
@@ -65,7 +66,7 @@ void _tUpdateDrawTextBox(UIItem *item)
 
     bool draw_cursor_line = (int)(GetTime() - DATA->begin_active) % 2 == 0 || DATA->is_backspace_pressed;
     DATA->data_changed = false;
-    if (item->mouse_clicked)
+    if (item->mouse_clicked && DATA->allow_edit)
     {
         item->active = true;
         DATA->begin_active = GetTime();

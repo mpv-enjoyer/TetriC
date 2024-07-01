@@ -40,39 +40,24 @@ void tDrawMenuFrame(UIItem* items, int items_count)
     EndDrawing();
 }
 
-void tDrawGameOverFrame(int lines_cleared)
+void tDrawGameOverFrame(UIItem* items, int item_count)
 {
     BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawText("Game over frame.\nDon't mind me.\n(click Enter to proceed)", 0, 0, DEFAULT_FONT_SIZE, BLACK);
+        tUpdateDrawUIItems(items, item_count);
     EndDrawing();
 }
 
-int tDrawPauseFrame(const Field* field, const Record *record)
+void tDrawPauseFrame(UIItem* items, int item_count, const Field* field, const Record *record)
 {
-    const static int item_count = 2;
-    const static char* item_strings[item_count] = {"Continue", "To menu"};
     BeginDrawing();
     ClearBackground(RAYWHITE);
-
     _tDrawGameFrameEx(field, record, false);
-
     Color darker = BLACK;
     darker.a = 200;
     DrawRectangle(0, 0, GetRenderWidth(), GetRenderHeight(), darker);
-
-    const float sector_height = 23;
-    int sector_count = item_count * 2 - 1;
-    int y_center = GetRenderHeight() / 2;
-    int y_center_begin = y_center - sector_height * ((sector_count - 1) / 2.0f);
-    int selected = -1;
-    for (int i = 0; i < item_count; i++)
-    {
-        int y_center_current = y_center_begin + i * 2 * sector_height;
-        if (tCenteredButton(y_center_current, item_strings[i], nullptr)) selected = i;
-    }
+    tUpdateDrawUIItems(items, item_count);
     EndDrawing();
-    return selected;
 }
 
 void tDrawSettingsFrame(UIItem* items, int item_count)
