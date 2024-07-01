@@ -1,63 +1,60 @@
 #include "settings.h"
 #include "render.h"
-
-void _tMakeSettingsFrameData(SettingsFrameData* frame_data, const Config* config);
-bool _tProcessFinalFrame(const SettingsFrameData* frame_data, Config* config);
+#include "uiitem.h"
 
 Shared tSettings(Shared shared)
 {
-    SettingsFrameData frame_data;
-    _tMakeSettingsFrameData(&frame_data, shared.config);
+    const int item_count = 7;
+    UIItem items[item_count];
+    UIItem* exit, *save_exit, *begin_speed, *max_speed, *acceleration, *lines_for_next_level, *srs;
+    tBindUIItems(items, item_count, &exit, &save_exit, &begin_speed, &max_speed, &acceleration, &lines_for_next_level, &srs);
+
+    tMakeButton(save_exit, "Save and Exit", nullptr, AnchorPassive);
+    save_exit->position.x = 5;
+    save_exit->position.y = 5;
+    save_exit->data_button->resize_on_hover = false;
+    save_exit->color_text = DARKGREEN;
+    tMakeButton(exit, "Exit", save_exit, AnchorRight);
+    exit->data_button->resize_on_hover = false;
+    tMakeDoubleBox(begin_speed, "Begin speed (blocks per second)", save_exit, AnchorBottom, 1.0f / shared.config->begin_keyframe_seconds, 0.1, 1000);
+    tMakeDoubleBox(max_speed, "Max speed (blocks per second)", begin_speed, AnchorBottom, 1.0f / shared.config->min_keyframe_seconds, 0.1, 1000);
+    tMakeDoubleBox(acceleration, "Acceleration (weird value)", max_speed, AnchorBottom, shared.config->acceleration, 0.00001, 100);
+    tMakeIntBox(lines_for_next_level, "Lines for next level", acceleration, AnchorBottom, shared.config->lines_for_acceleration, 1, 1000);
+    tMakeCheckBox(srs, "Super Rotation System", lines_for_next_level, AnchorBottom, shared.config->srs);
+    srs->secondary_anchor = AnchorLeft;
+    srs->padding = 3;
+
+    bool save = false;
     while (shared.state == STATE_IN_SETTINGS)
     {
-        tDrawSettingsFrame(shared.config, &frame_data);
-        if (_tProcessFinalFrame(&frame_data, shared.config))
+        bool had_active_textbox = false;
+        for (int i = 0; i < item_count; i++)
         {
-            shared.state = STATE_IN_MENU;
-            break;
+            had_active_textbox |= (items[i].data_textbox && items[i].active);
         }
-        if (WindowShouldClose())
+        tDrawSettingsFrame(&(items[0]), item_count);
+        if (exit->mouse_released) shared.state = STATE_IN_MENU;
+        if (save_exit->mouse_released)
         {
-            shared.state = STATE_EXITING;
-            break;
-        }
-        if (IsKeyPressed(KEY_ESCAPE))
-        {
+            save = true;
             shared.state = STATE_IN_MENU;
         }
+        if (IsKeyPressed(KEY_ESCAPE) && !had_active_textbox) shared.state = STATE_IN_MENU;
+        if (WindowShouldClose()) shared.state = STATE_EXITING;
+    }
+    
+    if (save)
+    {
+        shared.config->begin_keyframe_seconds = 1 / begin_speed->data_doublebox->value;
+        shared.config->lines_for_acceleration = lines_for_next_level->data_intbox->value;
+        shared.config->min_keyframe_seconds = 1 / max_speed->data_doublebox->value;
+        shared.config->acceleration = acceleration->data_doublebox->value;
+        shared.config->srs = srs->data_checkbox->value;
+    }
+
+    for (int i = 0; i < item_count; i++)
+    {
+        items[i].Free(&(items[i]));
     }
     return shared;
-}
-
-void _tMakeSettingsFrameData(SettingsFrameData *frame_data, const Config* config)
-{
-    const static int buffer_size = 13;
-    tMakeUIButton(&(frame_data->back), 10, 10, "Exit", false);
-    tMakeUIButton(&(frame_data->save_and_back), 10, -1, "Save and exit", false);
-    char* buffer = (char*)malloc(buffer_size * sizeof(char));
-    tMakeUIIntBox(&(frame_data->lines_for_next_level), 10, -1, "Lines for next level", buffer, buffer_size, config->lines_for_acceleration, 1, 1000);
-    buffer = (char*)malloc(buffer_size * sizeof(char));
-    tMakeUIDoubleBox(&(frame_data->min_speed), 10, -1, "Begin speed (blocks per second)", buffer, buffer_size, 1 / config->begin_keyframe_seconds, 0.1f, 1000);
-    buffer = (char*)malloc(buffer_size * sizeof(char));
-    tMakeUIDoubleBox(&(frame_data->max_speed), 10, -1, "Max speed (blocks per second)", buffer, buffer_size, 1 / config->min_keyframe_seconds, 0.1f, 1000);
-    buffer = (char*)malloc(buffer_size * sizeof(char));
-    tMakeUIDoubleBox(&(frame_data->acceleration), 10, -1, "Acceleration (Weird value)", buffer, buffer_size, config->acceleration, 0.00001f, 100);
-    tMakeUICheckBox(&(frame_data->srs), 10, -1, "Super Rotation System", config->srs);
-}
-
-bool _tProcessFinalFrame(const SettingsFrameData *frame_data, Config *config)
-{
-    bool is_last_frame = frame_data->back.data || frame_data->save_and_back.data;
-    if (!is_last_frame) return false;
-    free(frame_data->min_speed.data);
-    free(frame_data->max_speed.data);
-    free(frame_data->lines_for_next_level.data);
-    free(frame_data->acceleration.data);
-    if (frame_data->back.data) return true;
-    config->begin_keyframe_seconds = 1 / frame_data->min_speed.value;
-    config->lines_for_acceleration = frame_data->lines_for_next_level.value;
-    config->min_keyframe_seconds = 1 / frame_data->max_speed.value;
-    config->acceleration = frame_data->acceleration.value;
-    config->srs = frame_data->srs.data;
-    return true;
 }

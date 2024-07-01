@@ -13,22 +13,11 @@
 
 #define DEFAULT_FONT_SIZE 20
 
-typedef struct SettingsFrameData
-{
-    UIButton back;
-    UIButton save_and_back;
-    UIIntBox lines_for_next_level;
-    UIDoubleBox min_speed;
-    UIDoubleBox acceleration;
-    UIDoubleBox max_speed;
-    UICheckBox srs;
-} SettingsFrameData;
-
 void tDrawGameFrame(const Field *field, const Record *record);
 void tDrawMenuFrame(UIItem* items, int items_count);
 void tDrawGameOverFrame(int lines_cleared);
 int tDrawPauseFrame(const Field *field, const Record *record);
-void tDrawSettingsFrame(const Config *config, SettingsFrameData* frame_data);
+void tDrawSettingsFrame(UIItem* items, int item_count);
 void tDrawReplayFrame(const Field *field, const Record *record);
 
 #endif

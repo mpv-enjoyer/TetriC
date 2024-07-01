@@ -63,6 +63,7 @@ void _tUpdateDrawTextBox(UIItem *item)
     int label_x_difference = GetRenderWidth() - DATA->label_item->current_hitbox.x - item->position.x - item->outline_size * 2 - measured_data.x;
     if (item->stretch_x && label_x_difference > 0) item->current_hitbox.x += label_x_difference;
 
+    bool draw_cursor_line = (int)(GetTime() - DATA->begin_active) % 2 == 0 || DATA->is_backspace_pressed;
     DATA->data_changed = false;
     if (item->mouse_clicked)
     {
@@ -93,6 +94,14 @@ void _tUpdateDrawTextBox(UIItem *item)
     DrawRectanglePro(tGetUIItemHitbox(item), (Vector2){0, 0}, 0, DATA->color_input_background);
     DrawRectangleLinesEx(tGetUIItemHitbox(item), 2, item->color_hitbox);
     DrawText(DATA->text, item->position.x + item->outline_size, item->position.y + item->outline_size, item->font_size, item->color_text);
+
+    if (item->active && draw_cursor_line)
+    {
+        int cursor_x = item->position.x + measured_data.x + item->outline_size * 2;
+        int cursor_y_upper_point = item->position.y + item->outline_size;
+        int cursor_y_lower_point = cursor_y_upper_point + measured_data.y;
+        DrawLine(cursor_x, cursor_y_upper_point, cursor_x, cursor_y_lower_point, item->color_text);
+    }
 
     tUpdateUIItemMouse(item);
 }
@@ -128,11 +137,6 @@ void _tProcessTextBox(UIItem *item, Vector2 measured_data)
         DATA->is_backspace_pressed = false;
     }
 
-    bool draw_cursor_line = (int)(GetTime() - DATA->begin_active) % 2 == 0;
-    int cursor_x = item->position.x + measured_data.x + item->outline_size;
-    int cursor_y_upper_point = item->position.y + item->outline_size;
-    int cursor_y_lower_point = cursor_y_upper_point + measured_data.y;
-    if (draw_cursor_line) DrawLine(cursor_x, cursor_y_upper_point, cursor_x, cursor_y_lower_point, item->color_text);
     if (length + 1 == DATA->max_size) return;
     int input_char = GetCharPressed();
     int new_input_char = input_char;
@@ -147,6 +151,7 @@ void _tProcessTextBox(UIItem *item, Vector2 measured_data)
         if (input_char == ',') input_char = '.';
         DATA->text[length] = input_char;
         DATA->text[length + 1] = '\0';
+        DATA->begin_active = GetTime();
         length++;
         input_char = new_input_char;
     }

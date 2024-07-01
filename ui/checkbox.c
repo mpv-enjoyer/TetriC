@@ -31,6 +31,7 @@ void _tUpdateDrawCheckBox(UIItem *item)
     bool value = DATA->value;
     DATA->value_changed = item->mouse_released || DATA->label_item->mouse_released;
     bool mouse_hovered = item->mouse_hovered || DATA->label_item->mouse_hovered;
+    bool mouse_active = item->mouse_active || DATA->label_item->mouse_active;
     int size = DATA->label_item->current_hitbox.y;
 
     if (DATA->value_changed)
@@ -43,11 +44,11 @@ void _tUpdateDrawCheckBox(UIItem *item)
     item->current_hitbox.x = size;
 
     Color main_color = item->color_text;
-    Color outline_color = item->mouse_active ? DATA->color_active : item->color_hitbox;
+    Color outline_color = mouse_active ? DATA->color_active : item->color_hitbox;
     Color background_color = mouse_hovered ? DATA->color_hovered_background : item->color_background;
 
     DrawRectanglePro(tGetUIItemHitbox(item), (Vector2){0, 0}, 0, background_color);
-    DrawRectangleLinesEx(tGetUIItemHitbox(item), 2, item->color_hitbox);
+    DrawRectangleLinesEx(tGetUIItemHitbox(item), 2, outline_color);
     if (DATA->value)
     {
         Vector2 check_point_1 = {item->position.x + 0.25f * size, item->position.y + 0.5f  * size};

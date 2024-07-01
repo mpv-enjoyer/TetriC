@@ -29,10 +29,10 @@ Shared tMenu(Shared shared)
     hint->color_text = GRAY;
     hint->color_hitbox = LIGHTGRAY;
     hint->visible = !replay->visible;
-    tMakePictureBox(picture, "assets/linus.png", group1, AnchorRight);
-    picture->padding = 50;
     tMakeGroup(group1, "Group1", nullptr, 4, play, settings, exit, hint);
     group1->position_anchor = AnchorPassive;
+    tMakePictureBox(picture, "assets/linus.png", group1, AnchorRight);
+    picture->padding = 50;
     tMakeGroup(group2, "Group2", nullptr, 2, group1, picture);
 
     while (shared.state == STATE_IN_MENU)

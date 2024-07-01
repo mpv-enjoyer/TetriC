@@ -35,6 +35,7 @@ void tMakeUIItem(UIItem *item, const char *label, UIItemAnchor anchor, UIItem *p
     item->data_textbox = nullptr;
     item->data_group = nullptr;
     item->data_text = nullptr;
+    item->data_picturebox = nullptr;
 
     item->stretch_x = false;
     item->padding = 0;
@@ -63,6 +64,7 @@ void tMakeUIItem(UIItem *item, const char *label, UIItemAnchor anchor, UIItem *p
 
 void tUpdateUIItemXY(UIItem *item)
 {
+    D_ASSERT(item->parent != item);
     item->max_xy.x = GetRenderWidth();
     item->max_xy.y = GetRenderHeight();
     if (item->position_anchor == AnchorPassive) return;

@@ -24,7 +24,8 @@ void _tUpdateDrawPictureBox(UIItem *item)
     item->current_hitbox.x = DATA->texture.width;
     item->current_hitbox.y = DATA->texture.height;
     DrawTexture(DATA->texture, item->position.x, item->position.y, DATA->tint);
-
+    DrawRectangleLinesEx(tGetUIItemHitbox(item), 2, item->color_hitbox);
+    
     tUpdateUIItemMouse(item);
 }
 
