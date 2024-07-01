@@ -6,12 +6,12 @@ bool _tKeyFrame(Field* field, Record* record, int next_shape_type);
 
 Shared tReplay(Shared shared)
 {
-    if (!FileExists("replay.ggg"))
+    if (!FileExists(REPLAY_FILE_NAME))
     {
         shared.state = STATE_IN_MENU;
         return shared;
     }
-    shared.current_replay = LoadFileText("replay.ggg");
+    shared.current_replay = LoadFileText(REPLAY_FILE_NAME);
     shared.field = tAllocField(shared.config->replay);
     tMakeField(shared.field, shared.config);
     tMakeShapeKnown(shared.field, shared.current_replay[0] - '0');

@@ -1,6 +1,7 @@
 #include "playing.h"
 #include "input.h"
 #include "raylib.h"
+#include "replay.h"
 
 bool _tKeyFrame(Field* field, Record* record);
 
@@ -50,7 +51,7 @@ Shared tPlaying(Shared shared)
             if (!_tKeyFrame(shared.field, shared.current_record))
             {
 #ifndef NO_FILESAVE
-                SaveFileText("replay.ggg", shared.field->replay->data);
+                SaveFileText(REPLAY_FILE_NAME, shared.field->replay->data);
 #endif
                 shared.state = STATE_GAME_OVER;
                 tFreeField(shared.field);
