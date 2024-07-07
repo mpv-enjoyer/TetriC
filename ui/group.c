@@ -35,6 +35,7 @@ void _UpdateDrawGroup(UIItem *item)
     for (int i = 0; i < DATA->item_count; i++)
     {
         UIItem* current_item = *(DATA->items + i);
+        if (!current_item->visible) continue;
         int ldx = inner_hitbox.x - current_item->position.x;
         int ldy = inner_hitbox.y - current_item->position.y;
         if (ldx > 0)

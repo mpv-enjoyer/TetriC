@@ -6,8 +6,7 @@
 #include "stdarg.h"
 #include "helpers.h"
 
-typedef struct UIItem;
-typedef void (*UIItemFunction)(UIItem*);
+typedef void (*UIItemFunction)(struct UIItem*);
 
 typedef enum UIItemAnchor
 {

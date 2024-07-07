@@ -45,7 +45,7 @@ void tMakeUIItem(UIItem *item, const char *label, UIItemAnchor anchor, UIItem *p
     item->color_text = BLACK;
     item->parent = parent;
     item->label = label;
-    item->max_xy = (Vector2){ .x = GetRenderWidth(), .y = GetRenderHeight() };
+    item->max_xy = (Vector2){ .x = (float)GetRenderWidth(), .y = (float)GetRenderHeight() };
     item->position = (Vector2){0, 0};
     item->current_hitbox = (Vector2){0, 0};
     item->active = false;

@@ -22,5 +22,10 @@ Shared tPause(Shared shared)
         }
         if (WindowShouldClose()) shared.state = STATE_EXITING;
     }
+
+    for (int i = 0; i < item_count; i++)
+    {
+        items[i].Free(&(items[i]));
+    }
     return shared;
 }

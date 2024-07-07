@@ -12,7 +12,7 @@ tString* tAllocString()
 
 size_t tActualStringSize(tString* string)
 {
-    size_t size = -1;
+    size_t size = 0;
     for (size_t i = 0; i < string->size; i++)
     {
         if (string->data[i] == '\0')
@@ -21,6 +21,7 @@ size_t tActualStringSize(tString* string)
         }
     }
     D_ASSERT(false);
+    return 0;
 }
 
 void tAppendString(tString* string, char c)
@@ -44,6 +45,7 @@ size_t tSizeUntilCharString(const tString* string, size_t begin, char c)
         if (string->data[i] == c) return i - begin;
     }
     D_ASSERT(false);
+    return 0;
 }
 
 void tFreeString(tString* string)
@@ -74,5 +76,5 @@ void shuffle(int *array, size_t n)
 
 int random(int left_bound, int right_bound)
 {
-  return (rand() % (right_bound - left_bound)) + left_bound;
+    return (rand() % (right_bound - left_bound)) + left_bound;
 }
