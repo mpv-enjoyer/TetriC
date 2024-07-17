@@ -4,10 +4,10 @@
 
 Shared tSettings(Shared shared)
 {
-    const int item_count = 7;
+    const int item_count = 8;
     UIItem items[item_count];
-    UIItem* exit, *save_exit, *begin_speed, *max_speed, *acceleration, *lines_for_next_level, *srs;
-    tBindUIItems(items, item_count, &exit, &save_exit, &begin_speed, &max_speed, &acceleration, &lines_for_next_level, &srs);
+    UIItem* exit, *save_exit, *begin_speed, *max_speed, *acceleration, *lines_for_next_level, *srs, *fps;
+    tBindUIItems(items, item_count, &exit, &save_exit, &begin_speed, &max_speed, &acceleration, &lines_for_next_level, &srs, &fps);
 
     tMakeButton(save_exit, "Save and Exit", nullptr, AnchorPassive);
     save_exit->position.x = 5;
@@ -23,6 +23,8 @@ Shared tSettings(Shared shared)
     tMakeCheckBox(srs, "Super Rotation System", lines_for_next_level, AnchorBottom, shared.config->srs);
     srs->secondary_anchor = AnchorLeft;
     srs->padding = 3;
+    tMakeIntBox(fps, "FPS", srs, AnchorBottom, shared.config->fps, 0, __INT_MAX__);
+    fps->secondary_anchor = AnchorLeft;
 
     bool save = false;
     while (shared.state == STATE_IN_SETTINGS)
@@ -50,6 +52,16 @@ Shared tSettings(Shared shared)
         shared.config->min_keyframe_seconds = 1 / max_speed->data_doublebox->value;
         shared.config->acceleration = acceleration->data_doublebox->value;
         shared.config->srs = srs->data_checkbox->value;
+        shared.config->fps = fps->data_intbox->value;
+        if (shared.config->fps == 0)
+        {
+            SetWindowState(FLAG_VSYNC_HINT);
+        }
+        else
+        {
+            SetTargetFPS(shared.config->fps);
+            ClearWindowState(FLAG_VSYNC_HINT);
+        }
     }
 
     for (int i = 0; i < item_count; i++)

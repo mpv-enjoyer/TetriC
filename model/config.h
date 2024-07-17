@@ -9,6 +9,7 @@ typedef struct Config
     double min_keyframe_seconds;
     bool srs;
     bool replay;
+    int fps;
 } Config;
 
 void tMakeConfigDefault(Config* config);

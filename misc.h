@@ -30,8 +30,6 @@
 #define MIN(l, r) l < r ? l : r
 #define MAX(l, r) l > r ? l : r
 
-#define NO_FILESAVE
-
 typedef struct tString
 {
     char* data;

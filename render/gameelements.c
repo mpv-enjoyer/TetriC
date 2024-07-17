@@ -192,7 +192,7 @@ void tDrawNextShapes(const Bag* bag, int begin_x)
 void tDrawHoldShape(Shape* shape, int begin_x, int rectangle_size)
 {
     if (shape == nullptr) return;
-    int x = begin_x - 6 * rectangle_size - 50;
+    int x = begin_x - 9 * rectangle_size;
     int y = 50;
     DrawText("Hold:", x, 10, 30, GRAY);
     DrawText("Hold:", x, 10, 30, RAYWHITE);

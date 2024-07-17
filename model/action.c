@@ -116,6 +116,30 @@ int tFindLine(const Field* field)
     return -1;
 }
 
+int tFindDoubleLine(const Field* field)
+{
+    bool found_bottom_line = false;
+    for (int yi = 0; yi < FIELD_HEIGHT; yi++)
+    {
+        bool air_found = false;
+        for (int xi = 0; xi < FIELD_WIDTH; xi++)
+        {
+            if (!tGetFieldXY(field, xi, yi))
+            {
+                air_found = true;
+                break;
+            }
+        }
+        if (!air_found)
+        {
+            if (found_bottom_line) return yi;
+            else found_bottom_line = true;
+        }
+        else found_bottom_line = false;
+    }
+    return -1;
+}
+
 void tRemoveLine(Field* field, int y)
 {
     D_ASSERT(y > 0 && y < FIELD_HEIGHT);
@@ -139,9 +163,10 @@ int tRemoveFullLines(Field *field)
     int lines_cleared = 0;
     while (true)
     {
-        int found = tFindLine(field);
+        int found = tFindDoubleLine(field);
         if (found == -1) break;
         lines_cleared++;
+        tRemoveLine(field, found);
         tRemoveLine(field, found);
     }
     return lines_cleared;

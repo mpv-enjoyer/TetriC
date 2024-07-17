@@ -14,6 +14,7 @@ void tMakeConfigDefault(Config *config)
     config->min_keyframe_seconds = 1.0f / 60.0f;
     config->srs = true;
     config->replay = true;
+    config->fps = __INT_MAX__;
 }
 
 bool tLoadConfig(Config *config, const char *file_name)
@@ -28,6 +29,7 @@ bool tLoadConfig(Config *config, const char *file_name)
     _tStringToDouble(split_text[2], &(config->acceleration));
     _tStringToDouble(split_text[3], &(config->begin_keyframe_seconds));
     _tStringToDouble(split_text[4], &(config->min_keyframe_seconds));
+    _tStringToInt(split_text[5], &(config->fps));
 
     return true;
 }
@@ -51,6 +53,9 @@ bool tSaveConfig(const Config *config, const char *file_name)
     index = TextLength(buffer);
 
     sprintf(buffer + index, "%f\n\0", config->min_keyframe_seconds);
+    index = TextLength(buffer);
+
+    sprintf(buffer + index, "%i\n\0", config->fps);
     index = TextLength(buffer);
 
 #ifndef NO_FILESAVE

@@ -4,17 +4,27 @@
 
 Shared tPause(Shared shared)
 {
-    const int item_count = 3;
+    const int item_count = 4;
     UIItem items[item_count];
-    tMakeButton(&(items[0]), "Continue", nullptr, AnchorPassive);
-    tMakeButton(&(items[1]), "To menu", &(items[0]), AnchorBottom);
-    tMakeGroup(&(items[2]), "Group", nullptr, 2, &(items[0]), &(items[1]));
+    UIItem *button_continue, *to_menu, *restart, *group;
+    tBindUIItems(items, item_count, &button_continue, &to_menu, &restart, &group);
+
+    tMakeButton(button_continue, "Continue", restart, AnchorTop);
+    tMakeButton(restart, "Restart", button_continue, AnchorPassive);
+    tMakeButton(to_menu, "To menu", restart, AnchorBottom);
+    tMakeGroup(group, "Group", nullptr, 1, restart);
 
     while (shared.state == STATE_PAUSED)
     {
         tDrawPauseFrame(&(items[0]), item_count, shared.field, shared.current_record);
-        if (items[0].mouse_released || IsKeyPressed(KEY_ENTER)) shared.state = STATE_PLAYING;
-        if (items[1].mouse_released || IsKeyPressed(KEY_ESCAPE))
+        if (button_continue->mouse_released || IsKeyPressed(KEY_ENTER)) shared.state = STATE_PLAYING;
+        if (restart->mouse_released || IsKeyPressed(KEY_R))
+        {
+            tFreeField(shared.field);
+            shared.field = nullptr;
+            shared.state = STATE_PLAYING;
+        }
+        if (to_menu->mouse_released || IsKeyPressed(KEY_ESCAPE))
         {
             tFreeField(shared.field);
             shared.field = nullptr;

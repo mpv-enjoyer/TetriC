@@ -33,6 +33,15 @@ void tMainLoop()
 
     tMakeConfigDefault(&config);
     tLoadConfig(&config, "tetriC.data");
+    if (shared_data.config->fps == 0)
+    {
+        SetWindowState(FLAG_VSYNC_HINT);
+    }
+    else
+    {
+        SetTargetFPS(shared_data.config->fps);
+        ClearWindowState(FLAG_VSYNC_HINT);
+    }
 
     while (shared_data.state != STATE_EXITING)
     {
