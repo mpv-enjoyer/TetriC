@@ -21,6 +21,7 @@ typedef struct Shared
     Config* config;
     Record* current_record;
     Record* all_records;
+    bool is_40_lines;
     char* current_replay;
 } Shared;
 

@@ -13,11 +13,11 @@
 
 #define DEFAULT_FONT_SIZE 20
 
-void tDrawGameFrame(const Field *field, const Record *record);
+void tDrawGameFrame(const Field *field, const Record *record, bool is_40_lines);
 void tDrawMenuFrame(UIItem* items, int items_count);
 void tDrawGameOverFrame(UIItem* items, int item_count);
-void tDrawPauseFrame(UIItem* items, int item_count, const Field *field, const Record *record);
+void tDrawPauseFrame(UIItem* items, int item_count, const Field *field, const Record *record, bool is_40_lines);
 void tDrawSettingsFrame(UIItem* items, int item_count);
-void tDrawReplayFrame(const Field *field, const Record *record);
+void tDrawReplayFrame(const Field *field, const Record *record, bool is_40_lines);
 
 #endif

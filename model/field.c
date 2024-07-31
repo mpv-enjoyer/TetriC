@@ -41,6 +41,8 @@ void tMakeField(Field* field, Config* config)
         }
     }
     field->shape_hold = nullptr;
+    field->shape_on_ground_begin = 0.0f;
+    field->is_shape_on_ground = false;
     tMakeBag(field->bag);
 }
 

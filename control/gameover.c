@@ -8,19 +8,36 @@ Shared tGameOver(Shared shared)
     UIItem* level, *level_value, *lines_cleared, *lines_cleared_value, *score, *score_value, *time, *time_value, *group, *game_over, *group2, *button;
     tBindUIItems(items, item_count, &level, &level_value, &lines_cleared, &lines_cleared_value, &score, &score_value, &time, &time_value, &group, &game_over, &button, &group2);
 
-    tMakeText(game_over, "GAME OVER", group, AnchorTop);
+    bool is_40_lines_passed = shared.is_40_lines && shared.current_record->lines_cleared == 40;
+    tMakeText(game_over, is_40_lines_passed ? "40 LINES!" : "GAME OVER", group, AnchorTop);
     game_over->font_size = 100;
     game_over->padding = 20;
-    game_over->color_text = RED;
+    game_over->color_text = is_40_lines_passed ? DARKGREEN : RED;
 
-    tMakeText(level, "Level: ", nullptr, AnchorPassive);
-    tMakeIntBox(level_value, "", level, AnchorRight, shared.current_record->level, 0, __INT_MAX__);
+    if (shared.is_40_lines)
+    {
+        tMakeText(level, "Figures/sec: ", nullptr, AnchorPassive);
+        tMakeDoubleBox(level_value, "", level, AnchorRight, shared.current_record->shapes_placed / shared.current_record->time, 0, __FLT_MAX__);
+    }
+    else
+    {
+        tMakeText(level, "Level: ", nullptr, AnchorPassive);
+        tMakeIntBox(level_value, "", level, AnchorRight, shared.current_record->level, 0, __INT_MAX__);
+    }
     level_value->data_textbox->color_input_background = (Color){0, 0, 0, 0};
     level_value->data_textbox->allow_edit = false;
     level_value->stretch_x = false;
 
-    tMakeText(lines_cleared, "Lines: ", level, AnchorBottom);
-    tMakeIntBox(lines_cleared_value, "", lines_cleared, AnchorRight, shared.current_record->lines_cleared, 0, __INT_MAX__);
+    if (shared.is_40_lines)
+    {
+        tMakeText(lines_cleared, "Lines/sec: ", level, AnchorBottom);
+        tMakeDoubleBox(lines_cleared_value, "", lines_cleared, AnchorRight, shared.current_record->lines_cleared / shared.current_record->time, 0, __FLT_MAX__);
+    }
+    else
+    {
+        tMakeText(lines_cleared, "Lines: ", level, AnchorBottom);
+        tMakeIntBox(lines_cleared_value, "", lines_cleared, AnchorRight, shared.current_record->lines_cleared, 0, __INT_MAX__);
+    }
     lines_cleared_value->data_textbox->color_input_background = (Color){0, 0, 0, 0};
     lines_cleared_value->data_textbox->allow_edit = false;
     lines_cleared_value->stretch_x = false;

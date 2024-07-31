@@ -2,7 +2,7 @@
 #include "render.h"
 #include "action.h"
 
-bool _tKeyFrame(Field* field, Record* record, int next_shape_type);
+bool _tKeyFrame(Field* field, Record* record, int next_shape_type, bool is_40_lines);
 
 Shared tReplay(Shared shared)
 {
@@ -52,12 +52,12 @@ Shared tReplay(Shared shared)
                 index++;
             }
             next_figure_type = shared.current_replay[index + 1] - '0';
-            game_ended |= !_tKeyFrame(shared.field, shared.current_record, next_figure_type);
+            game_ended |= !_tKeyFrame(shared.field, shared.current_record, next_figure_type, shared.is_40_lines);
             previous_keyframe = current_time;
         }
         else
         {
-            tDrawReplayFrame(shared.field, shared.current_record);
+            tDrawReplayFrame(shared.field, shared.current_record, shared.is_40_lines);
         }
         if (IsKeyPressed(KEY_ESCAPE) || game_ended)
         {
@@ -77,7 +77,7 @@ Shared tReplay(Shared shared)
     return shared;
 }
 
-bool _tKeyFrame(Field* field, Record* record, int next_shape_type)
+bool _tKeyFrame(Field* field, Record* record, int next_shape_type, bool is_40_lines)
 {
     bool falling = tGravityShape(field);
     if (!falling)
@@ -91,6 +91,6 @@ bool _tKeyFrame(Field* field, Record* record, int next_shape_type)
         if (!good_spawn) return false;
         record->level = (record->lines_cleared / record->config->lines_for_acceleration);
     }
-    tDrawReplayFrame(field, record);
+    tDrawReplayFrame(field, record, is_40_lines);
     return true;
 }

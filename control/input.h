@@ -13,9 +13,6 @@
 #define CALLBACK_SOFTDROP        32
 #define CALLBACK_RESTART         64
 
-#define HOLD_TIMEOUT 0.133
-#define HOLD_INTERVAL 0.04
-
 int tInput(Field* field, double time);
 
 #endif

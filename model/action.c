@@ -17,6 +17,8 @@ bool tMakeShapeKnown(Field* field, int type)
     field->shape->x = SHAPE_DEFAULT_X;
     field->shape->y = SHAPE_DEFAULT_Y;
     field->shape->type = type;
+    field->is_shape_on_ground = false;
+    field->shape_on_ground_begin = 0;
     tUpdateShapeShadow(field);
     field->can_hold = true;
     return !tCollision(field);
@@ -163,10 +165,9 @@ int tRemoveFullLines(Field *field)
     int lines_cleared = 0;
     while (true)
     {
-        int found = tFindDoubleLine(field);
+        int found = tFindLine(field);
         if (found == -1) break;
         lines_cleared++;
-        tRemoveLine(field, found);
         tRemoveLine(field, found);
     }
     return lines_cleared;

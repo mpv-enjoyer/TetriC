@@ -59,7 +59,7 @@ int tInput(Field* field, double time)
         return callback;
     }
 
-    if (time - last_key_begin_time > HOLD_TIMEOUT)
+    if (time - last_key_begin_time > field->config->wait_on_hold_seconds)
     {
         last_action_time = time;
         if (last_key == KEY_LEFT)

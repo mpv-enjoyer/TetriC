@@ -11,6 +11,7 @@ typedef struct Record
     long score;
     int level;
     double time;
+    int shapes_placed;
 } Record;
 
 void tMakeRecord(Record* record, Config* config);

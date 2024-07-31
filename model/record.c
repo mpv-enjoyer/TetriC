@@ -8,6 +8,7 @@ void tMakeRecord(Record* record, Config* config)
     record->lines_cleared = 0;
     record->score = 0;
     record->time = 0;
+    record->shapes_placed = 0;
 }
 
 double tCalculateFrameTime(const Record *record, bool player_requests_faster)

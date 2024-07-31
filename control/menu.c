@@ -11,25 +11,25 @@ Shared tMenu(Shared shared)
 {
     tInitMenuBackground();
 
-    const int item_count = 8;
+    const int item_count = 9;
     UIItem items[item_count];
-    UIItem *play, *replay, *settings, *exit, *group1, *hint, *picture, *group2;
-    tBindUIItems(items, item_count, &play, &replay, &settings, &exit, &hint, &group1, &picture, &group2);
+    UIItem *play, *play_40_lines, *replay, *settings, *exit, *group1, *hint, *picture, *group2;
+    tBindUIItems(items, item_count, &play, &play_40_lines, &replay, &settings, &exit, &hint, &group1, &picture, &group2);
 
     tMakeButton(play, "Play", nullptr, AnchorPassive);
+    tMakeButton(play_40_lines, "Play 40 lines", play, AnchorBottom);
     tMakeButton(replay, "Replay", play, AnchorRight);
-    replay->visible = FileExists(REPLAY_FILE_NAME);
+    replay->visible = false;
     replay->font_size = 20;
     replay->data_button->resize_on_hover = false;
-    tMakeButton(settings, "Settings", play, AnchorBottom);
+    tMakeButton(settings, "Settings", play_40_lines, AnchorBottom);
     tMakeButton(exit, "Exit", settings, AnchorBottom);
-    tMakeText(hint, "Replay unavailable", play, AnchorRight);
+    tMakeText(hint, "Press Enter", play, AnchorRight);
     hint->font_size = 20;
     hint->color_background = WHITE;
     hint->color_text = GRAY;
     hint->color_hitbox = LIGHTGRAY;
-    hint->visible = !replay->visible;
-    tMakeGroup(group1, "Group1", nullptr, 4, play, settings, exit, hint);
+    tMakeGroup(group1, "Group1", nullptr, 4, play, play_40_lines, settings, exit, hint);
     group1->position_anchor = AnchorPassive;
     tMakePictureBox(picture, "assets/linus.png", group1, AnchorRight);
     picture->padding = 50;
@@ -38,11 +38,19 @@ Shared tMenu(Shared shared)
     while (shared.state == STATE_IN_MENU)
     {
         tDrawMenuFrame(&(items[0]), item_count);
-        if (play->mouse_released) shared.state = STATE_PLAYING;
+        if (play->mouse_released || IsKeyPressed(KEY_ENTER))
+        {
+            shared.state = STATE_PLAYING;
+            shared.is_40_lines = false;
+        }
+        if (play_40_lines->mouse_released)
+        {
+            shared.state = STATE_PLAYING;
+            shared.is_40_lines = true;
+        }
         if (replay->mouse_released) shared.state = STATE_REPLAY;
         if (settings->mouse_released) shared.state = STATE_IN_SETTINGS;
         if (exit->mouse_released) shared.state = STATE_EXITING;
-        if (IsKeyPressed(KEY_ENTER)) shared.state = STATE_PLAYING;
         if (WindowShouldClose()) shared.state = STATE_EXITING;
     }
 

@@ -7,6 +7,8 @@ typedef struct Config
     double acceleration;
     int lines_for_acceleration;
     double min_keyframe_seconds;
+    double wait_on_ground_seconds;
+    double wait_on_hold_seconds;
     bool srs;
     bool replay;
     int fps;

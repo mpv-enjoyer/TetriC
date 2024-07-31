@@ -16,7 +16,7 @@ Shared tPause(Shared shared)
 
     while (shared.state == STATE_PAUSED)
     {
-        tDrawPauseFrame(&(items[0]), item_count, shared.field, shared.current_record);
+        tDrawPauseFrame(&(items[0]), item_count, shared.field, shared.current_record, shared.is_40_lines);
         if (button_continue->mouse_released || IsKeyPressed(KEY_ENTER)) shared.state = STATE_PLAYING;
         if (restart->mouse_released || IsKeyPressed(KEY_R))
         {

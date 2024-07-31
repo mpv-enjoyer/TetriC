@@ -4,10 +4,10 @@
 
 Shared tSettings(Shared shared)
 {
-    const int item_count = 8;
+    const int item_count = 10;
     UIItem items[item_count];
-    UIItem* exit, *save_exit, *begin_speed, *max_speed, *acceleration, *lines_for_next_level, *srs, *fps;
-    tBindUIItems(items, item_count, &exit, &save_exit, &begin_speed, &max_speed, &acceleration, &lines_for_next_level, &srs, &fps);
+    UIItem* exit, *save_exit, *begin_speed, *max_speed, *acceleration, *wait_on_ground, *wait_on_hold, *lines_for_next_level, *srs, *fps;
+    tBindUIItems(items, item_count, &exit, &save_exit, &begin_speed, &max_speed, &acceleration, &wait_on_ground, &wait_on_hold, &lines_for_next_level, &srs, &fps);
 
     tMakeButton(save_exit, "Save and Exit", nullptr, AnchorPassive);
     save_exit->position.x = 5;
@@ -19,7 +19,9 @@ Shared tSettings(Shared shared)
     tMakeDoubleBox(begin_speed, "Begin speed (blocks per second)", save_exit, AnchorBottom, 1.0f / shared.config->begin_keyframe_seconds, 0.1, 1000);
     tMakeDoubleBox(max_speed, "Max speed (blocks per second)", begin_speed, AnchorBottom, 1.0f / shared.config->min_keyframe_seconds, 0.1, 1000);
     tMakeDoubleBox(acceleration, "Acceleration (weird value)", max_speed, AnchorBottom, shared.config->acceleration, 0.00001, 100);
-    tMakeIntBox(lines_for_next_level, "Lines for next level", acceleration, AnchorBottom, shared.config->lines_for_acceleration, 1, 1000);
+    tMakeDoubleBox(wait_on_ground, "Block on ground delay (seconds)", acceleration, AnchorBottom, shared.config->wait_on_ground_seconds, 0.00001, 10);
+    tMakeDoubleBox(wait_on_hold, "Hold delay (seconds)", wait_on_ground, AnchorBottom, shared.config->wait_on_hold_seconds, 0.00001, 10);
+    tMakeIntBox(lines_for_next_level, "Lines for next level", wait_on_hold, AnchorBottom, shared.config->lines_for_acceleration, 1, 1000);
     tMakeCheckBox(srs, "Super Rotation System", lines_for_next_level, AnchorBottom, shared.config->srs);
     srs->secondary_anchor = AnchorLeft;
     srs->padding = 3;
@@ -51,6 +53,8 @@ Shared tSettings(Shared shared)
         shared.config->lines_for_acceleration = lines_for_next_level->data_intbox->value;
         shared.config->min_keyframe_seconds = 1 / max_speed->data_doublebox->value;
         shared.config->acceleration = acceleration->data_doublebox->value;
+        shared.config->wait_on_ground_seconds = wait_on_ground->data_doublebox->value;
+        shared.config->wait_on_hold_seconds = wait_on_hold->data_doublebox->value;
         shared.config->srs = srs->data_checkbox->value;
         shared.config->fps = fps->data_intbox->value;
         if (shared.config->fps == 0)

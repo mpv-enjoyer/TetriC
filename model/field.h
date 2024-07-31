@@ -16,6 +16,8 @@ typedef struct Field
     Shape* shape;
     Shape* shape_hold;
     bool can_hold;
+    bool is_shape_on_ground;
+    double shape_on_ground_begin;
     Config* config;
     tString* replay;
 } Field;
