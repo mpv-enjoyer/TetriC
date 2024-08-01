@@ -100,7 +100,7 @@ Shared tPlaying(Shared shared)
 
 bool _tKeyFrame(Field* field, Record* record, bool is_40_lines)
 {
-    if (is_40_lines && record->lines_cleared == 40) return false;
+    if (is_40_lines && record->lines_cleared >= 40) return false;
     bool falling = tGravityShape(field);
     if (!falling)
     {

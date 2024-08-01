@@ -8,7 +8,7 @@ Shared tGameOver(Shared shared)
     UIItem* level, *level_value, *lines_cleared, *lines_cleared_value, *score, *score_value, *time, *time_value, *group, *game_over, *group2, *button;
     tBindUIItems(items, item_count, &level, &level_value, &lines_cleared, &lines_cleared_value, &score, &score_value, &time, &time_value, &group, &game_over, &button, &group2);
 
-    bool is_40_lines_passed = shared.is_40_lines && shared.current_record->lines_cleared == 40;
+    bool is_40_lines_passed = shared.is_40_lines && shared.current_record->lines_cleared >= 40;
     tMakeText(game_over, is_40_lines_passed ? "40 LINES!" : "GAME OVER", group, AnchorTop);
     game_over->font_size = 100;
     game_over->padding = 20;
