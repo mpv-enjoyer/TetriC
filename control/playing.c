@@ -46,10 +46,14 @@ Shared tPlaying(Shared shared)
         int keyframe_count = want_keyframe ? 1 : 0;
         if (!shared.field->is_shape_on_ground)
         {
-            if (was_lying_on_ground) previous_keyframe = current_time;
+            if (was_lying_on_ground)
+            {
+                previous_keyframe = current_time;
+                keyframe_count = 1;
+            }
             else
             {
-                if (!want_faster_keyframe && delta_keyframe_time >= wait_keyframe) keyframe_count = delta_keyframe_time / wait_keyframe;
+                if (!want_faster_keyframe && delta_keyframe_time >= wait_keyframe && !want_keyframe) keyframe_count = delta_keyframe_time / wait_keyframe;
                 if (!want_keyframe) previous_keyframe += keyframe_count * wait_keyframe;
                 else previous_keyframe = current_time;
             }
@@ -82,7 +86,7 @@ Shared tPlaying(Shared shared)
                 }
             }
             printf("delta_keyframe_time %f, wait_keyframe %f, keyframe_count %i, current_time %f\n", delta_keyframe_time, wait_keyframe, keyframe_count, current_time);
-            printf("was_lying_on_ground %i, is lying on ground %i, want keyframe %i", was_lying_on_ground ? 1 : 0, is_lying_on_ground ? 1 : 0, want_keyframe ? 1 : 0)
+            printf("was_lying_on_ground %i, is lying on ground %i, want keyframe %i", was_lying_on_ground ? 1 : 0, is_lying_on_ground ? 1 : 0, want_keyframe ? 1 : 0);
         }
         else
         {
