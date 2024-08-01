@@ -15,7 +15,6 @@ void tInit()
     InitWindow(WIDTH, HEIGHT, "TetriC");
     InitAudioDevice();
     SetWindowState(FLAG_WINDOW_RESIZABLE);
-    //SetTargetFPS(60);
     srand(time(NULL));
     SetExitKey(KEY_NULL);
 }

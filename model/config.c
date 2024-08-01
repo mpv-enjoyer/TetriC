@@ -12,8 +12,9 @@ void tMakeConfigDefault(Config *config)
     config->acceleration = 0.02f;
     config->lines_for_acceleration = 5;
     config->min_keyframe_seconds = 1.0f / 60.0f;
-    config->wait_on_ground_seconds = 1.0f;
+    config->wait_on_ground_seconds = 0.4f;
     config->wait_on_hold_seconds = 0.133f;
+    config->hold_interval_seconds = 0.03f;
     config->srs = true;
     config->replay = true;
     config->fps = __INT_MAX__;
@@ -34,6 +35,7 @@ bool tLoadConfig(Config *config, const char *file_name)
     _tStringToInt(split_text[5], &(config->fps));
     _tStringToDouble(split_text[6], &(config->wait_on_hold_seconds));
     _tStringToDouble(split_text[7], &(config->wait_on_ground_seconds));
+    _tStringToDouble(split_text[8], &(config->hold_interval_seconds));
 
     return true;
 }
@@ -41,14 +43,15 @@ bool tLoadConfig(Config *config, const char *file_name)
 bool tSaveConfig(const Config *config, const char *file_name)
 {
     char* buffer = (char*)malloc(sizeof(char) * 1000);
-    int size = sprintf(buffer, "%i\n%i\n%f\n%f\n%f\n%i\n%f\n%f\n\0", config->lines_for_acceleration,
+    int size = sprintf(buffer, "%i\n%i\n%f\n%f\n%f\n%i\n%f\n%f\n%f\n\0", config->lines_for_acceleration,
                                                       config->srs ? 1 : 0,
                                                       config->acceleration,
                                                       config->begin_keyframe_seconds,
                                                       config->min_keyframe_seconds,
                                                       config->fps,
                                                       config->wait_on_hold_seconds,
-                                                      config->wait_on_ground_seconds);
+                                                      config->wait_on_ground_seconds,
+                                                      config->hold_interval_seconds);
     D_ASSERT(size < 1000);
 
 #ifndef NO_FILESAVE

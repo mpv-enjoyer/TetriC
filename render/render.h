@@ -9,7 +9,7 @@
 #include "uiitem.h"
 
 #define WIDTH 800
-#define HEIGHT 450
+#define HEIGHT 500
 
 #define DEFAULT_FONT_SIZE 20
 

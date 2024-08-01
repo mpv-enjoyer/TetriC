@@ -68,7 +68,6 @@ Shared tPlaying(Shared shared)
         }
         if (delta_keyframe_time < 0) D_ASSERT(false);
 
-        if (was_lying_on_ground && !is_lying_on_ground) printf("was_lying_on_ground and not on ground");
         shared.current_record->time += GetFrameTime();
         if (keyframe_count != 0)
         {
@@ -85,8 +84,6 @@ Shared tPlaying(Shared shared)
                     break;
                 }
             }
-            printf("delta_keyframe_time %f, wait_keyframe %f, keyframe_count %i, current_time %f\n", delta_keyframe_time, wait_keyframe, keyframe_count, current_time);
-            printf("was_lying_on_ground %i, is lying on ground %i, want keyframe %i", was_lying_on_ground ? 1 : 0, is_lying_on_ground ? 1 : 0, want_keyframe ? 1 : 0);
         }
         else
         {

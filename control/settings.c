@@ -4,10 +4,10 @@
 
 Shared tSettings(Shared shared)
 {
-    const int item_count = 10;
+    const int item_count = 11;
     UIItem items[item_count];
-    UIItem* exit, *save_exit, *begin_speed, *max_speed, *acceleration, *wait_on_ground, *wait_on_hold, *lines_for_next_level, *srs, *fps;
-    tBindUIItems(items, item_count, &exit, &save_exit, &begin_speed, &max_speed, &acceleration, &wait_on_ground, &wait_on_hold, &lines_for_next_level, &srs, &fps);
+    UIItem* exit, *save_exit, *begin_speed, *max_speed, *acceleration, *wait_on_ground, *wait_on_hold, *hold_interval_seconds, *lines_for_next_level, *srs, *fps;
+    tBindUIItems(items, item_count, &exit, &save_exit, &begin_speed, &max_speed, &acceleration, &wait_on_ground, &wait_on_hold, &hold_interval_seconds, &lines_for_next_level, &srs, &fps);
 
     tMakeButton(save_exit, "Save and Exit", nullptr, AnchorPassive);
     save_exit->position.x = 5;
@@ -21,7 +21,8 @@ Shared tSettings(Shared shared)
     tMakeDoubleBox(acceleration, "Acceleration (weird value)", max_speed, AnchorBottom, shared.config->acceleration, 0.00001, 100);
     tMakeDoubleBox(wait_on_ground, "Block on ground delay (seconds)", acceleration, AnchorBottom, shared.config->wait_on_ground_seconds, 0.00001, 10);
     tMakeDoubleBox(wait_on_hold, "Hold delay (seconds)", wait_on_ground, AnchorBottom, shared.config->wait_on_hold_seconds, 0.00001, 10);
-    tMakeIntBox(lines_for_next_level, "Lines for next level", wait_on_hold, AnchorBottom, shared.config->lines_for_acceleration, 1, 1000);
+    tMakeDoubleBox(hold_interval_seconds, "Hold frequency (seconds)", wait_on_hold, AnchorBottom, shared.config->hold_interval_seconds, 0, 10);
+    tMakeIntBox(lines_for_next_level, "Lines for next level", hold_interval_seconds, AnchorBottom, shared.config->lines_for_acceleration, 1, 1000);
     tMakeCheckBox(srs, "Super Rotation System", lines_for_next_level, AnchorBottom, shared.config->srs);
     srs->secondary_anchor = AnchorLeft;
     srs->padding = 3;
@@ -55,6 +56,7 @@ Shared tSettings(Shared shared)
         shared.config->acceleration = acceleration->data_doublebox->value;
         shared.config->wait_on_ground_seconds = wait_on_ground->data_doublebox->value;
         shared.config->wait_on_hold_seconds = wait_on_hold->data_doublebox->value;
+        shared.config->hold_interval_seconds = hold_interval_seconds->data_doublebox->value;
         shared.config->srs = srs->data_checkbox->value;
         shared.config->fps = fps->data_intbox->value;
         if (shared.config->fps == 0)

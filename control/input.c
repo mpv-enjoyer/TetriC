@@ -59,21 +59,29 @@ int tInput(Field* field, double time)
         return callback;
     }
 
+    bool instant_move_left_right = field->config->hold_interval_seconds == 0;
+
     if (time - last_key_begin_time > field->config->wait_on_hold_seconds)
     {
-        last_action_time = time;
-        if (last_key == KEY_LEFT)
+        if (instant_move_left_right)
         {
-            while (tMoveShapeLeft(field));
-            callback |= CALLBACK_COLLISION;
+            if (last_key == KEY_LEFT)
+            {
+                while (tMoveShapeLeft(field));
+                callback |= CALLBACK_COLLISION;
+            }
+            if (last_key == KEY_RIGHT)
+            {
+                while (tMoveShapeRight(field));
+                callback |= CALLBACK_COLLISION;
+            }
         }
-        if (last_key == KEY_RIGHT)
+        else if (time - last_action_time > field->config->hold_interval_seconds)
         {
-            while (tMoveShapeRight(field));
-            callback |= CALLBACK_COLLISION;
+            last_action_time = time;
+            if (last_key == KEY_LEFT && !tMoveShapeLeft(field)) callback |= CALLBACK_COLLISION;
+            if (last_key == KEY_RIGHT && !tMoveShapeRight(field)) callback |= CALLBACK_COLLISION;
         }
-        if (last_key == KEY_LEFT && !tMoveShapeLeft(field)) callback |= CALLBACK_COLLISION;
-        if (last_key == KEY_RIGHT && !tMoveShapeRight(field)) callback |= CALLBACK_COLLISION;
     }
     return callback;
 }

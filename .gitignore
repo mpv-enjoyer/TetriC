@@ -3,3 +3,7 @@ exec.exe
 .vscode
 raylib_mingw64
 assets
+libraylib.dll
+tetriC.data
+tetriC.exe
+TetriC.zip
