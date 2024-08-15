@@ -2,7 +2,6 @@
 #define TEXTBOX_H
 
 #include "uiitem.h"
-#include "ui.h"
 
 typedef struct UIDataTextBox
 {

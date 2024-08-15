@@ -201,16 +201,20 @@ void tUpdateDrawUIItems(UIItem *items, int items_count)
         position_changed |= (items[i].position_changed && items[i].position_anchor != AnchorPassive);
     }
 
-    const int placement_attempts = 4;
-    for (int attempt = 0; position_changed && attempt < placement_attempts; attempt++)
+    const int placement_attempts = 6;
+    for (int attempt = 0; position_changed && (attempt < placement_attempts); attempt++)
     {
         position_changed = false;
         for (int i = 0; i < items_count; i++)
         {
             items[i].UpdateHitbox(&(items[i]));
-            position_changed |= items[i].position_changed;
+            position_changed |= items[i].position_changed && items[i].position_anchor != AnchorPassive;
         }
-        printf("\n Reached attempt %i\n", attempt);
+    }
+
+    if (position_changed)
+    {
+        printf("Failed to pin UI Items after %i attempts\n", placement_attempts);
     }
 
     for (int i = 0; i < items_count; i++)

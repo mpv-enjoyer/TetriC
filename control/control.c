@@ -34,6 +34,7 @@ void tMainLoop()
     tLoadConfig(&config, "tetriC.data");
     if (shared_data.config->fps == 0)
     {
+        SetTargetFPS(__INT_MAX__);
         SetWindowState(FLAG_VSYNC_HINT);
     }
     else

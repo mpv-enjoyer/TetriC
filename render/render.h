@@ -5,7 +5,6 @@
 #include "field.h"
 #include "shape.h"
 #include "record.h"
-#include "ui.h"
 #include "uiitem.h"
 
 #define WIDTH 800

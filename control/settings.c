@@ -61,6 +61,7 @@ Shared tSettings(Shared shared)
         shared.config->fps = fps->data_intbox->value;
         if (shared.config->fps == 0)
         {
+            SetTargetFPS(__INT_MAX__);
             SetWindowState(FLAG_VSYNC_HINT);
         }
         else
