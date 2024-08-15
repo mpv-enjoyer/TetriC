@@ -23,8 +23,15 @@ void _tUpdateHitboxPictureBox(UIItem *item)
     if (IsTextureReady(DATA->texture)) item->visible = false;
     if (!tUpdateUIVisibility(item)) return;
 
+    Vector2 old_hitbox = item->current_hitbox;
+
     item->current_hitbox.x = DATA->texture.width;
     item->current_hitbox.y = DATA->texture.height;
+
+    if (item->current_hitbox.x != old_hitbox.x || item->current_hitbox.y != old_hitbox.y)
+    {
+        item->position_changed = true;
+    }
 }
 
 void _tUpdatePictureBox(UIItem *item)

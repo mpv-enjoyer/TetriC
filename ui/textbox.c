@@ -59,11 +59,18 @@ void _tUpdateHitboxTextBox(UIItem* item)
     if (!tUpdateUIVisibility(item)) return;
     Vector2 measured_data = tMeasureTextFix(DATA->text, item->font_size);
 
+    Vector2 old_hitbox = item->current_hitbox;
+
     item->current_hitbox.x = item->outline_size * 2 + measured_data.x;
     item->current_hitbox.y = item->outline_size * 2 + measured_data.y;
 
     int label_x_difference = GetRenderWidth() - DATA->label_item->current_hitbox.x - item->position.x - item->outline_size * 2 - measured_data.x;
     if (item->stretch_x && label_x_difference > 0) item->current_hitbox.x += label_x_difference;
+
+    if (item->current_hitbox.x != old_hitbox.x || item->current_hitbox.y != old_hitbox.y)
+    {
+        item->position_changed = true;
+    }
 }
 
 void _tUpdateTextBox(UIItem *item)

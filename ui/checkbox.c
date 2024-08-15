@@ -30,8 +30,15 @@ void _tUpdateHitboxCheckBox(UIItem* item)
 
     int size = DATA->label_item->current_hitbox.y;
 
+    Vector2 old_hitbox = item->current_hitbox;
+
     item->current_hitbox.y = size;
     item->current_hitbox.x = size;
+
+    if (item->current_hitbox.x != old_hitbox.x || item->current_hitbox.y != old_hitbox.y)
+    {
+        item->position_changed = true;
+    }
 }
 
 void _tUpdateCheckBox(UIItem *item)

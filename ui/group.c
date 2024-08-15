@@ -60,10 +60,25 @@ void _tUpdateHitboxGroup(UIItem *item)
         if (rdy > 0) inner_hitbox.height += rdy;
     }
 
+    Vector2 old_passive_item_position = DATA->passive_item->position;
+
     DATA->passive_item->position.x = relative_first_item_position.x + item->position.x;
     DATA->passive_item->position.y = relative_first_item_position.y + item->position.y;
+
+    Vector2 new_passive_item_position = DATA->passive_item->position;
+
+    DATA->passive_item->position_changed =  (old_passive_item_position.x != new_passive_item_position.x) ||
+                                            (old_passive_item_position.y != new_passive_item_position.y);
+
+    Vector2 old_hitbox = item->current_hitbox;
+
     item->current_hitbox.x = inner_hitbox.width;
     item->current_hitbox.y = inner_hitbox.height;
+
+    if (item->current_hitbox.x != old_hitbox.x || item->current_hitbox.y != old_hitbox.y)
+    {
+        item->position_changed = true;
+    }
 }
 
 void _tUpdateGroup(UIItem *item)

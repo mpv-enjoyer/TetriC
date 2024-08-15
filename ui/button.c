@@ -38,12 +38,19 @@ void _tUpdateHitboxButton(UIItem *item)
         }
     }
 
+    Vector2 old_hitbox = item->current_hitbox;
+
     item->current_hitbox.x = text_hitbox.x + outline * 2;
     item->current_hitbox.y = text_hitbox.y + outline * 2;
 
     if (item->stretch_x)
     {
         item->current_hitbox.x = item->max_xy.x - item->position.x;
+    }
+
+    if (item->current_hitbox.x != old_hitbox.x || item->current_hitbox.y != old_hitbox.y)
+    {
+        item->position_changed = true;
     }
 }
 

@@ -81,14 +81,11 @@ Shared tPlaying(Shared shared)
                     shared.state = STATE_GAME_OVER;
                     tFreeField(shared.field);
                     shared.field = nullptr;
-                    break;
+                    return shared;
                 }
             }
         }
-        else
-        {
-            tDrawGameFrame(shared.field, shared.current_record, shared.is_40_lines);
-        }
+        tDrawGameFrame(shared.field, shared.current_record, shared.is_40_lines);
         if (WindowShouldClose())
         {
             shared.state = STATE_EXITING;
@@ -114,6 +111,5 @@ bool _tKeyFrame(Field* field, Record* record, bool is_40_lines)
         if (!good_spawn) return false;
         if (!is_40_lines) record->level = (record->lines_cleared / record->config->lines_for_acceleration);
     }
-    tDrawGameFrame(field, record, is_40_lines);
     return true;
 }

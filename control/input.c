@@ -50,8 +50,6 @@ int tInput(Field* field, double time)
         key = GetKeyPressed();
     }
 
-    //if (IsKeyDown(KEY_DOWN)) callback |= CALLBACK_FASTER_KEYFRAME;
-
     if (last_key == KEY_NULL) return callback;
     if (!IsKeyDown(last_key))
     {
