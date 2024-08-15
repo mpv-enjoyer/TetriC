@@ -179,8 +179,8 @@ void tDrawNextShapes(const Bag* bag, int begin_x)
 
     int rectangle_size = bounds.width / SHAPE_SIZE;
     int bag_lookup_size = MIN(bounds.height / (rectangle_size * SHAPE_SIZE), BAG_SIZE);
-    int* bag_info = (int*)malloc(sizeof(int) * bag_lookup_size);
-    tPeekBag(bag, bag_info, bag_lookup_size);
+    int bag_info[bag_lookup_size];
+    tPeekBag(bag, &(bag_info[0]), bag_lookup_size);
     for (int i = 0; i < bag_lookup_size; i++)
     {
         Shape shape = Shapes[bag_info[i]];
