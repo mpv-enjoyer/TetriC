@@ -32,8 +32,11 @@ typedef struct UIItem
     bool mouse_hovered;
     bool mouse_clicked;
     bool mouse_released;
+    bool position_changed;
     bool active;
-    UIItemFunction UpdateDraw;
+    UIItemFunction UpdateHitbox;
+    UIItemFunction Update;
+    UIItemFunction Draw;
     UIItemFunction Free;
     int font_size;
     int outline_size;
@@ -53,7 +56,7 @@ typedef struct UIItem
 } UIItem;
 
 void tBindUIItems(UIItem items[], int item_count, UIItem** item_slot, ...);
-void tMakeUIItem(UIItem* item, const char* label, UIItemAnchor anchor, UIItem* parent, UIItemFunction UpdateDraw, UIItemFunction Free);
+void tMakeUIItem(UIItem *item, const char *label, UIItemAnchor anchor, UIItem *parent, UIItemFunction UpdateHitbox, UIItemFunction Update, UIItemFunction Draw, UIItemFunction Free);
 Rectangle tGetUIItemHitbox(UIItem* item);
 
 void tUpdateUIItemXY(UIItem* item);

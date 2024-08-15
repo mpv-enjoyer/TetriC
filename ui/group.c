@@ -2,12 +2,14 @@
 
 #define DATA item->data_group
 
-void _UpdateDrawGroup(UIItem *item);
-void _FreeGroup(UIItem* item);
+void _tUpdateHitboxGroup(UIItem* item);
+void _tUpdateGroup(UIItem* item);
+void _tDrawGroup(UIItem* item);
+void _tFreeGroup(UIItem* item);
 
 void tMakeGroup(UIItem* item, const char* label, UIItem* parent, int group_item_count, UIItem* passive_item, ...)
 {
-    tMakeUIItem(item, label, AnchorCenter, parent, _UpdateDrawGroup, _FreeGroup);
+    tMakeUIItem(item, label, AnchorCenter, parent, _tUpdateHitboxGroup, _tUpdateGroup, _tDrawGroup, _tFreeGroup);
     group_item_count -= 1;
     DATA = (UIDataGroup*)malloc(sizeof(UIDataGroup));
     DATA->passive_item = passive_item;
@@ -22,7 +24,7 @@ void tMakeGroup(UIItem* item, const char* label, UIItem* parent, int group_item_
     va_end(group_items);
 }
 
-void _UpdateDrawGroup(UIItem *item)
+void _tUpdateHitboxGroup(UIItem *item)
 {
     D_ASSERT(DATA);
     tUpdateUIItemXY(item);
@@ -62,12 +64,22 @@ void _UpdateDrawGroup(UIItem *item)
     DATA->passive_item->position.y = relative_first_item_position.y + item->position.y;
     item->current_hitbox.x = inner_hitbox.width;
     item->current_hitbox.y = inner_hitbox.height;
+}
 
-    DrawRectangleLinesEx(tGetUIItemHitbox(item), 2, item->color_hitbox);
+void _tUpdateGroup(UIItem *item)
+{
+    D_ASSERT(DATA);
     tUpdateUIItemMouse(item);
 }
 
-void _FreeGroup(UIItem *item)
+void _tDrawGroup(UIItem *item)
+{
+    D_ASSERT(DATA);
+    if (!item->visible) return;
+    DrawRectangleLinesEx(tGetUIItemHitbox(item), 2, item->color_hitbox);
+}
+
+void _tFreeGroup(UIItem *item)
 {
     free(DATA->items);
     free(DATA);

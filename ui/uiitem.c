@@ -26,7 +26,7 @@ void tBindUIItems(UIItem items[], int item_count, UIItem **item_slot, ...)
     va_end(slots);
 }
 
-void tMakeUIItem(UIItem *item, const char *label, UIItemAnchor anchor, UIItem *parent, UIItemFunction UpdateDraw, UIItemFunction Free)
+void tMakeUIItem(UIItem *item, const char *label, UIItemAnchor anchor, UIItem *parent, UIItemFunction UpdateHitbox, UIItemFunction Update, UIItemFunction Draw, UIItemFunction Free)
 {
     item->data_button = nullptr;
     item->data_checkbox = nullptr;
@@ -48,14 +48,17 @@ void tMakeUIItem(UIItem *item, const char *label, UIItemAnchor anchor, UIItem *p
     item->max_xy = (Vector2){ .x = (float)GetRenderWidth(), .y = (float)GetRenderHeight() };
     item->position = (Vector2){0, 0};
     item->current_hitbox = (Vector2){0, 0};
-    item->active = false;
     item->mouse_active = false;
     item->mouse_hovered = false;
     item->mouse_clicked = false;
     item->mouse_released = false;
+    item->position_changed = true;
+    item->active = false;
     item->position_anchor = anchor;
     item->secondary_anchor = AnchorCenter;
-    item->UpdateDraw = UpdateDraw;
+    item->UpdateHitbox = UpdateHitbox;
+    item->Update = Update;
+    item->Draw = Draw;
     item->Free = Free;
 
     item->font_size = 40;
@@ -73,6 +76,7 @@ void tUpdateUIItemXY(UIItem *item)
     if (!parent) return _tUpdateUIItemXYNoParent(item);
     D_ASSERT(item->position_anchor != AnchorCenter);
     D_ASSERT(item->secondary_anchor != AnchorPassive);
+    Vector2 old_position = item->position;
     Vector2 parent_position = parent->position;
     Vector2 parent_size = parent->current_hitbox;
     switch (item->position_anchor)
@@ -106,6 +110,7 @@ void tUpdateUIItemXY(UIItem *item)
             default: D_ASSERT(false);
         }
     }
+    item->position_changed = !(item->position.x == old_position.x && item->position.y == old_position.y);
 }
 
 bool tUpdateUIVisibility(UIItem *item)
@@ -120,6 +125,7 @@ bool tUpdateUIVisibility(UIItem *item)
 
 void _tUpdateUIItemXYNoParent(UIItem *item)
 {
+    Vector2 old_position = item->position;
     switch (item->position_anchor)
     {
         case AnchorBottom: item->position.y = item->padding; break;
@@ -128,7 +134,7 @@ void _tUpdateUIItemXYNoParent(UIItem *item)
         case AnchorRight: item->position.x = item->padding; break;
         case AnchorCenter: item->position.x = (item->max_xy.x - item->current_hitbox.x) / 2;
                            item->position.y = (item->max_xy.y - item->current_hitbox.y) / 2;
-                           return;
+                           break;
         default: break;
     }
 
@@ -142,7 +148,7 @@ void _tUpdateUIItemXYNoParent(UIItem *item)
             default: D_ASSERT(false);
         }
     }
-    else
+    else if (item->position_anchor == AnchorLeft || item->position_anchor == AnchorRight)
     {
         switch (item->secondary_anchor)
         {
@@ -152,6 +158,7 @@ void _tUpdateUIItemXYNoParent(UIItem *item)
             default: D_ASSERT(false);
         }
     }
+    item->position_changed = !(item->position.x == old_position.x && item->position.y == old_position.y);
 }
 
 Rectangle tGetUIItemHitbox(UIItem *item)
@@ -181,8 +188,33 @@ void tUpdateDrawUIItems(UIItem *items, int items_count)
         case MouseStateUp: if (is_mouse_down) _mouse_state = MouseStatePressed; break;
         case MouseStatePressed: _mouse_state = _mouse_state = MouseStateDown; break;
     }
+
     for (int i = 0; i < items_count; i++)
     {
-        items[i].UpdateDraw(&(items[i]));
+        items[i].Update(&(items[i]));
+    }
+
+    bool position_changed = false;
+    for (int i = 0; i < items_count; i++)
+    {
+        items[i].UpdateHitbox(&(items[i]));
+        position_changed |= (items[i].position_changed && items[i].position_anchor != AnchorPassive);
+    }
+
+    const int placement_attempts = 4;
+    for (int attempt = 0; position_changed && attempt < placement_attempts; attempt++)
+    {
+        position_changed = false;
+        for (int i = 0; i < items_count; i++)
+        {
+            items[i].UpdateHitbox(&(items[i]));
+            position_changed |= items[i].position_changed;
+        }
+        printf("\n Reached attempt %i\n", attempt);
+    }
+
+    for (int i = 0; i < items_count; i++)
+    {
+        items[i].Draw(&(items[i]));
     }
 }

@@ -2,15 +2,18 @@
 
 #define DATA item->data_textbox
 
-void _tUpdateDrawTextBox(UIItem *item);
+void _tUpdateHitboxTextBox(UIItem* item);
+void _tUpdateTextBox(UIItem* item);
+void _tDrawTextBox(UIItem* item);
 void _tFreeTextBox(UIItem* item);
-void _tProcessTextBox(UIItem* item, Vector2 measured_data);
+
+void _tProcessTextBox(UIItem* item);
 void _tUpdateValueTextBox(UIItem* item);
 void _tRestoreValueTextBox(UIItem* item);
 
 void tMakeTextBox(UIItem *item, const char *label, UIItem* parent, UIItemAnchor anchor, const char *text, size_t max_size)
 {
-    tMakeUIItem(item, label, anchor, parent, _tUpdateDrawTextBox, _tFreeTextBox);
+    tMakeUIItem(item, label, anchor, parent, _tUpdateHitboxTextBox, _tUpdateTextBox, _tDrawTextBox, _tFreeTextBox);
     if (anchor != AnchorLeft && anchor != AnchorRight) item->secondary_anchor = AnchorLeft;
     item->stretch_x = true;
     item->padding = item->outline_size;
@@ -47,24 +50,27 @@ void tMakeTextBox(UIItem *item, const char *label, UIItem* parent, UIItemAnchor 
     tMakeText(DATA->label_item, label, item, AnchorRight);
 }
 
-void _tUpdateDrawTextBox(UIItem *item)
+void _tUpdateHitboxTextBox(UIItem* item)
 {
     D_ASSERT(DATA);
     tUpdateUIItemXY(item);
+    DATA->label_item->UpdateHitbox(DATA->label_item);
     DATA->label_item->visible = item->visible;
-    DATA->label_item->UpdateDraw(DATA->label_item);
     if (!tUpdateUIVisibility(item)) return;
-
-    Vector2 measured_label = tMeasureTextFix(item->label, item->font_size);
     Vector2 measured_data = tMeasureTextFix(DATA->text, item->font_size);
 
     item->current_hitbox.x = item->outline_size * 2 + measured_data.x;
     item->current_hitbox.y = item->outline_size * 2 + measured_data.y;
-    
+
     int label_x_difference = GetRenderWidth() - DATA->label_item->current_hitbox.x - item->position.x - item->outline_size * 2 - measured_data.x;
     if (item->stretch_x && label_x_difference > 0) item->current_hitbox.x += label_x_difference;
+}
 
-    bool draw_cursor_line = (int)(GetTime() - DATA->begin_active) % 2 == 0 || DATA->is_backspace_pressed;
+void _tUpdateTextBox(UIItem *item)
+{
+    D_ASSERT(DATA);
+    DATA->label_item->Update(DATA->label_item);
+
     DATA->data_changed = false;
     if (item->mouse_clicked && DATA->allow_edit)
     {
@@ -73,7 +79,7 @@ void _tUpdateDrawTextBox(UIItem *item)
     }
     else if (item->active)
     {
-        _tProcessTextBox(item, measured_data);
+        _tProcessTextBox(item);
         bool should_change_data = false;
         bool should_keep_data = false;
         if (!item->mouse_clicked && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) should_change_data = true;
@@ -92,6 +98,21 @@ void _tUpdateDrawTextBox(UIItem *item)
         }
     }
 
+    tUpdateUIItemMouse(item);
+}
+
+void _tDrawTextBox(UIItem *item)
+{
+    D_ASSERT(DATA);
+    if (!item->visible) return;
+
+    DATA->label_item->Draw(DATA->label_item);
+
+    Vector2 measured_label = tMeasureTextFix(item->label, item->font_size);
+    Vector2 measured_data = tMeasureTextFix(DATA->text, item->font_size);
+
+    bool draw_cursor_line = (int)(GetTime() - DATA->begin_active) % 2 == 0 || DATA->is_backspace_pressed;
+
     DrawRectanglePro(tGetUIItemHitbox(item), (Vector2){0, 0}, 0, DATA->color_input_background);
     DrawRectangleLinesEx(tGetUIItemHitbox(item), 2, item->color_hitbox);
     DrawText(DATA->text, item->position.x + item->outline_size, item->position.y + item->outline_size, item->font_size, item->color_text);
@@ -104,7 +125,6 @@ void _tUpdateDrawTextBox(UIItem *item)
         DrawLine(cursor_x, cursor_y_upper_point, cursor_x, cursor_y_lower_point, item->color_text);
     }
 
-    tUpdateUIItemMouse(item);
 }
 
 void _tFreeTextBox(UIItem *item)
@@ -116,7 +136,7 @@ void _tFreeTextBox(UIItem *item)
     free(DATA);
 }
 
-void _tProcessTextBox(UIItem *item, Vector2 measured_data)
+void _tProcessTextBox(UIItem *item)
 {
     int length = TextLength(DATA->text);
     D_ASSERT(length + 1 <= DATA->max_size);

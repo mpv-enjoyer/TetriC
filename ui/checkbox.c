@@ -2,12 +2,14 @@
 
 #define DATA item->data_checkbox
 
-void _tUpdateDrawCheckBox(UIItem* item);
-void _tFreeCheckBox(UIItem* item);
+void _tUpdateHitboxCheckBox(UIItem* item);
+void _tUpdateCheckBox(UIItem* item);
+void _tDrawCheckBox(UIItem *item);
+void _tFreeCheckBox(UIItem *item);
 
 void tMakeCheckBox(UIItem *item, const char *label, UIItem *parent, UIItemAnchor anchor, bool value)
 {
-    tMakeUIItem(item, label, anchor, parent, _tUpdateDrawCheckBox, _tFreeCheckBox);
+    tMakeUIItem(item, label, anchor, parent, _tUpdateHitboxCheckBox, _tUpdateCheckBox, _tDrawCheckBox, _tFreeCheckBox);
     item->color_hitbox = BLACK;
     item->active = value;
     DATA = (UIDataCheckBox*)malloc(sizeof(UIDataCheckBox));
@@ -19,20 +21,27 @@ void tMakeCheckBox(UIItem *item, const char *label, UIItem *parent, UIItemAnchor
     tMakeText(DATA->label_item, label, item, AnchorRight);
 }
 
-void _tUpdateDrawCheckBox(UIItem *item)
+void _tUpdateHitboxCheckBox(UIItem* item)
 {
     D_ASSERT(DATA);
+    DATA->label_item->UpdateHitbox(DATA->label_item);
     tUpdateUIItemXY(item);
-    DATA->label_item->visible = item->visible;
-    DATA->label_item->UpdateDraw(DATA->label_item);
     if (!tUpdateUIVisibility(item)) return;
+
+    int size = DATA->label_item->current_hitbox.y;
+
+    item->current_hitbox.y = size;
+    item->current_hitbox.x = size;
+}
+
+void _tUpdateCheckBox(UIItem *item)
+{
+    D_ASSERT(DATA);
+    DATA->label_item->Update(DATA->label_item);
     
     D_ASSERT(item->active == DATA->value);
     bool value = DATA->value;
     DATA->value_changed = item->mouse_released || DATA->label_item->mouse_released;
-    bool mouse_hovered = item->mouse_hovered || DATA->label_item->mouse_hovered;
-    bool mouse_active = item->mouse_active || DATA->label_item->mouse_active;
-    int size = DATA->label_item->current_hitbox.y;
 
     if (DATA->value_changed)
     {
@@ -40,8 +49,18 @@ void _tUpdateDrawCheckBox(UIItem *item)
         DATA->value = !value;
     }
 
-    item->current_hitbox.y = size;
-    item->current_hitbox.x = size;
+    tUpdateUIItemMouse(item);
+}
+
+void _tDrawCheckBox(UIItem* item)
+{
+    D_ASSERT(DATA);
+    if (!item->visible) return;
+    DATA->label_item->Draw(DATA->label_item);
+
+    bool mouse_hovered = item->mouse_hovered || DATA->label_item->mouse_hovered;
+    bool mouse_active = item->mouse_active || DATA->label_item->mouse_active;
+    int size = DATA->label_item->current_hitbox.y;
 
     Color main_color = item->color_text;
     Color outline_color = mouse_active ? DATA->color_active : item->color_hitbox;
@@ -58,8 +77,6 @@ void _tUpdateDrawCheckBox(UIItem *item)
         check_point_2.x -= 2;
         DrawLineEx(check_point_3, check_point_2, 4, BLACK);
     }
-
-    tUpdateUIItemMouse(item);
 }
 
 void _tFreeCheckBox(UIItem *item)
