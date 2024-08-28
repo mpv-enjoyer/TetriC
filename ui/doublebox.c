@@ -5,6 +5,7 @@
 void _tFreeDoubleBox(UIItem *item);
 void _tUpdateValueDoubleBox(UIItem* item);
 void _tRestoreValueDoubleBox(UIItem* item);
+int _tCheckInputDoubleBox(UIItem* item, int c);
 
 void tMakeDoubleBox(UIItem *item, const char *label, UIItem *parent, UIItemAnchor anchor, double value, double min, double max)
 {
@@ -14,8 +15,7 @@ void tMakeDoubleBox(UIItem *item, const char *label, UIItem *parent, UIItemAncho
     tMakeTextBox(item, label, parent, anchor, &(buffer[0]), buffer_size);
     item->data_textbox->UpdateValue = _tUpdateValueDoubleBox;
     item->data_textbox->RestoreValue = _tRestoreValueDoubleBox;
-    item->data_textbox->is_integer = false;
-    item->data_textbox->is_number = true;
+    item->data_textbox->CheckInput = _tCheckInputDoubleBox;
     DATA = (UIDataDoubleBox*)malloc(sizeof(UIDataDoubleBox));
     DATA->value = value;
     DATA->min = min;
@@ -45,4 +45,23 @@ void _tUpdateValueDoubleBox(UIItem *item)
 void _tRestoreValueDoubleBox(UIItem *item)
 {
     snprintf(item->data_textbox->text, item->data_textbox->max_size, "%f", DATA->value);
+}
+
+int _tCheckInputDoubleBox(UIItem* item, int c)
+{
+    bool is_number = c >= '0' && c <= '9';
+    bool is_number_delimiter = c == ',' || c == '.';
+    if (!is_number && !is_number_delimiter) return 0;
+    for (int i = 0; i < item->data_textbox->max_size; i++)
+    {
+        char current_char = item->data_textbox->text[i];
+        if (!current_char) break;
+        if (current_char == '.')
+        {
+            if (is_number_delimiter) return 0;
+            break;
+        }
+    }
+    if (is_number_delimiter) c = '.';
+    return c;
 }

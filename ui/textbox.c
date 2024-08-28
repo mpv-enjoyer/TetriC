@@ -10,6 +10,7 @@ void _tFreeTextBox(UIItem* item);
 void _tProcessTextBox(UIItem* item);
 void _tUpdateValueTextBox(UIItem* item);
 void _tRestoreValueTextBox(UIItem* item);
+int _tCheckInputTextBox(UIItem* item, int c);
 
 void tMakeTextBox(UIItem *item, const char *label, UIItem* parent, UIItemAnchor anchor, const char *text, size_t max_size)
 {
@@ -42,11 +43,10 @@ void tMakeTextBox(UIItem *item, const char *label, UIItem* parent, UIItemAnchor 
     DATA->label_item = (UIItem*)malloc(sizeof(UIItem));
     DATA->color_input_background = LIGHTGRAY;
     DATA->is_backspace_pressed = false;
-    DATA->is_integer = false;
-    DATA->is_number = false;
     DATA->allow_edit = true;
     DATA->UpdateValue = _tUpdateValueTextBox;
     DATA->RestoreValue = _tRestoreValueTextBox;
+    DATA->CheckInput = _tCheckInputTextBox;
     tMakeText(DATA->label_item, label, item, AnchorRight);
 }
 
@@ -131,7 +131,6 @@ void _tDrawTextBox(UIItem *item)
         int cursor_y_lower_point = cursor_y_upper_point + measured_data.y;
         DrawLine(cursor_x, cursor_y_upper_point, cursor_x, cursor_y_lower_point, item->color_text);
     }
-
 }
 
 void _tFreeTextBox(UIItem *item)
@@ -166,17 +165,13 @@ void _tProcessTextBox(UIItem *item)
     }
 
     if (length + 1 == DATA->max_size) return;
-    int input_char = GetCharPressed();
+    int input_char = item->data_textbox->CheckInput(item, GetCharPressed());
     int new_input_char = input_char;
     while (new_input_char != KEY_NULL && length + 1 < DATA->max_size)
     {
-        bool is_number = input_char >= '0' && input_char <= '9';
-        bool is_number_delimiter = input_char == ',' || input_char == '.';
-        new_input_char = GetCharPressed();
-        if (DATA->is_integer && !is_number) continue;
-        if (DATA->is_number && !(is_number || is_number_delimiter)) continue;
+        new_input_char = item->data_textbox->CheckInput(item, GetCharPressed());
+        if (!input_char) continue;
         if (input_char == '\n') continue;
-        if (input_char == ',') input_char = '.';
         DATA->text[length] = input_char;
         DATA->text[length + 1] = '\0';
         DATA->begin_active = GetTime();
@@ -193,4 +188,9 @@ void _tUpdateValueTextBox(UIItem *item)
 void _tRestoreValueTextBox(UIItem *item)
 {
     strncpy(DATA->text, DATA->text_backup, DATA->max_size);
+}
+
+int _tCheckInputTextBox(UIItem* item, int c)
+{
+    return c;
 }

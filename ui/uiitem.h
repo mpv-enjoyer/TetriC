@@ -53,6 +53,7 @@ typedef struct UIItem
     struct UIDataGroup* data_group;
     struct UIDataButton* data_text;
     struct UIDataPictureBox* data_picturebox;
+    struct UIDataDummy* data_dummy;
 } UIItem;
 
 void tBindUIItems(UIItem items[], int item_count, UIItem** item_slot, ...);
@@ -73,5 +74,6 @@ void tUpdateDrawUIItems(UIItem* items, int items_count);
 #include "intbox.h"
 #include "checkbox.h"
 #include "picturebox.h"
+#include "dummy.h"
 
 #endif //UIITEM_H

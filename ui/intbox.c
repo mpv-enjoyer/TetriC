@@ -2,9 +2,10 @@
 
 #define DATA item->data_intbox
 
-void _tFreeIntBox(UIItem *item);
+void _tFreeIntBox(UIItem* item);
 void _tUpdateValueIntBox(UIItem* item);
 void _tRestoreValueIntBox(UIItem* item);
+int _tCheckInputIntBox(UIItem* item, int c);
 
 void tMakeIntBox(UIItem *item, const char *label, UIItem *parent, UIItemAnchor anchor, int value, int min, int max)
 {
@@ -15,8 +16,7 @@ void tMakeIntBox(UIItem *item, const char *label, UIItem *parent, UIItemAnchor a
     tMakeTextBox(item, label, parent, anchor, &(buffer[0]), buffer_size);
     item->data_textbox->UpdateValue = _tUpdateValueIntBox;
     item->data_textbox->RestoreValue = _tRestoreValueIntBox;
-    item->data_textbox->is_integer = true;
-    item->data_textbox->is_number = true;
+    item->data_textbox->CheckInput = _tCheckInputIntBox;
     DATA = (UIDataIntBox*)malloc(sizeof(UIDataIntBox));
     DATA->value = value;
     DATA->min = min;
@@ -46,4 +46,11 @@ void _tUpdateValueIntBox(UIItem *item)
 void _tRestoreValueIntBox(UIItem *item)
 {
     snprintf(item->data_textbox->text, item->data_textbox->max_size, "%i", DATA->value);
+}
+
+int _tCheckInputIntBox(UIItem* item, int c)
+{
+    bool is_number = c >= '0' && c <= '9';
+    if (!is_number) return 0;
+    return c;
 }

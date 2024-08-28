@@ -8,8 +8,6 @@ typedef struct UIDataTextBox
     char* text;
     char* text_backup;
     size_t max_size;
-    bool is_number;
-    bool is_integer;
     UIItem* label_item;
     Color color_input_background;
     double begin_active;
@@ -19,6 +17,7 @@ typedef struct UIDataTextBox
     double backspace_emit_period;
     double backspace_before_emit_period;
     bool data_changed;
+    int (*CheckInput)(UIItem*, int);
     UIItemFunction UpdateValue;
     UIItemFunction RestoreValue;
     bool allow_edit;

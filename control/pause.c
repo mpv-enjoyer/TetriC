@@ -12,7 +12,7 @@ Shared tPause(Shared shared)
     tMakeButton(button_continue, "Continue", restart, AnchorTop);
     tMakeButton(restart, "Restart", button_continue, AnchorPassive);
     tMakeButton(to_menu, "To menu", restart, AnchorBottom);
-    tMakeGroup(group, "Group", nullptr, 1, restart);
+    tMakeGroup(group, "Group", nullptr, 3, restart, button_continue, to_menu);
 
     while (shared.state == STATE_PAUSED)
     {
