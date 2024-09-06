@@ -18,17 +18,20 @@ void tMakeDummy(UIItem *item, const char *label, UIItem *parent, UIItemAnchor an
 
 void _tUpdateHitboxDummy(UIItem *item)
 {
+    Vector2 old_position = item->position;
     tUpdateUIItemXY(item);
+    if (old_position.x != item->position.x || old_position.y != item->position.y) item->position_changed = true;
+    else item->position_changed = false;
 }
 
 void _tUpdateDummy(UIItem *item)
 {
-
+    
 }
 
 void _tDrawDummy(UIItem *item)
 {
-
+    
 }
 
 void _tFreeDummy(UIItem *item)
