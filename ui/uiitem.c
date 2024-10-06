@@ -191,12 +191,14 @@ void tUpdateDrawUIItems(UIItem *items, int items_count)
 
     for (int i = 0; i < items_count; i++)
     {
+        if (items[i].Update == nullptr) continue;
         items[i].Update(&(items[i]));
     }
 
     bool position_changed = false;
     for (int i = 0; i < items_count; i++)
     {
+        if (items[i].UpdateHitbox == nullptr) continue;
         items[i].UpdateHitbox(&(items[i]));
         position_changed |= (items[i].position_changed && items[i].position_anchor != AnchorPassive);
     }
@@ -207,6 +209,7 @@ void tUpdateDrawUIItems(UIItem *items, int items_count)
         position_changed = false;
         for (int i = 0; i < items_count; i++)
         {
+            if (items[i].UpdateHitbox == nullptr) continue;
             items[i].UpdateHitbox(&(items[i]));
             position_changed |= items[i].position_changed && items[i].position_anchor != AnchorPassive;
         }
@@ -219,6 +222,15 @@ void tUpdateDrawUIItems(UIItem *items, int items_count)
 
     for (int i = 0; i < items_count; i++)
     {
+        if (items[i].Draw == nullptr) continue;
         items[i].Draw(&(items[i]));
+    }
+}
+
+void tFreeUIItems(UIItem *items, int items_count)
+{
+    for (int i = 0; i < items_count; i++)
+    {
+        items[i].Free(&(items[i]));
     }
 }

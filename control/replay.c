@@ -2,7 +2,7 @@
 #include "render.h"
 #include "action.h"
 
-bool _tKeyFrame(Field* field, Record* record, int next_shape_type, bool is_40_lines);
+bool _tReplayKeyFrame(Field* field, Record* record, int next_shape_type, bool is_40_lines);
 
 Shared tReplay(Shared shared)
 {
@@ -52,7 +52,7 @@ Shared tReplay(Shared shared)
                 index++;
             }
             next_figure_type = shared.current_replay[index + 1] - '0';
-            game_ended |= !_tKeyFrame(shared.field, shared.current_record, next_figure_type, shared.is_40_lines);
+            game_ended |= !_tReplayKeyFrame(shared.field, shared.current_record, next_figure_type, shared.is_40_lines);
             previous_keyframe = current_time;
         }
         else
@@ -77,7 +77,7 @@ Shared tReplay(Shared shared)
     return shared;
 }
 
-bool _tKeyFrame(Field* field, Record* record, int next_shape_type, bool is_40_lines)
+bool _tReplayKeyFrame(Field* field, Record* record, int next_shape_type, bool is_40_lines)
 {
     bool falling = tGravityShape(field);
     if (!falling)

@@ -2,10 +2,16 @@
 #define UIITEM_H
 
 #include <raylib.h>
+#include <stdarg.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "misc.h"
-#include "stdarg.h"
 #include "helpers.h"
 
+struct UIItem;
 typedef void (*UIItemFunction)(struct UIItem*);
 
 typedef enum UIItemAnchor
@@ -23,7 +29,7 @@ typedef struct UIItem
     Vector2 position;
     UIItemAnchor position_anchor;
     UIItemAnchor secondary_anchor;
-    UIItem* parent;
+    struct UIItem* parent;
     bool stretch_x;
     Vector2 max_xy;
     Vector2 current_hitbox;
@@ -65,6 +71,11 @@ bool tUpdateUIVisibility(UIItem* item);
 void tUpdateUIItemMouse(UIItem* item);
 
 void tUpdateDrawUIItems(UIItem* items, int items_count);
+void tFreeUIItems(UIItem* items, int items_count);
+
+#ifdef __cplusplus
+}
+#endif
 
 #include "button.h"
 #include "group.h"

@@ -1,6 +1,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include "misc.h"
+
 typedef struct Config
 {
     double begin_keyframe_seconds;

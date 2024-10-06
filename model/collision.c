@@ -9,7 +9,7 @@ typedef struct _WallKickData
     const int Left[SRS_ROTATE_COUNT][SRS_KICK_COUNT * 2];
 } _WallKickData;
 
-const _WallKickData _wallkickJLTSZ
+const _WallKickData _wallkickJLTSZ =
 {
     {
         {-1, 0,-1,-1, 0, 2,-1, 2},
@@ -25,7 +25,7 @@ const _WallKickData _wallkickJLTSZ
     }
 };
 
-const _WallKickData _wallkickI
+const _WallKickData _wallkickI =
 {
     {
         {-2, 0,  1, 0, -2, 1,  1,-2},

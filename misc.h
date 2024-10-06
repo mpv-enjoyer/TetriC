@@ -6,9 +6,10 @@
 #include <time.h>
 #include <string.h>
 #include <malloc.h>
+#include <stdbool.h>
 
 #ifdef _WIN32
-#include <cstdio>
+#include <stdio.h>
 #endif
 
 #ifndef NDEBUG
@@ -18,10 +19,7 @@
 #endif
 
 #ifndef __cplusplus
- typedef unsigned char bool;
- static const bool false = 0;
- static const bool true = 1;
- static const size_t nullptr = 0;
+ #define nullptr (void*)0
 #endif
 
 #define LOOP_PLUS(value, base) ((value + 1) % base)
@@ -43,6 +41,6 @@ size_t tSizeUntilCharString(const tString *string, size_t begin, char c);
 void tFreeString(tString *string);
 
 void shuffle(int *array, size_t n);
-int random(int left_bound, int right_bound);
+int random_int(int left_bound, int right_bound);
 
 #endif

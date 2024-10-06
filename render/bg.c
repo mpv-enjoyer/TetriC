@@ -22,8 +22,8 @@ void tInitMenuBackground()
     {
         if (shapes[i] != nullptr) free(shapes[i]); 
         shapes[i] = _tMakeBGShape();
-        shapes[i]->x = random(- BG_MENU_OFFSCREEN, GetRenderWidth() + BG_MENU_OFFSCREEN);
-        shapes[i]->y = random(- BG_MENU_OFFSCREEN, GetRenderHeight() + BG_MENU_OFFSCREEN);
+        shapes[i]->x = random_int(- BG_MENU_OFFSCREEN, GetRenderWidth() + BG_MENU_OFFSCREEN);
+        shapes[i]->y = random_int(- BG_MENU_OFFSCREEN, GetRenderHeight() + BG_MENU_OFFSCREEN);
     }
 }
 
@@ -63,18 +63,18 @@ _BGShape* _tMakeBGShape()
     _BGShape* bgshape = (_BGShape*)malloc(sizeof(_BGShape));
     bgshape->shape = Shapes[type];
     int outside_coordinate = rand() % BG_MENU_OFFSCREEN + BG_MENU_OFFSCREEN;
-    int inside_coordinate_x = random(- BG_MENU_OFFSCREEN, GetRenderWidth() + BG_MENU_OFFSCREEN);
-    int inside_coordinate_y = random(- BG_MENU_OFFSCREEN, GetRenderHeight() + BG_MENU_OFFSCREEN);
-    int velocity_directed = random(BG_MENU_MIN_VELOCITY, BG_MENU_MAX_VELOCITY);
-    int velocity_undirected = random(-BG_MENU_MAX_VELOCITY, BG_MENU_MAX_VELOCITY);
+    int inside_coordinate_x = random_int(- BG_MENU_OFFSCREEN, GetRenderWidth() + BG_MENU_OFFSCREEN);
+    int inside_coordinate_y = random_int(- BG_MENU_OFFSCREEN, GetRenderHeight() + BG_MENU_OFFSCREEN);
+    int velocity_directed = random_int(BG_MENU_MIN_VELOCITY, BG_MENU_MAX_VELOCITY);
+    int velocity_undirected = random_int(-BG_MENU_MAX_VELOCITY, BG_MENU_MAX_VELOCITY);
 
     bgshape->x = GetRenderWidth() + outside_coordinate;
     bgshape->y = inside_coordinate_y;
     bgshape->velocity.x = - velocity_directed;
     bgshape->velocity.y = velocity_undirected;
-    bgshape->angular_velocity = random(-30, 30);
+    bgshape->angular_velocity = random_int(-30, 30);
     bgshape->rotation = rand() % 360;
     bgshape->time = GetTime();
-    bgshape->rectangle_size = random(BG_MENU_BLOCK_SIZE_MAX, BG_MENU_BLOCK_SIZE_MIN);
+    bgshape->rectangle_size = random_int(BG_MENU_BLOCK_SIZE_MAX, BG_MENU_BLOCK_SIZE_MIN);
     return bgshape;
 }
