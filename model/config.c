@@ -42,8 +42,8 @@ bool tLoadConfig(Config *config, const char *file_name)
 
 bool tSaveConfig(const Config *config, const char *file_name)
 {
-    char* buffer = (char*)malloc(sizeof(char) * 1000);
-    int size = sprintf(buffer, "%i\n%i\n%f\n%f\n%f\n%i\n%f\n%f\n%f\n\0", config->lines_for_acceleration,
+    char* buffer = (char*)tMalloc(sizeof(char) * 1000);
+    int size = sprintf(buffer, "%i\n%i\n%f\n%f\n%f\n%i\n%f\n%f\n%f\n", config->lines_for_acceleration,
                                                       config->srs ? 1 : 0,
                                                       config->acceleration,
                                                       config->begin_keyframe_seconds,

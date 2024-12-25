@@ -18,12 +18,12 @@ void tSetFieldXY(Field* field, int x, int y, int value)
     field->data[offset] = value;
 }
 
-Field* tAllocField(bool record_replay)
+Field* tAllocField()
 {
-    Field* output = (Field*)malloc(sizeof(Field));
-    output->data = (char*)malloc(FIELD_WIDTH * FIELD_HEIGHT * sizeof(char));
-    output->shape = (Shape*)malloc(sizeof(Shape));
-    output->bag = (Bag*)malloc(sizeof(Bag));
+    Field* output = TMALLOC(Field);
+    output->data = (char*)tMalloc(FIELD_WIDTH * FIELD_HEIGHT * sizeof(char));
+    output->shape = TMALLOC(Shape);
+    output->bag = TMALLOC(Bag);
     output->replay = tAllocString();
     return output;
 }

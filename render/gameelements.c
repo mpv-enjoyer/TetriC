@@ -92,9 +92,11 @@ void tDrawShape(const Shape *shape, int begin_x, int rectangle_size)
 
 Vector2 _tStatisticsElement(const char* label, long value, Rectangle bounds)
 {
+    const Font* font = nullptr;
+    static const int spacing = 2;
     int font_size = 40;
     const char* text = TextFormat("%s: %i", label, value);
-    Vector2 measured = tMeasureTextFix(text, font_size);
+    Vector2 measured = tMeasureTextFix(text, font_size, font, spacing);
     if (measured.x < bounds.width)
     {
         DrawText(text, bounds.x + 2, bounds.y - 2, font_size, GRAY);
@@ -103,7 +105,7 @@ Vector2 _tStatisticsElement(const char* label, long value, Rectangle bounds)
     }
     value /= 1000;
     text = TextFormat("%s: %iK", label, value);
-    measured = tMeasureTextFix(text, font_size);
+    measured = tMeasureTextFix(text, font_size, font, spacing);
     if (measured.x < bounds.width)
     {
         DrawText(text, bounds.x + 2, bounds.y - 2, font_size, GRAY);
@@ -112,7 +114,7 @@ Vector2 _tStatisticsElement(const char* label, long value, Rectangle bounds)
     }
     value /= 1000;
     text = TextFormat("%s: %iM", label, value);
-    measured = tMeasureTextFix(text, font_size);
+    measured = tMeasureTextFix(text, font_size, font, spacing);
     if (measured.x < bounds.width)
     {
         DrawText(text, bounds.x + 2, bounds.y - 2, font_size, GRAY);
@@ -121,7 +123,7 @@ Vector2 _tStatisticsElement(const char* label, long value, Rectangle bounds)
     }
     value /= 1000;
     text = TextFormat("%s: %iB", label, value);
-    measured = tMeasureTextFix(text, font_size);
+    measured = tMeasureTextFix(text, font_size, font, spacing);
     if (measured.x < bounds.width)
     {
         DrawText(text, bounds.x + 2, bounds.y - 2, font_size, GRAY);
@@ -129,7 +131,7 @@ Vector2 _tStatisticsElement(const char* label, long value, Rectangle bounds)
         return measured;
     }
     text = TextFormat("%s ?", label, value);
-    measured = tMeasureTextFix(text, font_size);
+    measured = tMeasureTextFix(text, font_size, font, spacing);
     if (measured.x < bounds.width)
     {
         DrawText(text, bounds.x + 2, bounds.y - 2, font_size, GRAY);

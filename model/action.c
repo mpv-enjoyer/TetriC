@@ -189,7 +189,7 @@ bool tHoldShape(Field* field)
     bool result;
     if (field->shape_hold == nullptr)
     {
-        field->shape_hold = (Shape*)malloc(sizeof(Shape));
+        field->shape_hold = (Shape*)tMalloc(sizeof(Shape));
         result = tMakeShape(field);
     }
     else result = tMakeShapeKnown(field, field->shape_hold->type);

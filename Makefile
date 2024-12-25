@@ -12,11 +12,9 @@ INCLUDES += -Itui/include
 
 LIBS = -lraylib -ltui -Ltui/lib
 
-CFLAGS = -Wall
+CFLAGS = -Wall -Wextra -fanalyzer
 
 RAYPATH = raylib_mingw64/
-
-#
 
 all:
 	gcc $(SOURCES) $(LIBS) $(INCLUDES) $(CFLAGS) -O0 -g -o exec

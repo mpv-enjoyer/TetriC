@@ -10,6 +10,7 @@
 #define SHAPE_DEFAULT_X 3
 #define SHAPE_DEFAULT_Y -2
 #define SHAPE_DEFAULT_ROTATION 0
+#define SHAPE_DEFAULT_ARGS SHAPE_DEFAULT_ROTATION, SHAPE_DEFAULT_X, SHAPE_DEFAULT_Y, SHAPE_DEFAULT_Y
 
 #define SHAPE_TYPE_O 0
 #define SHAPE_TYPE_I 1
@@ -31,7 +32,7 @@ typedef struct Shape
 
 bool tGetShapeHitbox(const Shape* shape, int x, int y);
 
-const static Shape Shapes[SHAPE_TYPE_COUNT] = 
+static const Shape Shapes[SHAPE_TYPE_COUNT] = 
 {{{
 "0110"
 "0110"
@@ -52,7 +53,7 @@ const static Shape Shapes[SHAPE_TYPE_COUNT] =
 "0110"
 "0000"
 "0000"
-}, SHAPE_TYPE_O}, {{
+}, SHAPE_TYPE_O, SHAPE_DEFAULT_ARGS}, {{
 "0000"
 "1111"
 "0000"
@@ -72,7 +73,7 @@ const static Shape Shapes[SHAPE_TYPE_COUNT] =
 "0100"
 "0100"
 "0100"
-}, SHAPE_TYPE_I}, {{
+}, SHAPE_TYPE_I, SHAPE_DEFAULT_ARGS}, {{
 "0100"
 "1110"
 "0000"
@@ -92,7 +93,7 @@ const static Shape Shapes[SHAPE_TYPE_COUNT] =
 "1100"
 "0100"
 "0000"
-}, SHAPE_TYPE_T}, {{
+}, SHAPE_TYPE_T, SHAPE_DEFAULT_ARGS}, {{
 "1000"
 "1110"
 "0000"
@@ -112,7 +113,7 @@ const static Shape Shapes[SHAPE_TYPE_COUNT] =
 "0100"
 "1100"
 "0000"
-}, SHAPE_TYPE_J}, {{
+}, SHAPE_TYPE_J, SHAPE_DEFAULT_ARGS}, {{
 "0010"
 "1110"
 "0000"
@@ -132,7 +133,7 @@ const static Shape Shapes[SHAPE_TYPE_COUNT] =
 "0100"
 "0100"
 "0000"
-}, SHAPE_TYPE_L}, {{
+}, SHAPE_TYPE_L, SHAPE_DEFAULT_ARGS}, {{
 "1100"
 "0110"
 "0000"
@@ -152,7 +153,7 @@ const static Shape Shapes[SHAPE_TYPE_COUNT] =
 "1100"
 "1000"
 "0000"
-}, SHAPE_TYPE_Z}, {{
+}, SHAPE_TYPE_Z, SHAPE_DEFAULT_ARGS}, {{
 
 "0110"
 "1100"
@@ -173,6 +174,6 @@ const static Shape Shapes[SHAPE_TYPE_COUNT] =
 "1100"
 "0100"
 "0000"
-}, SHAPE_TYPE_S}};
+}, SHAPE_TYPE_S, SHAPE_DEFAULT_ARGS}};
 
 #endif
