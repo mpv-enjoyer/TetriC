@@ -1,0 +1,3 @@
+[submodule "tui"]
+	path = tui
+	url = git@github.com:mpv-enjoyer/tui.git
