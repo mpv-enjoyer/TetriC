@@ -9,25 +9,25 @@ Shared tSettings(Shared shared)
     UIItem* exit, *save_exit, *begin_speed, *max_speed, *acceleration, *wait_on_ground, *wait_on_hold, *hold_interval_seconds, *lines_for_next_level, *srs, *fps;
     tBindUIItems(items, item_count, &exit, &save_exit, &begin_speed, &max_speed, &acceleration, &wait_on_ground, &wait_on_hold, &hold_interval_seconds, &lines_for_next_level, &srs, &fps);
 
-    tMakeButton(save_exit, "Save and Exit", nullptr, AnchorPassive);
+    tMakeButton(save_exit, "Save and Exit", nullptr, UIItemAnchorPassive);
     save_exit->position.x = 5;
     save_exit->position.y = 5;
     save_exit->data_button->resize_on_hover = false;
     save_exit->color_text = DARKGREEN;
-    tMakeButton(exit, "Exit", save_exit, AnchorRight);
+    tMakeButton(exit, "Exit", save_exit, UIItemAnchorRight);
     exit->data_button->resize_on_hover = false;
-    tMakeDoubleBox(begin_speed, "Begin speed (blocks per second)", save_exit, AnchorBottom, 1.0f / shared.config->begin_keyframe_seconds, 0.1, 1000);
-    tMakeDoubleBox(max_speed, "Max speed (blocks per second)", begin_speed, AnchorBottom, 1.0f / shared.config->min_keyframe_seconds, 0.1, 1000);
-    tMakeDoubleBox(acceleration, "Acceleration (weird value)", max_speed, AnchorBottom, shared.config->acceleration, 0.00001, 100);
-    tMakeDoubleBox(wait_on_ground, "Block on ground delay (seconds)", acceleration, AnchorBottom, shared.config->wait_on_ground_seconds, 0.00001, 10);
-    tMakeDoubleBox(wait_on_hold, "Hold delay (seconds)", wait_on_ground, AnchorBottom, shared.config->wait_on_hold_seconds, 0.00001, 10);
-    tMakeDoubleBox(hold_interval_seconds, "Hold frequency (seconds)", wait_on_hold, AnchorBottom, shared.config->hold_interval_seconds, 0, 10);
-    tMakeIntBox(lines_for_next_level, "Lines for next level", hold_interval_seconds, AnchorBottom, shared.config->lines_for_acceleration, 1, 1000);
-    tMakeCheckBox(srs, "Super Rotation System", lines_for_next_level, AnchorBottom, shared.config->srs);
-    srs->secondary_anchor = AnchorLeft;
+    tMakeDoubleBox(begin_speed, "Begin speed (blocks per second)", save_exit, UIItemAnchorBottom, 1.0f / shared.config->begin_keyframe_seconds, 0.1, 1000);
+    tMakeDoubleBox(max_speed, "Max speed (blocks per second)", begin_speed, UIItemAnchorBottom, 1.0f / shared.config->min_keyframe_seconds, 0.1, 1000);
+    tMakeDoubleBox(acceleration, "Acceleration (weird value)", max_speed, UIItemAnchorBottom, shared.config->acceleration, 0.00001, 100);
+    tMakeDoubleBox(wait_on_ground, "Block on ground delay (seconds)", acceleration, UIItemAnchorBottom, shared.config->wait_on_ground_seconds, 0.00001, 10);
+    tMakeDoubleBox(wait_on_hold, "Hold delay (seconds)", wait_on_ground, UIItemAnchorBottom, shared.config->wait_on_hold_seconds, 0.00001, 10);
+    tMakeDoubleBox(hold_interval_seconds, "Hold frequency (seconds)", wait_on_hold, UIItemAnchorBottom, shared.config->hold_interval_seconds, 0, 10);
+    tMakeIntBox(lines_for_next_level, "Lines for next level", hold_interval_seconds, UIItemAnchorBottom, shared.config->lines_for_acceleration, 1, 1000);
+    tMakeCheckBox(srs, "Super Rotation System", lines_for_next_level, UIItemAnchorBottom, shared.config->srs);
+    srs->secondary_anchor = UIItemAnchorLeft;
     srs->padding = 3;
-    tMakeIntBox(fps, "FPS", srs, AnchorBottom, shared.config->fps, 0, __INT_MAX__);
-    fps->secondary_anchor = AnchorLeft;
+    tMakeIntBox(fps, "FPS", srs, UIItemAnchorBottom, shared.config->fps, 0, __INT_MAX__);
+    fps->secondary_anchor = UIItemAnchorLeft;
 
     bool save = false;
     while (shared.state == STATE_IN_SETTINGS)

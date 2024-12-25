@@ -12,7 +12,6 @@ tString* tAllocString()
 
 size_t tActualStringSize(tString* string)
 {
-    size_t size = 0;
     for (size_t i = 0; i < string->size; i++)
     {
         if (string->data[i] == '\0')

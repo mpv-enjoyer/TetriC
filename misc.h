@@ -22,6 +22,10 @@
  #define nullptr (void*)0
 #endif
 
+#if RAYLIB_VERSION_MAJOR > 5 || ( RAYLIB_VERSION_MAJOR == 5 && RAYLIB_VERSION_MINOR >= 5 )
+ #define IsTextureReady(texture) IsTextureValid(texture)
+#endif
+
 #define LOOP_PLUS(value, base) ((value + 1) % base)
 #define LOOP_MINUS(value, base) ((value + (base - 1)) % base)
 
