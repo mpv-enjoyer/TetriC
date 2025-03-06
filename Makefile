@@ -9,6 +9,7 @@ INCLUDES += -Imodel
 INCLUDES += -Irender
 INCLUDES += -Icontrol
 INCLUDES += -Iui
+INCLUDES += -Ithirdparty
 
 LIBS = -lraylib
 

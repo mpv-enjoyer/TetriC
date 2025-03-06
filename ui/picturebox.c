@@ -20,7 +20,7 @@ void _tUpdateHitboxPictureBox(UIItem *item)
 {
     D_ASSERT(DATA);
     tUpdateUIItemXY(item);
-    if (!IsTextureReady(DATA->texture)) item->visible = false;
+    //if (!IsTextureReady(DATA->texture)) item->visible = false;
     if (!tUpdateUIVisibility(item)) return;
 
     Vector2 old_hitbox = item->current_hitbox;

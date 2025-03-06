@@ -2,9 +2,17 @@
 #include "misc.h"
 #include <raylib.h>
 
+#define ARENA_IMPLEMENTATION
+#include "arena.h"
+
 bool _tStringToInt(const char* input, int* output);
-bool _tStringToBool(const char *input, bool *output);
-bool _tStringToDouble(const char *input, double *output);
+bool _tStringToBool(const char* input, bool* output);
+bool _tStringToDouble(const char* input, double* output);
+#define DESERIALIZE(INPUT, OUTPUT) _Generic((OUTPUT), \
+    int: _tStringToInt, \
+    bool: _tStringToBool, \
+    double: _tStringToDouble \
+    )(INPUT, &(OUTPUT))
 
 void tMakeConfigDefault(Config *config)
 {
@@ -27,37 +35,45 @@ bool tLoadConfig(Config *config, const char *file_name)
     int split_text_size;
     const char** split_text = TextSplit(file_text, '\n', &split_text_size);
 
-    _tStringToInt(split_text[0], &(config->lines_for_acceleration));
-    _tStringToBool(split_text[1], &(config->srs));
-    _tStringToDouble(split_text[2], &(config->acceleration));
-    _tStringToDouble(split_text[3], &(config->begin_keyframe_seconds));
-    _tStringToDouble(split_text[4], &(config->min_keyframe_seconds));
-    _tStringToInt(split_text[5], &(config->fps));
-    _tStringToDouble(split_text[6], &(config->wait_on_hold_seconds));
-    _tStringToDouble(split_text[7], &(config->wait_on_ground_seconds));
-    _tStringToDouble(split_text[8], &(config->hold_interval_seconds));
+    DESERIALIZE(split_text[0], config->lines_for_acceleration);
+    DESERIALIZE(split_text[1], config->srs);
+    DESERIALIZE(split_text[2], config->acceleration);
+    DESERIALIZE(split_text[3], config->begin_keyframe_seconds);
+    DESERIALIZE(split_text[4], config->min_keyframe_seconds);
+    DESERIALIZE(split_text[5], config->fps);
+    DESERIALIZE(split_text[6], config->wait_on_hold_seconds);
+    DESERIALIZE(split_text[7], config->wait_on_ground_seconds);
+    DESERIALIZE(split_text[8], config->hold_interval_seconds);
 
     return true;
 }
 
 bool tSaveConfig(const Config *config, const char *file_name)
 {
-    char* buffer = (char*)malloc(sizeof(char) * 1000);
-    int size = sprintf(buffer, "%i\n%i\n%f\n%f\n%f\n%i\n%f\n%f\n%f\n\0", config->lines_for_acceleration,
-                                                      config->srs ? 1 : 0,
-                                                      config->acceleration,
-                                                      config->begin_keyframe_seconds,
-                                                      config->min_keyframe_seconds,
-                                                      config->fps,
-                                                      config->wait_on_hold_seconds,
-                                                      config->wait_on_ground_seconds,
-                                                      config->hold_interval_seconds);
-    D_ASSERT(size < 1000);
-
+    Arena arena = { 0 };
+    char* buffer = arena_sprintf(&arena,
+        "%i\n"
+         "%i\n"
+          "%f\n"
+           "%f\n"
+            "%f\n"
+             "%i\n"
+              "%f\n"
+               "%f\n"
+                "%f\n",
+        config->lines_for_acceleration,
+         config->srs ? 1 : 0,
+          config->acceleration,
+           config->begin_keyframe_seconds,
+            config->min_keyframe_seconds,
+             config->fps,
+              config->wait_on_hold_seconds,
+               config->wait_on_ground_seconds,
+                config->hold_interval_seconds);
 #ifndef NO_FILESAVE
     if (!SaveFileText(file_name, buffer)) return false;
 #endif
-    free(buffer);
+    arena_free(&arena);
     return true;
 }
 
