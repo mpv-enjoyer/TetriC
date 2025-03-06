@@ -70,6 +70,10 @@ bool tCollisionSRS(const Field *field, SRSRotateType type)
             dx = current_wall_kicks->Right[initial_rotation][i * 2];
             dy = current_wall_kicks->Right[initial_rotation][i * 2 + 1];
         }
+        else
+        {
+            D_ASSERT(false && "invalid SRS type");
+        }
         field->shape->x += dx;
         field->shape->y += dy;
         if (!tCollision(field)) return false;

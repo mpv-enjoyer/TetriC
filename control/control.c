@@ -53,6 +53,7 @@ void tMainLoop()
             case (STATE_PAUSED): shared_data = tPause(shared_data); break;
             case (STATE_IN_SETTINGS): shared_data = tSettings(shared_data); break;
             case (STATE_REPLAY): shared_data = tReplay(shared_data); break;
+            default: break;
         }
     }
     tSaveConfig(&config, "tetriC.data");

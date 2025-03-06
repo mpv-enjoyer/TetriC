@@ -60,10 +60,9 @@ void tDrawMenuBackground()
 _BGShape* _tMakeBGShape()
 {
     int type = rand() % SHAPE_TYPE_COUNT;
-    _BGShape* bgshape = (_BGShape*)malloc(sizeof(_BGShape));
+    _BGShape* bgshape = TMALLOC(_BGShape);
     bgshape->shape = Shapes[type];
     int outside_coordinate = rand() % BG_MENU_OFFSCREEN + BG_MENU_OFFSCREEN;
-    int inside_coordinate_x = random_int(- BG_MENU_OFFSCREEN, GetRenderWidth() + BG_MENU_OFFSCREEN);
     int inside_coordinate_y = random_int(- BG_MENU_OFFSCREEN, GetRenderHeight() + BG_MENU_OFFSCREEN);
     int velocity_directed = random_int(BG_MENU_MIN_VELOCITY, BG_MENU_MAX_VELOCITY);
     int velocity_undirected = random_int(-BG_MENU_MAX_VELOCITY, BG_MENU_MAX_VELOCITY);

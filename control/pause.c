@@ -9,9 +9,9 @@ Shared tPause(Shared shared)
     UIItem *button_continue, *to_menu, *restart, *group;
     tBindUIItems(items, item_count, &button_continue, &to_menu, &restart, &group);
 
-    tMakeButton(button_continue, "Continue", restart, AnchorTop);
-    tMakeButton(restart, "Restart", button_continue, AnchorPassive);
-    tMakeButton(to_menu, "To menu", restart, AnchorBottom);
+    tMakeButton(button_continue, "Continue", restart, UIItemAnchorTop);
+    tMakeButton(restart, "Restart", button_continue, UIItemAnchorPassive);
+    tMakeButton(to_menu, "To menu", restart, UIItemAnchorBottom);
     tMakeGroup(group, "Group", nullptr, 3, restart, button_continue, to_menu);
 
     while (shared.state == STATE_PAUSED)

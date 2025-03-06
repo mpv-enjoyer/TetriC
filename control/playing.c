@@ -9,7 +9,7 @@ Shared tPlaying(Shared shared)
 {
     if (shared.field == nullptr)
     {
-        shared.field = tAllocField(shared.config->replay);
+        shared.field = tAllocField();
         tMakeField(shared.field, shared.config);
         tMakeShape(shared.field);
         tMakeRecord(shared.current_record, shared.config);

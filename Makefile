@@ -8,17 +8,16 @@ INCLUDES = -I.
 INCLUDES += -Imodel
 INCLUDES += -Irender
 INCLUDES += -Icontrol
-INCLUDES += -Iui
-INCLUDES += -Ithirdparty
+INCLUDES += -Itui/include
 
-LIBS = -lraylib
+LIBS = -lraylib -ltui -Ltui/lib
+
+CFLAGS = -Wall -Wextra -fanalyzer
 
 RAYPATH = raylib_mingw64/
 
-#-fanalyzer
-
 all:
-	gcc $(SOURCES) $(LIBS) $(INCLUDES) -O0 -g -o exec
+	gcc $(SOURCES) $(LIBS) $(INCLUDES) $(CFLAGS) -O0 -g -o exec
 
 windows:
 	x86_64-w64-mingw32-gcc $(SOURCES) -static -l:libraylib.dll.a -l:libraylib.a $(INCLUDES) -L$(RAYPATH)/lib -I$(RAYPATH)/include -O3 -g -o tetriC

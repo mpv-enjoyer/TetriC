@@ -1,18 +1,24 @@
 #include "misc.h"
 #include <stdlib.h>
 
-tString* tAllocString()
+void *tMalloc(size_t size)
 {
-    tString* string = (tString*)malloc(sizeof(tString));
+    void* output = malloc(size);
+    D_ASSERT(output != nullptr);
+    return output;
+}
+
+tString *tAllocString()
+{
+    tString* string = TMALLOC(tString);
     string->size = 32;
-    string->data = (char*)malloc(string->size * sizeof(char));
+    string->data = (char*)tMalloc(string->size * sizeof(char));
     memset(string->data, '\0', string->size * sizeof(char));
     return string;
 }
 
 size_t tActualStringSize(tString* string)
 {
-    size_t size = 0;
     for (size_t i = 0; i < string->size; i++)
     {
         if (string->data[i] == '\0')

@@ -24,7 +24,7 @@ typedef struct Field
 
 int tGetFieldXY(const Field* field, int x, int y);
 void tSetFieldXY(Field* field, int x, int y, int value);
-Field* tAllocField(bool record_replay);
+Field* tAllocField();
 void tMakeField(Field *field, Config *config);
 void tFreeField(Field* field);
 

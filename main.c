@@ -1,10 +1,8 @@
-#include <raylib.h>
 #include "control.h"
 
-int main(void)
+int main()
 {
     tInit();
     tMainLoop();
     tEnd();
-    return 0;
 }
