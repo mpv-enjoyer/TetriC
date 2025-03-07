@@ -28,25 +28,27 @@ void tMakeConfigDefault(Config *config)
     config->fps = __INT_MAX__;
 }
 
-#define FILE_LAYOUT(prefix) \
-        "%i\n"\
-         "%i\n"\
-          "%f\n"\
-           "%f\n"\
-            "%f\n"\
-             "%i\n"\
-              "%f\n"\
-               "%f\n"\
-                "%f\n",\
-prefix## lines_for_acceleration,\
-prefix##  srs ? 1 : 0,\
-prefix##   acceleration,\
-prefix##    begin_keyframe_seconds,\
-prefix##     min_keyframe_seconds,\
-prefix##      fps,\
-prefix##       wait_on_hold_seconds,\
-prefix##        wait_on_ground_seconds,\
-prefix##         hold_interval_seconds\
+#define L_INT "%i "
+#define L_FLT "%f "
+#define FILE_LAYOUT(conf) \
+        L_INT\
+         L_INT\
+          L_FLT\
+           L_FLT\
+            L_FLT\
+             L_INT\
+              L_FLT\
+               L_FLT\
+                L_FLT,\
+conf->  lines_for_acceleration,\
+conf->   srs,\
+conf->    acceleration,\
+conf->     begin_keyframe_seconds,\
+conf->      min_keyframe_seconds,\
+conf->       fps,\
+conf->        wait_on_hold_seconds,\
+conf->         wait_on_ground_seconds,\
+conf->          hold_interval_seconds\
 
 int _tCall_vsscanf(char *tokenstring, char *format, ...)
 {
@@ -60,18 +62,16 @@ int _tCall_vsscanf(char *tokenstring, char *format, ...)
 
 bool tLoadConfig(Config *config, const char *file_name)
 {
-    const char* file_text = LoadFileText(file_name);
+    char* file_text = LoadFileText(file_name);
     if (!file_text) return false;
-    int split_text_size;
-    const char** split_text = TextSplit(file_text, '\n', &split_text_size);
-    _tCall_vsscanf(file_text, FILE_LAYOUT(&config->));
+    _tCall_vsscanf(file_text, FILE_LAYOUT(&config));
     return true;
 }
 
 bool tSaveConfig(const Config *config, const char *file_name)
 {
     Arena arena = { 0 };
-    char* buffer = arena_sprintf(&arena, FILE_LAYOUT(config->));
+    char* buffer = arena_sprintf(&arena, FILE_LAYOUT(config));
 #ifndef NO_FILESAVE
     if (!SaveFileText(file_name, buffer)) return false;
 #endif

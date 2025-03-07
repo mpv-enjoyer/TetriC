@@ -9,6 +9,7 @@ INCLUDES += -Imodel
 INCLUDES += -Irender
 INCLUDES += -Icontrol
 INCLUDES += -Itui/include
+INCLUDES += -Ithirdparty
 
 LIBS = -lraylib -ltui -Ltui/lib
 
