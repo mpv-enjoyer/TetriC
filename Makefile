@@ -13,7 +13,7 @@ INCLUDES += -Ithirdparty
 
 LIBS = -lraylib -ltui -Ltui/lib
 
-CFLAGS = -Wall -Wextra -fanalyzer
+CFLAGS = -Wall -Wextra #-fanalyzer
 
 RAYPATH = raylib_mingw64/
 
