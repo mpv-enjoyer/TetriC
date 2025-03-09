@@ -36,16 +36,16 @@ void tDrawGameFrame(const Field* field, const Record *record, bool is_40_lines)
 void tDrawMenuFrame(UIItem* items, int items_count)
 {
     BeginDrawing();
-    ClearBackground(RAYWHITE);
-    tDrawMenuBackground();
-    tUpdateDrawUIItems(items, items_count);
+        ClearBackground(FIELD_COLOR);
+        tDrawMenuBackground();
+        tUpdateDrawUIItems(items, items_count);
     EndDrawing();
 }
 
 void tDrawGameOverFrame(UIItem* items, int item_count)
 {
     BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(FIELD_COLOR);
         tUpdateDrawUIItems(items, item_count);
     EndDrawing();
 }
@@ -53,19 +53,21 @@ void tDrawGameOverFrame(UIItem* items, int item_count)
 void tDrawPauseFrame(UIItem* items, int item_count, const Field* field, const Record *record, bool is_40_lines)
 {
     BeginDrawing();
-    ClearBackground(RAYWHITE);
-    _tDrawGameFrameEx(field, record, false, is_40_lines);
-    Color darker = BLACK;
-    darker.a = 200;
-    DrawRectangle(0, 0, GetRenderWidth(), GetRenderHeight(), darker);
-    tUpdateDrawUIItems(items, item_count);
+        ClearBackground(RAYWHITE);
+        _tDrawGameFrameEx(field, record, false, is_40_lines);
+        BeginBlendMode(BLEND_ALPHA);
+            Color darker = BLACK;
+            darker.a = 200;
+            DrawRectangle(0, 0, GetRenderWidth(), GetRenderHeight(), darker);
+        EndBlendMode();
+        tUpdateDrawUIItems(items, item_count);
     EndDrawing();
 }
 
 void tDrawSettingsFrame(UIItem* items, int item_count)
 {
     BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(DARKGRAY);
         tUpdateDrawUIItems(items, item_count);
     EndDrawing();
 }
@@ -73,7 +75,7 @@ void tDrawSettingsFrame(UIItem* items, int item_count)
 void tDrawReplayFrame(const Field* field, const Record* record, bool is_40_lines)
 {
     BeginDrawing();
-    ClearBackground(FIELD_OUTSIDE_COLOR);
-    _tDrawGameFrameEx(field, record, true, is_40_lines);
+        ClearBackground(FIELD_OUTSIDE_COLOR);
+        _tDrawGameFrameEx(field, record, true, is_40_lines);
     EndDrawing();
 }

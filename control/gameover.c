@@ -1,6 +1,20 @@
 #include "gameover.h"
 #include "render.h"
 
+void _tMakeGameOverDoubleBox(UIItem *item, const char *label, const UIItem *parent, UIItemAnchor anchor, double value, double min, double max)
+{
+    tMakeDoubleBox(item, label, parent, anchor, value, min, max);
+    item->data_textbox->label_item->color_text = WHITE;
+    item->color_text = WHITE;
+}
+
+void _tMakeGameOverIntBox(UIItem *item, const char *label, const UIItem *parent, UIItemAnchor anchor, int value, int min, int max)
+{
+    tMakeIntBox(item, label, parent, anchor, value, min, max);
+    item->data_textbox->label_item->color_text = WHITE;
+    item->color_text = WHITE;
+}
+
 Shared tGameOver(Shared shared)
 {
     const int item_count = 9;
@@ -16,11 +30,11 @@ Shared tGameOver(Shared shared)
 
     if (shared.is_40_lines)
     {
-        tMakeDoubleBox(level_value, "Figures/sec: ", nullptr, UIItemAnchorPassive, shared.current_record->shapes_placed / shared.current_record->time, 0, __FLT_MAX__);
+        _tMakeGameOverDoubleBox(level_value, "Figures/sec: ", nullptr, UIItemAnchorPassive, shared.current_record->shapes_placed / shared.current_record->time, 0, __FLT_MAX__);
     }
     else
     {
-        tMakeIntBox(level_value, "Level: ", nullptr, UIItemAnchorPassive, shared.current_record->level, 0, __INT_MAX__);
+        _tMakeGameOverIntBox(level_value, "Level: ", nullptr, UIItemAnchorPassive, shared.current_record->level, 0, __INT_MAX__);
     }
     level_value->data_textbox->color_input_background = (Color){0, 0, 0, 0};
     level_value->data_textbox->allow_edit = false;
@@ -29,29 +43,30 @@ Shared tGameOver(Shared shared)
 
     if (shared.is_40_lines)
     {
-        tMakeDoubleBox(lines_cleared_value, "Lines/sec: ", level_value, UIItemAnchorBottom, shared.current_record->lines_cleared / shared.current_record->time, 0, __FLT_MAX__);
+        _tMakeGameOverDoubleBox(lines_cleared_value, "Lines/sec: ", level_value, UIItemAnchorBottom, shared.current_record->lines_cleared / shared.current_record->time, 0, __FLT_MAX__);
     }
     else
     {
-        tMakeIntBox(lines_cleared_value, "Lines: ", level_value, UIItemAnchorBottom, shared.current_record->lines_cleared, 0, __INT_MAX__);
+        _tMakeGameOverIntBox(lines_cleared_value, "Lines: ", level_value, UIItemAnchorBottom, shared.current_record->lines_cleared, 0, __INT_MAX__);
     }
     lines_cleared_value->data_textbox->color_input_background = (Color){0, 0, 0, 0};
     lines_cleared_value->data_textbox->allow_edit = false;
     lines_cleared_value->data_textbox->label_item->position_anchor = UIItemAnchorLeft;
     lines_cleared_value->stretch_x = false;
 
-    tMakeIntBox(score_value, "Score: ", lines_cleared_value, UIItemAnchorBottom, shared.current_record->score, 0, __INT_MAX__);
+    _tMakeGameOverIntBox(score_value, "Score: ", lines_cleared_value, UIItemAnchorBottom, shared.current_record->score, 0, __INT_MAX__);
     score_value->data_textbox->color_input_background = (Color){0, 0, 0, 0};
     score_value->data_textbox->allow_edit = false;
     score_value->data_textbox->label_item->position_anchor = UIItemAnchorLeft;
     score_value->stretch_x = false;
 
-    tMakeDoubleBox(time_value, "Time: ", score_value, UIItemAnchorBottom, shared.current_record->time, 0, __DBL_MAX__);
+    _tMakeGameOverDoubleBox(time_value, "Time: ", score_value, UIItemAnchorBottom, shared.current_record->time, 0, __DBL_MAX__);
     time_value->data_textbox->color_input_background = (Color){0, 0, 0, 0};
     time_value->data_textbox->allow_edit = false;
     time_value->data_textbox->label_item->position_anchor = UIItemAnchorLeft;
     time_value->stretch_x = false;
     tMakeText(sec, "s.", time_value, UIItemAnchorRight);
+    sec->color_text = WHITE;
     sec->secondary_anchor = UIItemAnchorCenter;
 
     tMakeGroup(group, "Group", nullptr, 8, level_value, level_value->data_textbox->label_item,

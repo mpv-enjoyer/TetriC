@@ -17,13 +17,17 @@ Shared tMenu(Shared shared)
     tBindUIItems(items, item_count, &play, &play_40_lines, &replay, &settings, &exit, &hint, &group1, &picture, &group2);
 
     tMakeButton(play, "Play", nullptr, UIItemAnchorPassive);
+    play->data_button->resize_on_hover = false;
     tMakeButton(play_40_lines, "Play 40 lines", play, UIItemAnchorBottom);
+    play_40_lines->data_button->resize_on_hover = false;
     tMakeButton(replay, "Replay", play, UIItemAnchorRight);
+    replay->data_button->resize_on_hover = false;
     replay->visible = false;
     replay->font_size = 20;
-    replay->data_button->resize_on_hover = false;
     tMakeButton(settings, "Settings", play_40_lines, UIItemAnchorBottom);
+    settings->data_button->resize_on_hover = false;
     tMakeButton(exit, "Exit", settings, UIItemAnchorBottom);
+    exit->data_button->resize_on_hover = false;
     tMakeText(hint, "Press Enter", play, UIItemAnchorRight);
     hint->font_size = 20;
     hint->color_background = WHITE;
@@ -32,7 +36,7 @@ Shared tMenu(Shared shared)
     tMakeGroup(group1, "Group1", nullptr, 4, play, play_40_lines, settings, exit, hint);
     group1->position_anchor = UIItemAnchorPassive;
     tMakePictureBox(picture, "assets/linus.png", group1, UIItemAnchorRight);
-    picture->padding = 50;
+    picture->padding = 80;
     tMakeGroup(group2, "Group2", nullptr, 2, group1, picture);
 
     while (shared.state == STATE_IN_MENU)
